@@ -29,7 +29,7 @@ export const Slow3g: NetworkSetup = withOnline({
     latency: 400 * 5,
 });
 
-export const NetworkCondtionFactory = (networkType: string) => {
+export const NetworkCondtionFactory = (networkType: string | undefined) => {
     switch (networkType) {
         case 'no-throttling': return NoThrottlingConditions
         case 'slow-3g': return Slow3g;

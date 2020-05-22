@@ -15,52 +15,27 @@ export interface CliParams extends NotImplementedParams {
     runs: number;
     cache: boolean;
 
-    reporter: 'json'
+    reporter: string
 }
 
-interface ProfileOptionDefintion extends OptionDefinition {
+interface ProfileOptionDefintion<T> extends OptionDefinition {
     name: keyof CliParams;
+    type: (args?: string) => T,
+    defaultValue?: T
 }
 
-export const params: ProfileOptionDefintion[] = [
-    {
-        name: 'url',
-        type: String,
-        defaultOption: true
-    },
-    {
-        name: 'timeout',
-        type: Number,
-        defaultValue: 30_000
-    },
-    {
-        name: 'throttling',
-        type: Number,
-        defaultValue: 2
-    },
-    {
-        name: "network",
-        type: NetworkCondtionFactory,
-        defaultValue: Fast3g
-    },
-    {
-        name: 'output',
-        type: String,
-        defaultValue: './_perf'
-    },
-    {
-        name: 'runs',
-        type: Number,
-        defaultValue: 3
-    },
-    {
-        name: 'cache',
-        type: Boolean,
-        defaultValue: false
-    },
-    {
-        name: 'reporter',
-        defaultValue: 'json'
-    }
-];
+type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliParams[key]>, 'name'> }
 
+const map: ParamsMap = {
+    url: { type: String, defaultOption: true },
+    timeout: { type: Number, defaultValue: 30_000 },
+    cache: { type: Boolean, defaultValue: false },
+    throttling: { type: Number, defaultValue: 2 },
+    network: { type: NetworkCondtionFactory, defaultValue: Fast3g },
+    output: { type: String, defaultValue: './generated' },
+    purge: { type: Boolean, defaultValue: false },
+    reporter: { type: String, defaultValue: 'basic' },
+    runs: { type: Number, defaultValue: 3 }
+}
+
+export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: k }));

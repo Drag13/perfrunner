@@ -1,7 +1,9 @@
 import { IReporter } from "./ireporter";
-import { report } from "./json";
+import { toJson } from "./json";
+import { basic } from "./default";
 
 export {
     IReporter,
-    report
+    toJson,
+    basic
 };
