@@ -1,5 +1,5 @@
 import { OptionDefinition } from 'command-line-args';
-import { NetworkCondtionFactory, Fast3g } from './options';
+import { NetworkCondtionFactory, Fast3g } from './network';
 import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
 
 type NotImplementedParams = {
