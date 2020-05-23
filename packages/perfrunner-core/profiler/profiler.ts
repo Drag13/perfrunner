@@ -3,7 +3,7 @@ import { RawPerfData } from './raw-perf-data';
 import { PerfRunnerOptions, PerfOptions } from './perf-options';
 
 async function startBrowser(timeout: number) {
-    return await puppeteer.launch({ headless: false, timeout });
+    return await puppeteer.launch({ headless: true, timeout });
 }
 
 async function startEmptyPage(browser: Browser) {

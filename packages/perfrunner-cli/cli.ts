@@ -9,5 +9,5 @@ import { loader } from "./reporter-loader";
     const profileParams: PerfRunnerOptions = { ...inputParams, useCache: inputParams.cache, throttlingRate: inputParams.throttling };
     const performanceResult = await profile(profileParams);
     const report = await loader(inputParams.reporter);
-    report(inputParams.output, performanceResult);
+    await report(inputParams.output, performanceResult);
 })();
