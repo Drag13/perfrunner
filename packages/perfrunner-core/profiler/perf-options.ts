@@ -20,4 +20,5 @@ export interface RunnerOptions {
 
 export interface PerfRunnerOptions extends PerfOptions, RunnerOptions {
     output: string;
+    purge: boolean;
 }

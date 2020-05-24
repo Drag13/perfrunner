@@ -3,7 +3,6 @@ import { NetworkCondtionFactory, Fast3g } from './network';
 import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
 
 type NotImplementedParams = {
-    purge: boolean,
 }
 
 export interface CliParams extends NotImplementedParams {
@@ -14,8 +13,8 @@ export interface CliParams extends NotImplementedParams {
     output: string;
     runs: number;
     cache: boolean;
-
-    reporter: string
+    reporter: string;
+    purge: boolean,
 }
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {

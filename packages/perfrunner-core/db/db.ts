@@ -6,49 +6,44 @@ import { createFolderIfNotExists, generateReportName } from './utils';
 import { PerfOptions } from '../profiler/perf-options';
 
 class Db {
-    private _db: LowdbSync<DbSchema> | undefined;
+    private static _instance: Db | undefined;
 
-    saveData(outputFolder: string, data: PerfRunResult): void {
-        const isInitied = !!this._db;
+    private _db: LowdbSync<DbSchema>;
 
-        if (!isInitied) {
-            this.init(outputFolder, data.runParams);
-        }
-
-        const db = this._db;
-
-        if (db) {
-            db.defaults({ profile: [], count: 0 }).write();
-            db.get('profile').push(data).write();
-            db.update('count', n => n + 1).write();
-        } else {
-            throw new Error('Db not found');
-        }
-    }
-
-    readData(outputFolder: string, options: PerfOptions) {
-        const isInitied = !!this._db;
-
-        if (!isInitied) {
-            this.init(outputFolder, options);
-        }
-
-        const db = this._db;
-
-        if (db) {
-            db.defaults({ profile: [], count: 0 }).write();
-            return db.get('profile').value();
-        } else {
-            throw new Error('Db not found');
-        }
-    }
-
-    private init(outputFolder: string, options: PerfOptions) {
+    private constructor(outputFolder: string, options: PerfOptions) {
         const fileName = generateReportName({ ...options, ...options.network });
         createFolderIfNotExists(outputFolder);
         const adapter = new FileSync<DbSchema>(`${outputFolder}/${fileName}.json`);
         this._db = lowdb(adapter);
     }
+
+    write(data: PerfRunResult, purge: boolean): void {
+        const db = this._db;
+
+        db.defaults({ profile: [], count: 0 }).write();
+
+        if (purge) { this.purge(); }
+
+        db.get('profile').push(data).write();
+        db.update('count', n => n + 1).write();
+
+    }
+
+    read() {
+        const db = this._db;
+
+        db.defaults({ profile: [], count: 0 }).write();
+        return db.get('profile').value();
+    }
+
+    purge() {
+        this._db.get('profile').remove(() => true).write();
+        this._db.update('count', _ => 0).write();
+    }
+
+    public static connect(outputFolder: string, perfRunParams: PerfOptions) {
+        return this._instance == null ? (this._instance = new Db(outputFolder, perfRunParams)) : this._instance;;
+    }
 }
 
-export const db = new Db();
+export { Db };

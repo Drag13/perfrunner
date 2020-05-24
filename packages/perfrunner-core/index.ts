@@ -1,8 +1,8 @@
 import { profile as profilePage } from "./profiler/profiler";
 import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from "./processor/processor";
-import { db } from './db/db';
-import { PerfRunResult, IPerformanceResult } from './db/perf-run-result';
+import { Db } from './db/db';
+import { IPerformanceResult, PerfRunResult } from './db/scheme';
 
 export { PerfRunnerOptions }
 export { IPerformanceResult }
@@ -12,6 +12,8 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
     const { pageMetrics, performanceEntries } = processPerfData(rawMetrics);
 
     const dataToSave: PerfRunResult = { timeStamp: Date.now(), pageMetrics, performanceEntries, runParams: { useCache: options.useCache, network: options.network, throttlingRate: options.throttlingRate, url: options.url } }
-    db.saveData(options.output, dataToSave);
-    return db.readData(options.output, dataToSave.runParams);
+    const db = Db.connect(options.output, options);
+    console.log(`purge ? : ${options.purge ? 'purge!' : 'no!'}`);
+    db.write(dataToSave, options.purge);
+    return db.read();
 }
