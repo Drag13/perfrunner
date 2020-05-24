@@ -50,11 +50,11 @@ async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor:
 export async function profile(options: PerfRunnerOptions): Promise<RawPerfData[]> {
     const { useCache, url, waitFor, runs } = options;
     const browser = await startBrowser(options.timeout);
+    const result = [];
 
     try {
-        const result = [];
-        const page = await startEmptyPage(browser);
 
+        const page = await startEmptyPage(browser);
         await setupPerformanceConditions(page, options);
 
         if (useCache) { // warm up application

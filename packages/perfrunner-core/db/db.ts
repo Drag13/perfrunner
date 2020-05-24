@@ -1,14 +1,9 @@
 import FileSync from 'lowdb/adapters/FileSync';
 import lowdb, { LowdbSync } from 'lowdb';
 
-import { PerfOptions } from '../profiler/perf-options';
+import { DbSchema, PerfRunResult } from "./scheme";
 import { createFolderIfNotExists, generateReportName } from './utils';
-import { PerfRunResult } from './perf-run-result';
-
-type DbSchema = {
-    profile: PerfRunResult[],
-    count: number
-}
+import { PerfOptions } from '../profiler/perf-options';
 
 class Db {
     private _db: LowdbSync<DbSchema> | undefined;

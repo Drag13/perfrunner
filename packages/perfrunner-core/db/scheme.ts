@@ -1,5 +1,4 @@
 import { Metrics } from 'puppeteer';
-import { PerfOptions } from '../profiler/perf-options';
 import { ExtendedPerformanceEntry } from '../processor/perf-data';
 
 export interface PerfRunResult {
@@ -9,4 +8,11 @@ export interface PerfRunResult {
     performanceEntries: ExtendedPerformanceEntry[];
 }
 
+import { PerfOptions } from '../profiler/perf-options';
+
 export type IPerformanceResult = PerfRunResult[] | undefined;
+
+export type DbSchema = {
+    profile: PerfRunResult[],
+    count: number
+}
