@@ -18,6 +18,7 @@
     "typescript": "^3.9.2"
   },
   "dependencies": {
+    "@types/chartjs": "^0.0.31",
     "@types/mustache": "^4.0.1",
     "@types/web-resource-inliner": "^4.2.0",
     "copyfiles": "^2.2.0",

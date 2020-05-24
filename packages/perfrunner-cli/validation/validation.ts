@@ -20,9 +20,14 @@ class Validation {
 
 export default (args: Partial<CliParams>): Validation => {
     const errors: ValidationErrors = {};
+    const { url, runs } = args;
 
-    if (!args.url) {
+    if (url == null || url === '') {
         errors.url = `Url is required`;
+    }
+
+    if (runs == null || runs < 1) {
+        errors.runs = `Number of runs should be greater than zero`
     }
 
     return new Validation(errors);
