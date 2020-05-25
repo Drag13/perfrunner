@@ -15,6 +15,7 @@ export interface PerfOptions {
 export interface RunnerOptions {
     runs: number,
     timeout: number,
+    headless: boolean;
     waitFor?: number | string,
 }
 

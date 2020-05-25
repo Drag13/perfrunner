@@ -21,7 +21,7 @@
 <body>
 
     <script>
-       /* eslint-disable */
+        /* eslint-disable */
         window.data = {{{ payload }}};
         /*eslint-enable */
     </script>
@@ -52,7 +52,10 @@
                 animation: { duration: 0 },
                 hover: { animationDuration: 0 },
                 responsiveAnimationDuration: 0,
-                elements: { line: { tension: 0 } }
+                elements: { line: { tension: 0 } },
+                scales: {
+                    yAxes: [{ ticks: { beginAtZero: true } }]
+                }
             }
             const { data } = window;
 

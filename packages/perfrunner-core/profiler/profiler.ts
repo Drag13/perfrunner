@@ -1,9 +1,10 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
 import { RawPerfData } from './raw-perf-data';
 import { PerfRunnerOptions, PerfOptions } from './perf-options';
+import { report } from '../log';
 
-async function startBrowser(timeout: number) {
-    return await puppeteer.launch({ headless: true, timeout });
+async function startBrowser(timeout: number, headless: boolean) {
+    return await puppeteer.launch({ headless, timeout });
 }
 
 async function startEmptyPage(browser: Browser) {
@@ -49,7 +50,7 @@ async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor:
 
 export async function profile(options: PerfRunnerOptions): Promise<RawPerfData[]> {
     const { useCache, url, waitFor, runs } = options;
-    const browser = await startBrowser(options.timeout);
+    const browser = await startBrowser(options.timeout, options.headless);
     const result = [];
 
     try {
@@ -58,11 +59,16 @@ export async function profile(options: PerfRunnerOptions): Promise<RawPerfData[]
         await setupPerformanceConditions(page, options);
 
         if (useCache) { // warm up application
+            report(`warming up cache`)
             await startApplication(page, url, waitFor)
         }
 
+        let i = 0;
+
         for await (const dump of profilePage(page, url, runs, waitFor)) {
             result.push(dump)
+            i++;
+            report(`running #${i} profile session`);
         }
 
         return result;

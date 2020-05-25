@@ -32,7 +32,7 @@ import { IPerformanceResult } from "../../perfrunner-core/db/scheme";
             {
                 labels: viewData.labels,
                 datasets: [{
-                    label: 'layoutDuration',
+                    label: 'first-contentful-paint',
                     data: viewData.fcp,
                     borderColor: 'rgba(255, 99, 60, 1)',
                     fillColor: 'rgba(0, 0, 0, 0.0)',

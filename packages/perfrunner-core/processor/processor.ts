@@ -1,20 +1,21 @@
-import { mergeWithRules, RuleSet, groupEntries } from './utils';
+import { groupEntries } from './utils';
 import { RawPerfData } from '../profiler/raw-perf-data';
 import { ExtendedPerformanceEntry, PerformanceData } from './perf-data';
 
-const performanceEntryTransformMap: RuleSet<ExtendedPerformanceEntry> = {
-    nextHopProtocol: 'exclude',
-    toJSON: 'exclude',
-}
+import { exclude, mergeWithRules as merge } from "./merge";
+import { transform } from "./transform";
+
+const toMiliseconds = (v: number) => v * 1000;
 
 export const processPerfData = (rawPerformanceData: RawPerfData[]): PerformanceData => {
 
     const metrics = rawPerformanceData.map(x => x.metrics);
-    const mergedMetrics = mergeWithRules(metrics, { Timestamp: 'exclude' });
+    const mergedMetrics = merge(metrics, { Timestamp: exclude });
+    const normalizedMetrics = transform(mergedMetrics, { TaskDuration: toMiliseconds, RecalcStyleCount: toMiliseconds, RecalcStyleDuration: toMiliseconds, ScriptDuration: toMiliseconds, LayoutDuration: toMiliseconds });
 
     const perfEntries = rawPerformanceData.map(x => x.performanceEntries);
     const grouped = groupEntries(perfEntries);
-    const mergedPerEntries = grouped.map(group => mergeWithRules<ExtendedPerformanceEntry>(group, performanceEntryTransformMap))
+    const mergedPerEntries = grouped.map(group => merge<ExtendedPerformanceEntry>(group, { nextHopProtocol: exclude, toJSON: exclude }))
 
-    return { pageMetrics: mergedMetrics, performanceEntries: mergedPerEntries };
+    return { pageMetrics: normalizedMetrics, performanceEntries: mergedPerEntries };
 };
