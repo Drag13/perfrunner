@@ -1,17 +1,23 @@
 (function () {
 
+    type ViewData = Record<string, any[]>;
+
     const colors = [
-        `rgba(50, 50, 50, 1)`,
-        `rgba(50, 50, 100, 1)`,
-        `rgba(50, 50, 150, 1)`,
-        `rgba(50, 50, 200, 1)`,
-        `rgba(50, 50, 250, 1)`,
+        `#375E97`,
+        `#FB6542`,
+        `#FFBB00`,
+        `#3f681C`,
+        `#000000`,
     ];
 
-    function transform(rawData) {
-        if (!Array.isArray(data)) {
+    function transform(rawData: IPerformanceResult) {
+        if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format')
         };
+
+        const result: ViewData = {
+            labels: []
+        }
 
         return rawData.reduce((acc, v, i) => {
             const marks = v.performanceEntries.filter(x => x.entryType === 'mark');
@@ -20,37 +26,38 @@
                 const name = m.name;
                 const startTime = m.startTime;
 
-                if (!acc[name]) {
+                if (acc[name] == null) {
                     acc[name] = []
                 }
-
                 acc[name].push(startTime);
             });
 
-            acc.labels.push(`#${i+1}`);
+            acc.labels.push(`#${i + 1}`);
 
             return acc;
-        }, {
-            labels: []
-        });
+        }, result);
     }
 
-    function toDataSet(viewData) {
+    function toDataSet(viewData: ViewData) {
         return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => ({
             label: key,
             data: entries,
             borderColor: colors[i],
             backgroundColor: 'rgba(0, 0, 0, 0.0)',
-            borderWidth: 1
+            borderWidth: 2
         }));
     }
 
-    function render(canvasId, rawData, options) {
+    function render(canvasId: string, rawData: IPerformanceResult, options: Chart.ChartOptions) {
         const viewData = transform(rawData);
-        var ctx = document.getElementById(canvasId).getContext('2d');
-        const datasets = toDataSet(viewData);
-        console.log(datasets);
+        var ctx = (document.getElementById(canvasId) as HTMLCanvasElement)?.getContext('2d');
 
+        if (ctx == null) {
+            console.warn(`Canvas with id: ${canvasId} not found`)
+            return;
+        }
+
+        const datasets = toDataSet(viewData);
 
         const chart = new Chart(ctx, {
             type: 'line',
@@ -63,7 +70,7 @@
 
         return chart;
     }
-    window.marksChart = {
+    (window as any).marksChart = {
         render
     }
 })();
