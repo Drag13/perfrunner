@@ -27,7 +27,7 @@
                 acc[name].push(startTime);
             });
 
-            acc.labels.push(`#${i}`);
+            acc.labels.push(`#${i+1}`);
 
             return acc;
         }, {

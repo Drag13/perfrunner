@@ -10,7 +10,7 @@ export interface PerfRunResult {
 
 import { PerfOptions } from '../profiler/perf-options';
 
-export type IPerformanceResult = PerfRunResult[] | undefined;
+export type IPerformanceResult = PerfRunResult[];
 
 export type DbSchema = {
     profile: PerfRunResult[],

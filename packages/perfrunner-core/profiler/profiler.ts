@@ -4,7 +4,7 @@ import { PerfRunnerOptions, PerfOptions } from './perf-options';
 import { report } from '../log';
 
 async function startBrowser(timeout: number, headless: boolean) {
-    return await puppeteer.launch({ headless, timeout });
+    return await puppeteer.launch({ headless, timeout, ignoreHTTPSErrors: true });
 }
 
 async function startEmptyPage(browser: Browser) {

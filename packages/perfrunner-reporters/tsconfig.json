@@ -1,10 +1,16 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-      "outDir": "./dist",
-      "types": ["chartjs"]
-    },
-    "files": ["index.ts"],
-    "include": ["./templates/**/*.ts"],
-
-   }
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "types": [
+      "chart.js",
+      "./core-models"
+    ]
+  },
+  "files": [
+    "index.ts"
+  ],
+  "include": [
+    "./templates/**/*.ts"
+  ]
+}

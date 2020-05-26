@@ -1,5 +1,3 @@
-import { IPerformanceResult } from "../../perfrunner-core/db/scheme";
-
 (function () {
     function transform(rawData: IPerformanceResult) {
         if (!Array.isArray(rawData)) {
@@ -7,8 +5,8 @@ import { IPerformanceResult } from "../../perfrunner-core/db/scheme";
         };
 
         return rawData.reduce((acc, v, i) => {
-            const fcpEvent = v.performanceEntries.find(x => x.name === 'first-contentful-paint');
-            acc.fcp.push(fcpEvent!.startTime);
+            const fcpEvent = v.performanceEntries.find((x: any) => x.name === 'first-contentful-paint');
+            acc.fcp.push(fcpEvent ? fcpEvent.startTime : 0);
             acc.labels.push(`#${i + 1}`);
 
             return acc;
@@ -18,7 +16,7 @@ import { IPerformanceResult } from "../../perfrunner-core/db/scheme";
         });
     }
 
-    function render(canvasId: string, rawData: IPerformanceResult, options: any) {
+    function render(canvasId: string, rawData: any, options: any) {
         const viewData = transform(rawData);
         const ctx = (document.getElementById(canvasId) as HTMLCanvasElement)?.getContext('2d');
 
@@ -27,20 +25,19 @@ import { IPerformanceResult } from "../../perfrunner-core/db/scheme";
             return;
         }
 
-        var ch = new Chart(ctx);
-        ch.Line(
-            {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
                 labels: viewData.labels,
                 datasets: [{
                     label: 'first-contentful-paint',
                     data: viewData.fcp,
                     borderColor: 'rgba(255, 99, 60, 1)',
-                    fillColor: 'rgba(0, 0, 0, 0.0)',
-                    strokeColor: 'rgba(66, 66, 66, 0.0)'
+                    borderWidth: 1
                 }]
             },
             options
-        )
+        });
     }
 
     (window as any).entriesChart = {

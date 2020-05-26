@@ -9,7 +9,7 @@
             acc.layoutDuration.push(v.pageMetrics.LayoutDuration);
             acc.recalcStyleDuration.push(v.pageMetrics.RecalcStyleDuration);
             acc.scriptDuration.push(v.pageMetrics.ScriptDuration);
-            acc.labels.push(`#${i}`);
+            acc.labels.push(`#${i+1}`);
             return acc;
         }, {
             layoutDuration: [],
