@@ -65,7 +65,7 @@
                 labels: viewData.labels,
                 datasets
             },
-            options
+            options: { ...options, tooltips: { callbacks: { title: () => 'Hello', footer: () => 'I AM FOOTER' } } }
         });
 
         return chart;

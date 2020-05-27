@@ -10,10 +10,10 @@ class Db {
 
     private _db: LowdbSync<DbSchema>;
 
-    private constructor(outputFolder: string, options: PerfOptions) {
+    private constructor(outputFolder: string, options: PerfOptions, testName?: string) {
         const fileName = generateReportName({ ...options, ...options.network });
         createFolderIfNotExists(outputFolder);
-        const adapter = new FileSync<DbSchema>(`${outputFolder}/${fileName}.json`);
+        const adapter = new FileSync<DbSchema>(`${outputFolder}/${testName ?? fileName}.json`);
         this._db = lowdb(adapter);
     }
 
@@ -41,8 +41,8 @@ class Db {
         this._db.update('count', _ => 0).write();
     }
 
-    public static connect(outputFolder: string, perfRunParams: PerfOptions) {
-        return this._instance == null ? (this._instance = new Db(outputFolder, perfRunParams)) : this._instance;;
+    public static connect(outputFolder: string, perfRunParams: PerfOptions, testName?: string) {
+        return this._instance == null ? (this._instance = new Db(outputFolder, perfRunParams, testName)) : this._instance;
     }
 }
 

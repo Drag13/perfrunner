@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-import { profile, PerfRunnerOptions } from "perfrunner-core";
 import cmd from "./cmd";
+import { join } from "path";
+import { profile, PerfRunnerOptions } from "perfrunner-core";
 import { loader } from "./utils/reporter-loader";
 
 (async function () {
@@ -10,5 +11,7 @@ import { loader } from "./utils/reporter-loader";
 
     const performanceResult = await profile(profileParams);
     const report = await loader(inputParams.reporter);
-    await report(inputParams.output, performanceResult);
+    const outputPath = join(inputParams.output, inputParams.testName ? inputParams.testName : 'report');
+
+    await report(outputPath, performanceResult);
 })();

@@ -1,5 +1,12 @@
 (function () {
-    function transform(rawData: IPerformanceResult) {
+
+    type ChartData = {
+        fcp: number[],
+        fp: number[],
+        labels: string[],
+    }
+
+    function transform(rawData: IPerformanceResult): ChartData {
         if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format')
         };
@@ -17,12 +24,17 @@
         }, {
             fcp: [] as number[],
             fp: [] as number[],
-            labels: [] as string[]
+            labels: [] as string[],
         });
+    }
+
+    function getComments(rawData: IPerformanceResult): string[] {
+        return rawData.map(x => x.comment ?? '');
     }
 
     function render(canvasId: string, rawData: any, options: Chart.ChartOptions) {
         const viewData = transform(rawData);
+        const comments = getComments(rawData);
         const ctx = (document.getElementById(canvasId) as HTMLCanvasElement)?.getContext('2d');
 
         if (ctx == null) {
@@ -51,7 +63,16 @@
                     }
                 ]
             },
-            options
+            options: {
+                ...options, tooltips: {
+                    callbacks: {
+                        afterBody: (t) => {
+                            const index = t[0].index;
+                            return index == null || index >= comments.length ? '' : comments[index] ?? '';
+                        }
+                    }
+                }
+            }
         });
     }
 

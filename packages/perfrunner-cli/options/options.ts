@@ -16,6 +16,8 @@ export interface CliParams extends NotImplementedParams {
     reporter: string;
     purge: boolean;
     noHeadless: boolean;
+    comment: string;
+    testName: string;
 }
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
@@ -36,7 +38,9 @@ const map: ParamsMap = {
     purge: { type: Boolean, defaultValue: false },
     reporter: { type: String, defaultValue: 'basic' },
     runs: { type: Number, defaultValue: 3 },
-    noHeadless: { type: Boolean, defaultValue: false }
+    noHeadless: { type: Boolean, defaultValue: false },
+    comment: { type: String },
+    testName: { type: String }
 }
 
 export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: k.split(/(?=[A-Z])/g).join('-').toLowerCase() }));

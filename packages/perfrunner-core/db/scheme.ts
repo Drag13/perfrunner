@@ -6,6 +6,7 @@ export interface PerfRunResult {
     runParams: PerfOptions;
     pageMetrics: Metrics;
     performanceEntries: ExtendedPerformanceEntry[];
+    comment?: string;
 }
 
 import { PerfOptions } from '../profiler/perf-options';
