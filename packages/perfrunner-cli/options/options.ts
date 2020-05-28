@@ -30,7 +30,7 @@ type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliPara
 
 const map: ParamsMap = {
     url: { type: String, defaultOption: true },
-    timeout: { type: Number, defaultValue: 30_000 },
+    timeout: { type: Number, defaultValue: 60_000 },
     cache: { type: Boolean, defaultValue: false },
     throttling: { type: Number, defaultValue: 2 },
     network: { type: NetworkCondtionFactory, defaultValue: Fast3g },
