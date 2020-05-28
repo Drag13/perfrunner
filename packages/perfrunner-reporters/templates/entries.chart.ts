@@ -69,7 +69,8 @@
                         afterBody: (t) => {
                             const index = t[0].index;
                             return index == null || index >= comments.length ? '' : comments[index] ?? '';
-                        }
+                        },
+                        label: (t, d) => { return `${d.datasets![t.datasetIndex!].label}: ${d.datasets![t.datasetIndex!].data![t.index!]}ms` }
                     }
                 }
             }
