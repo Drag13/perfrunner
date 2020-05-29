@@ -7,64 +7,31 @@
     <title>Document</title>
 
     <style>
-        .basic {
+        .charts {
             display: flex;
+            flex-wrap: wrap;
         }
 
-        .basic>div {
-            max-width: 33.33333%;
-            flex: 1 1 auto
+        .chart-container {
+            flex: 1 1 auto;
+        }
+
+        @media screen and (max-width: 992px) {
+            .chart-container{max-width: 100%!important;}
         }
     </style>
 </head>
 
 <body>
-
-    <script>
-        /* eslint-disable */
-        window.data = {{{ payload }}};
-        /*eslint-enable */
-    </script>
-
     <script src="./chart.min.js"></script>
-    <script src="metrics.chart.js"></script>
-    <script src="entries.chart.js"></script>
-    <script src="marks.chart.js"></script>
+    <script src="./renderer.js"></script>
+    <script src="./entries2.chart.js"></script>
+    <script src="./marks2.chart.js"></script>
+    <script>window.data = {{{ payload }}}</script>
 
-    <div class="basic">
-        <div>
-            <canvas id="entries" width="400" height="400"></canvas>
-        </div>
+    <div id="root"></div>
 
-        <div>
-            <canvas id="metrics" width="400" height="400"></canvas>
-        </div>
-
-        <div>
-            <canvas id="marks" width="400" height="400"></canvas>
-        </div>
-    </div>
-
-
-    <script>
-        (function () {
-            const chartOptions = {
-                animation: { duration: 0 },
-                hover: { animationDuration: 0 },
-                responsiveAnimationDuration: 0,
-                elements: { line: { tension: 0 } },
-                scales: {
-                    yAxes: [{ ticks: { beginAtZero: true } }]
-                }
-            }
-            const { data } = window;
-
-            window.metricsChart.render("metrics", data, chartOptions);
-            window.entriesChart.render('entries', data, chartOptions);
-            window.marksChart.render('marks', data, chartOptions);
-        }());
-    </script>
-
+    <script>window.renderer.render('root', ['entries', 'marks'], window.data)</script>
 </body>
 
 </html>

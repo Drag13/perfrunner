@@ -33,21 +33,21 @@
                 datasets: [{
                         label: 'layoutDuration',
                         data: viewData.layoutDuration,
-                        borderColor: '#3f681C',
+                        borderColor:  `#375E97`,
                         backgroundColor: 'rgba(0, 0, 0, 0.0)',
                         borderWidth: 2
                     },
                     {
                         label: 'recalcStyleDuration',
                         data: viewData.recalcStyleDuration,
-                        borderColor: '#FFBB00',
+                        borderColor:  `#FB6542`,
                         backgroundColor: 'rgba(0, 0, 0, 0.0)',
                         borderWidth: 2
                     },
                     {
                         label: 'scriptDuration',
                         data: viewData.scriptDuration,
-                        borderColor:  `#3f681C`,
+                        borderColor:  `#FFBB00`,
                         backgroundColor: 'rgba(0, 0, 0, 0.0)',
                         borderWidth: 2
                     }
