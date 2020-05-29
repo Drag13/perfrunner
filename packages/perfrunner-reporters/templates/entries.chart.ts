@@ -1,5 +1,5 @@
 import Chart from 'chart.js';
-import { AbstractReporter } from "./base-plugin";
+import { AbstractReporter } from "./abstract-reporter";
 
 type ChartData = {
     fcp: number[],
@@ -43,10 +43,7 @@ export class EntriesChartReporter extends AbstractReporter<HTMLCanvasElement, IC
                 ...defaultOptions,
                 tooltips: {
                     callbacks: {
-                        afterBody: (t) => {
-                            const index = t[0].index;
-                            return index == null || index >= comments.length ? '' : comments[index] ?? '';
-                        },
+                        afterBody: this.renderComment(comments),
                         label: (t, d) => { return `${d.datasets![t.datasetIndex!].label}: ${d.datasets![t.datasetIndex!].data![t.index!]}ms` }
                     }
                 }
@@ -57,7 +54,7 @@ export class EntriesChartReporter extends AbstractReporter<HTMLCanvasElement, IC
     private transform(rawData: IPerformanceResult): ChartData {
         if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
 
-        const viewData = { fcp: [], fp: [], labels: [], } as ChartData;
+        const chartData = { fcp: [], fp: [], labels: [], } as ChartData;
 
         return rawData.reduce((acc, v, i) => {
             const fcpEvent = v.performanceEntries.find(x => x.name === 'first-contentful-paint');
@@ -69,8 +66,6 @@ export class EntriesChartReporter extends AbstractReporter<HTMLCanvasElement, IC
             acc.labels.push(`#${i + 1}`);
 
             return acc;
-        }, viewData);
+        }, chartData);
     }
-
-    private getComments = (rawData: IPerformanceResult) => rawData.map(x => x.comment ?? '');
 }

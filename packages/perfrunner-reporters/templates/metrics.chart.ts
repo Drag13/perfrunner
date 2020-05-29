@@ -1,4 +1,4 @@
-import { AbstractReporter } from './base-plugin';
+import { AbstractReporter } from './abstract-reporter';
 import Chart, { ChartOptions } from 'chart.js';
 
 type ChartData = {
@@ -16,6 +16,7 @@ export class MetricsChartReporter extends AbstractReporter<HTMLCanvasElement, IC
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
+        const comments = this.getComments(data);
 
         new Chart(ctx, {
             type: 'line',
@@ -44,7 +45,14 @@ export class MetricsChartReporter extends AbstractReporter<HTMLCanvasElement, IC
                 }
                 ]
             },
-            options: { ...defaultOptions }
+            options: {
+                ...defaultOptions,
+                tooltips: {
+                    callbacks: {
+                        afterBody: this.renderComment(comments)
+                    }
+                }
+            }
         });
     }
 

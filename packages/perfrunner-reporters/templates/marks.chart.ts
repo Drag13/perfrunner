@@ -1,5 +1,5 @@
 import Chart from 'chart.js';
-import { AbstractReporter } from "./base-plugin";
+import { AbstractReporter } from "./abstract-reporter";
 
 const colors = [
     `#375E97`,
@@ -9,7 +9,7 @@ const colors = [
     `#000000`,
 ];
 
-type ViewData = Record<string, any[]>;
+type ChartData = Record<string, any[]>;
 
 export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement, IChartOptions> {
 
@@ -21,6 +21,7 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
 
         const viewData = this.transform(data);
         const datasets = this.toDataSet(viewData);
+        const comments = this.getComments(data);
 
         new Chart(ctx, {
             type: 'line',
@@ -28,7 +29,14 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
                 labels: viewData.labels,
                 datasets
             },
-            options: { ...defaultOptions }
+            options: {
+                ...defaultOptions,
+                tooltips: {
+                    callbacks: {
+                        afterBody: this.renderComment(comments)
+                    }
+                }
+            }
         });
     }
 
@@ -37,7 +45,7 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
             throw new Error('data is not in array format')
         };
 
-        const result: ViewData = { labels: [] }
+        const result: ChartData = { labels: [] }
 
         return rawData.reduce((acc, v, i) => {
             const marks = v.performanceEntries.filter(x => x.entryType === 'mark');
@@ -47,10 +55,10 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
                 const startTime = m.startTime;
 
                 if (acc[name] == null) {
-                    acc[name] = []
+                    acc[name] = new Array(rawData.length).fill(0);
                 }
 
-                acc[name].push(startTime);
+                acc[name][i] = startTime;
             });
 
             acc.labels.push(`#${i + 1}`);
@@ -59,7 +67,7 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
         }, result);
     }
 
-    private toDataSet(viewData: ViewData) {
+    private toDataSet(viewData: ChartData) {
         return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => ({
             label: key,
             data: entries,

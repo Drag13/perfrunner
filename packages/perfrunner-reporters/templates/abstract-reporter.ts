@@ -13,4 +13,11 @@ export abstract class AbstractReporter<TTarget extends HTMLElement, TOptions>{
 
         return canvas.getContext('2d')!;
     }
+
+    protected renderComment = (comments: string[]) => (t: Chart.ChartTooltipItem[]) => {
+        const index = t[0].index;
+        return index == null || index >= comments.length ? '' : comments[index] ?? '';
+    }
+
+    protected getComments = (rawData: IPerformanceResult) => rawData.map(x => x.comment ?? '');
 }

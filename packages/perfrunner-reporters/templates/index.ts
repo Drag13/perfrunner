@@ -1,9 +1,9 @@
 import { EntriesChartReporter } from "./entries.chart";
 import { CustomMarksChartReporter } from './marks.chart';
 import { MetricsChartReporter } from './metrics.chart';
-import { AbstractReporter } from './base-plugin';
+import { AbstractReporter } from './abstract-reporter';
 
-const utils = {
+const utils: IUtils = {
     colors: {
         transparent: 'rgba(0, 0, 0, 0.0)'
     }
