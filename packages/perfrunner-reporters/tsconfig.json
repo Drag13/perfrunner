@@ -10,7 +10,4 @@
   "files": [
     "index.ts"
   ],
-  "include": [
-    "./templates/**/*.ts"
-  ]
 }

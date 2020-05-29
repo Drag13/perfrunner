@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reporter</title>
 
     <style>
         .charts {
@@ -17,21 +17,24 @@
         }
 
         @media screen and (max-width: 992px) {
-            .chart-container{max-width: 100%!important;}
+            .chart-container {
+                max-width: 100% !important;
+            }
         }
     </style>
 </head>
 
 <body>
-    <script src="./chart.min.js"></script>
-    <script src="./renderer.js"></script>
-    <script src="./entries2.chart.js"></script>
-    <script src="./marks2.chart.js"></script>
-    <script>window.data = {{{ payload }}}</script>
+
+    <script>
+        const rawData = '\"{{{payload}}}\"';
+        const norm = rawData.substring(1, rawData.length - 1);
+        window.data = JSON.parse(norm);
+    </script>
 
     <div id="root"></div>
 
-    <script>window.renderer.render('root', ['entries', 'marks'], window.data)</script>
+    <script inline="inline" src="./index.ts"></script>
 </body>
 
 </html>
