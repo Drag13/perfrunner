@@ -6,7 +6,7 @@ export type NetworkSetup = {
 }
 
 export interface PerfOptions {
-    url: string,
+    url: URL,
     network: NetworkSetup,
     throttlingRate: number,
     useCache: boolean

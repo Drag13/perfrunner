@@ -60,12 +60,12 @@ export async function profile(options: PerfRunnerOptions): Promise<RawPerfData[]
 
         if (useCache) { // warm up application
             report(`warming up cache`)
-            await startApplication(page, url, waitFor)
+            await startApplication(page, url.href, waitFor)
         }
 
         let i = 0;
 
-        for await (const dump of profilePage(page, url, runs, waitFor)) {
+        for await (const dump of profilePage(page, url.href, runs, waitFor)) {
             result.push(dump)
             i++;
             report(`running #${i} profile session`);

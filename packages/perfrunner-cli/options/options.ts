@@ -1,12 +1,13 @@
 import { OptionDefinition } from 'command-line-args';
 import { NetworkCondtionFactory, Fast3g } from './network';
 import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
+import { Url } from "./url";
 
 type NotImplementedParams = {
 }
 
 export interface CliParams extends NotImplementedParams {
-    url: string;
+    url: URL;
     timeout: number;
     throttling: number;
     network: NetworkSetup;
@@ -29,7 +30,7 @@ interface ProfileOptionDefintion<T> extends OptionDefinition {
 type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliParams[key]>, 'name'> }
 
 const map: ParamsMap = {
-    url: { type: String, defaultOption: true },
+    url: { type: Url, defaultOption: true },
     timeout: { type: Number, defaultValue: 60_000 },
     cache: { type: Boolean, defaultValue: false },
     throttling: { type: Number, defaultValue: 2 },

@@ -4,6 +4,7 @@ import lowdb, { LowdbSync } from 'lowdb';
 import { DbSchema, PerfRunResult } from "./scheme";
 import { createFolderIfNotExists, generateReportName } from './utils';
 import { PerfOptions } from '../profiler/perf-options';
+import { trace } from '../log';
 
 class Db {
     private static _instance: Db | undefined;
@@ -13,7 +14,9 @@ class Db {
     private constructor(outputFolder: string, options: PerfOptions, testName?: string) {
         const fileName = generateReportName({ ...options, ...options.network });
         createFolderIfNotExists(outputFolder);
-        const adapter = new FileSync<DbSchema>(`${outputFolder}/${testName ?? fileName}.json`);
+        const fullPath = `${outputFolder}/${testName ?? fileName}.json`;
+        const adapter = new FileSync<DbSchema>(fullPath);
+        trace(`connecting to: ${fullPath}`);
         this._db = lowdb(adapter);
     }
 
@@ -22,11 +25,12 @@ class Db {
 
         db.defaults({ profile: [], count: 0 }).write();
 
-        if (purge) { this.purge(); }
+        if (purge) {
+            this.purge();
+        }
 
         db.get('profile').push(data).write();
         db.update('count', n => n + 1).write();
-
     }
 
     read() {
@@ -37,6 +41,7 @@ class Db {
     }
 
     purge() {
+        trace(`clearing old data`)
         this._db.get('profile').remove(() => true).write();
         this._db.update('count', _ => 0).write();
     }

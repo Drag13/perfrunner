@@ -22,7 +22,7 @@ export default (args: Partial<CliParams>): Validation => {
     const errors: ValidationErrors = {};
     const { url, runs } = args;
 
-    if (url == null || url === '') {
+    if (url == null) {
         errors.url = `Url is required`;
     }
 
