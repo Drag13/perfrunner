@@ -5,13 +5,21 @@ import { join } from "path";
 import { profile, PerfRunnerOptions } from "perfrunner-core";
 import { loader } from "./utils/reporter-loader";
 
-(async function () {
+(async function (): Promise<number> {
     const inputParams = cmd();
     const profileParams: PerfRunnerOptions = { ...inputParams, useCache: inputParams.cache, throttlingRate: inputParams.throttling, headless: !inputParams.noHeadless };
 
-    const performanceResult = await profile(profileParams);
-    const report = await loader(inputParams.reporter);
-    const outputPath = join(inputParams.output, inputParams.testName ? inputParams.testName : 'report');
+    try {
+        const performanceResult = await profile(profileParams);
+        const report = await loader(inputParams.reporter);
+        const outputPath = join(inputParams.output, inputParams.testName ? inputParams.testName : 'report');
 
-    await report(outputPath, performanceResult);
+        await report(outputPath, performanceResult);
+    }
+    catch (error) {
+        console.log(error);
+        return -1;
+    }
+
+    return 0;
 })();

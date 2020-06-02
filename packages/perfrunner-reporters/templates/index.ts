@@ -2,10 +2,14 @@ import { EntriesChartReporter } from "./entries.chart";
 import { CustomMarksChartReporter } from './marks.chart';
 import { MetricsChartReporter } from './metrics.chart';
 import { AbstractReporter } from './abstract-reporter';
+import { IUtils, IChartOptions, IPerformanceResult } from './typings';
 
 const utils: IUtils = {
     colors: {
         transparent: 'rgba(0, 0, 0, 0.0)'
+    },
+    formatters: {
+        toMs: (v) => v == null || isNaN(v) ? `` : `${Math.round(v)} ms`
     }
 }
 

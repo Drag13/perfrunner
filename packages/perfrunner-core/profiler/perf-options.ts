@@ -13,10 +13,11 @@ export interface PerfOptions {
 };
 
 export interface RunnerOptions {
-    runs: number,
-    timeout: number,
+    runs: number;
+    timeout: number;
     headless: boolean;
-    waitFor?: number | string,
+    waitFor?: number | string;
+    reportOnly?: boolean;
 }
 
 export interface PerfRunnerOptions extends PerfOptions, RunnerOptions {
