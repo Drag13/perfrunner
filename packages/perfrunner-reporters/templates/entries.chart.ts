@@ -1,5 +1,6 @@
 import Chart from 'chart.js';
-import { AbstractReporter } from "./abstract-reporter";
+import { AbstractReporter, MsChart } from "./abstract-reporter";
+import { IPerformanceResult, IChartOptions, IUtils } from './typings';
 
 type ChartData = {
     fcp: number[],
@@ -44,8 +45,12 @@ export class EntriesChartReporter extends AbstractReporter<HTMLCanvasElement, IC
                 tooltips: {
                     callbacks: {
                         afterBody: this.renderComment(comments),
-                        label: (t, d) => { return `${d.datasets![t.datasetIndex!].label}: ${d.datasets![t.datasetIndex!].data![t.index!]}ms` }
+                        label: MsChart.diffLabel(this._utils.formatters.toMs)
                     }
+                },
+                title: {
+                    display: true,
+                    text: "Application Events"
                 }
             }
         });

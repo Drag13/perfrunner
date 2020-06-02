@@ -1,5 +1,6 @@
-import { AbstractReporter } from './abstract-reporter';
+import { AbstractReporter, MsChart } from './abstract-reporter';
 import Chart, { ChartOptions } from 'chart.js';
+import { IPerformanceResult, IChartOptions, IUtils } from './typings';
 
 type ChartData = {
     layoutDuration: number[],
@@ -49,8 +50,13 @@ export class MetricsChartReporter extends AbstractReporter<HTMLCanvasElement, IC
                 ...defaultOptions,
                 tooltips: {
                     callbacks: {
-                        afterBody: this.renderComment(comments)
+                        afterBody: this.renderComment(comments),
+                        label: MsChart.diffLabel(this._utils.formatters.toMs)
                     }
+                },
+                title: {
+                    display: true,
+                    text: 'Common performance metrics'
                 }
             }
         });

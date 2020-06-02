@@ -1,5 +1,6 @@
 import Chart from 'chart.js';
-import { AbstractReporter } from "./abstract-reporter";
+import { AbstractReporter, MsChart } from "./abstract-reporter";
+import { IPerformanceResult, IChartOptions, IUtils } from './typings';
 
 const colors = [
     `#375E97`,
@@ -33,10 +34,16 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
                 ...defaultOptions,
                 tooltips: {
                     callbacks: {
-                        afterBody: this.renderComment(comments)
+                        afterBody: this.renderComment(comments),
+                        label: MsChart.diffLabel(this._utils.formatters.toMs)
                     }
+                },
+                title: {
+                    display: true,
+                    text: "Performance Marks"
                 }
             }
+
         });
     }
 

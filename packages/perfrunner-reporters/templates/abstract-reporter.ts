@@ -1,3 +1,5 @@
+import { IUtils, IPerformanceResult } from './typings';
+
 export abstract class AbstractReporter<TTarget extends HTMLElement, TOptions>{
     abstract type: 'chart';
     abstract name: string;
@@ -20,4 +22,29 @@ export abstract class AbstractReporter<TTarget extends HTMLElement, TOptions>{
     }
 
     protected getComments = (rawData: IPerformanceResult) => rawData.map(x => x.comment ?? '');
+}
+
+export class MsChart {
+    public static diffLabel(formatter: (v: number) => string): (t: Chart.ChartTooltipItem, d: Chart.ChartData) => string {
+
+        return (t: Chart.ChartTooltipItem, d: Chart.ChartData, ) => {
+
+            const entryIndex = t.index;
+            const currentValue = d.datasets[t.datasetIndex].data[t.index];
+            const label = d.datasets![t.datasetIndex!].label;
+
+            if (typeof currentValue !== "number") { return `${t.label}: ${t.value}`; }
+
+            if (entryIndex === 0) {
+                return `${label}: ${formatter(currentValue)}`
+            }
+
+            if (entryIndex > 0) {
+                const first = d.datasets[t.datasetIndex].data[0] as number;
+                const diff = currentValue - (first as number);
+                const formmattedDiff = `(diff: ${diff > 0 ? '+' + formatter(diff) : formatter(diff)})`
+                return `${label}: ${formatter(currentValue)} ${formmattedDiff}`;
+            }
+        }
+    }
 }

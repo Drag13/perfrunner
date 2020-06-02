@@ -19,6 +19,7 @@ export interface CliParams extends NotImplementedParams {
     noHeadless: boolean;
     comment: string;
     testName: string;
+    reportOnly: boolean;
 }
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
@@ -33,7 +34,7 @@ const map: ParamsMap = {
     url: { type: Url, defaultOption: true },
     timeout: { type: Number, defaultValue: 60_000 },
     cache: { type: Boolean, defaultValue: false },
-    throttling: { type: Number, defaultValue: 2 },
+    throttling: { type: Number, defaultValue: 2, alias: 'T' },
     network: { type: NetworkCondtionFactory, defaultValue: Fast3g },
     output: { type: String, defaultValue: './generated' },
     purge: { type: Boolean, defaultValue: false },
@@ -41,7 +42,8 @@ const map: ParamsMap = {
     runs: { type: Number, defaultValue: 3 },
     noHeadless: { type: Boolean, defaultValue: false },
     comment: { type: String },
-    testName: { type: String }
+    testName: { type: String },
+    reportOnly: { type: Boolean }
 }
 
 export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: k.split(/(?=[A-Z])/g).join('-').toLowerCase() }));
