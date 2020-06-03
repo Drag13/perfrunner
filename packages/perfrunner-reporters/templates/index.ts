@@ -1,44 +1,16 @@
 import { EntriesChartReporter } from "./entries.chart";
 import { CustomMarksChartReporter } from './marks.chart';
 import { MetricsChartReporter } from './metrics.chart';
-import { AbstractReporter } from './abstract-reporter';
-import { IUtils, IChartOptions, IPerformanceResult } from './typings';
+import { IPerformanceResult, IReporter } from './typings';
+import { PArr } from '../utils';
+import { ResourceSizeChart } from './size.chart';
 
-const utils: IUtils = {
-    colors: {
-        transparent: 'rgba(0, 0, 0, 0.0)'
-    },
-    formatters: {
-        toMs: (v) => v == null || isNaN(v) ? `` : `${Math.round(v)} ms`
-    }
-}
-
-const allReporters = [new EntriesChartReporter(utils), new CustomMarksChartReporter(utils), new MetricsChartReporter(utils)];
-
-const splitBy = <T>(arr: T[], min: number): T[][] => {
-
-    const res = [];
-    while (arr.length > 0) {
-        res.push(arr.splice(0, min));
-    }
-
-    return res;
-}
+const allReporters = [new EntriesChartReporter(), new CustomMarksChartReporter(), new MetricsChartReporter(), new ResourceSizeChart()];
 
 const notUndefined = <T>(x: T | undefined): x is T => x !== undefined;
 
-const defaultChartOptions: IChartOptions = {
-    animation: { duration: 0 },
-    hover: { animationDuration: 0 },
-    responsiveAnimationDuration: 0,
-    elements: { line: { tension: 0 } },
-    scales: {
-        yAxes: [{ ticks: { beginAtZero: true } }]
-    }
-}
-
-function renderChartRow(parent: Node, charts: AbstractReporter<any, any>[]) {
-    const canvases: { canvas: HTMLCanvasElement, chart: AbstractReporter<any, any> }[] = []
+function renderChartRow(parent: Node, charts: IReporter<HTMLElement>[]) {
+    const canvases: { canvas: HTMLCanvasElement, chart: IReporter<HTMLElement> }[] = []
 
     const row = document.createElement(`div`);
     row.className = 'charts';
@@ -60,12 +32,13 @@ function renderChartRow(parent: Node, charts: AbstractReporter<any, any>[]) {
     return canvases
 }
 
-function renderCharts(root: Node, charts: AbstractReporter<any, any>[], data: IPerformanceResult) {
+function renderCharts(root: Node, charts: IReporter<HTMLElement>[], data: IPerformanceResult) {
     const maxChartsInRow = 3;
-    splitBy(charts, maxChartsInRow)
+
+    PArr.splitBy(charts, maxChartsInRow)
         .map(chartGroup => renderChartRow(root, chartGroup))
         .forEach(charts =>
-            charts.forEach(({ canvas, chart }) => chart.render(canvas, data, utils, defaultChartOptions)))
+            charts.forEach(({ canvas, chart }) => chart.render(canvas, data)))
 }
 
 (function render(root: string, reporters: string[], data: IPerformanceResult) {
@@ -78,5 +51,5 @@ function renderCharts(root: Node, charts: AbstractReporter<any, any>[], data: IP
     const plugins = reporters.map(pluginName => allReporters.find(pl => pl.name === pluginName)).filter(notUndefined);
 
     renderCharts(rootNode, plugins.filter(x => x.type === 'chart'), data);
-}('root', ['entries', 'marks', 'metrics'], (window as any).data));
+}('root', ['entries', 'marks', 'metrics', 'resource-size'], (window as any).data));
 

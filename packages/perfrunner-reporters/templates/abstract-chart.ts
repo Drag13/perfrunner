@@ -1,12 +1,24 @@
-import { IUtils, IPerformanceResult } from './typings';
+import { ChartTooltipItem, ChartData } from 'chart.js';
+import { IPerformanceResult, IChartOptions, IReporter } from './typings';
+import { PColor } from './utils';
 
-export abstract class AbstractReporter<TTarget extends HTMLElement, TOptions>{
+export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
+    protected readonly DEFAULT_LINE_WIDTH = 2;;
+    protected readonly DEFAULT_CHART_OPTIONS: IChartOptions = {
+        animation: { duration: 0 },
+        hover: { animationDuration: 0 },
+        responsiveAnimationDuration: 0,
+        elements: { line: { tension: 0 } },
+        scales: {
+            yAxes: [{ ticks: { beginAtZero: true } }],
+            xAxes: [{ type: 'time' }]
+        }
+    };
+
     abstract type: 'chart';
     abstract name: string;
-    constructor(protected readonly _utils: IUtils) { };
-    abstract render(container: TTarget, data: IPerformanceResult, _: IUtils, defaultOptions?: TOptions): void;
 
-    getSafeCanvasContext(container: HTMLElement | undefined): CanvasRenderingContext2D {
+    public getSafeCanvasContext(container: HTMLElement | undefined): CanvasRenderingContext2D {
         const canvas = container as HTMLCanvasElement;
 
         if (canvas == null || typeof canvas.getContext !== 'function') {
@@ -16,18 +28,30 @@ export abstract class AbstractReporter<TTarget extends HTMLElement, TOptions>{
         return canvas.getContext('2d')!;
     }
 
-    protected renderComment = (comments: string[]) => (t: Chart.ChartTooltipItem[]) => {
+    abstract render(container: HTMLCanvasElement, data: IPerformanceResult): void;
+
+    protected renderComment = (comments: string[]) => (t: ChartTooltipItem[]) => {
         const index = t[0].index;
         return index == null || index >= comments.length ? '' : comments[index] ?? '';
     }
 
     protected getComments = (rawData: IPerformanceResult) => rawData.map(x => x.comment ?? '');
+
+    protected withDefaults = (label: string, data: number[], color: string) => ({
+        label,
+        data,
+        borderColor: color,
+        backgroundColor: PColor.transparent,
+        borderWidth: this.DEFAULT_LINE_WIDTH
+    })
 }
 
 export class MsChart {
-    public static diffLabel(formatter: (v: number) => string): (t: Chart.ChartTooltipItem, d: Chart.ChartData) => string {
 
-        return (t: Chart.ChartTooltipItem, d: Chart.ChartData, ) => {
+
+    public static diffLabel(formatter: (v: number) => string): (t: ChartTooltipItem, d: ChartData) => string {
+
+        return (t: ChartTooltipItem, d: ChartData, ) => {
 
             const entryIndex = t.index;
             const currentValue = d.datasets[t.datasetIndex].data[t.index];

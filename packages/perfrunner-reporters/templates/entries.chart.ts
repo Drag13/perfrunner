@@ -1,19 +1,21 @@
 import Chart from 'chart.js';
-import { AbstractReporter, MsChart } from "./abstract-reporter";
-import { IPerformanceResult, IChartOptions, IUtils } from './typings';
+import { AbstractChart, MsChart } from "./abstract-chart";
+import { IPerformanceResult } from './typings';
+import { PColor, PFormat } from './utils';
+import { PArr } from '../utils';
 
 type ChartData = {
     fcp: number[],
     fp: number[],
-    labels: string[],
+    labels: Date[],
 }
 
-export class EntriesChartReporter extends AbstractReporter<HTMLCanvasElement, IChartOptions>{
+export class EntriesChartReporter extends AbstractChart{
 
     type: 'chart' = 'chart';
     name: string = 'entries';
 
-    render(container: HTMLCanvasElement, data: IPerformanceResult, _: IUtils, defaultOptions?: any): void {
+    render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
@@ -27,25 +29,25 @@ export class EntriesChartReporter extends AbstractReporter<HTMLCanvasElement, IC
                     {
                         label: 'First Contentful Paint',
                         data: viewData.fcp,
-                        borderColor: '#3f681C',
-                        borderWidth: 2,
-                        backgroundColor: this._utils.colors.transparent,
+                        borderColor: PColor.pick(0),
+                        borderWidth: this.DEFAULT_LINE_WIDTH,
+                        backgroundColor: PColor.transparent,
                     },
                     {
                         label: "First Paint",
                         data: viewData.fp,
-                        borderColor: '#FFBB00',
-                        borderWidth: 2,
-                        backgroundColor: this._utils.colors.transparent,
+                        borderColor: PColor.pick(1),
+                        borderWidth: this.DEFAULT_LINE_WIDTH,
+                        backgroundColor: PColor.transparent,
                     }
                 ]
             },
             options: {
-                ...defaultOptions,
+                ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
+                        label: MsChart.diffLabel(PFormat.toMs),
                         afterBody: this.renderComment(comments),
-                        label: MsChart.diffLabel(this._utils.formatters.toMs)
                     }
                 },
                 title: {
@@ -59,16 +61,17 @@ export class EntriesChartReporter extends AbstractReporter<HTMLCanvasElement, IC
     private transform(rawData: IPerformanceResult): ChartData {
         if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
 
-        const chartData = { fcp: [], fp: [], labels: [], } as ChartData;
+        const length = rawData.length;
+        const chartData = { fcp: PArr.init0(length), fp: PArr.init0(length), labels: PArr.init0(length), } as ChartData;
 
         return rawData.reduce((acc, v, i) => {
             const fcpEvent = v.performanceEntries.find(x => x.name === 'first-contentful-paint');
-            acc.fcp.push(fcpEvent ? fcpEvent.startTime : 0);
+            acc.fcp[i] = (fcpEvent ? fcpEvent.startTime : 0);
 
             const fpEvent = v.performanceEntries.find(x => x.name === 'first-paint');
-            acc.fp.push(fpEvent ? fpEvent.startTime : 0);
+            acc.fp[i] = (fpEvent ? fpEvent.startTime : 0);
 
-            acc.labels.push(`#${i + 1}`);
+            acc.labels[i] = new Date(v.timeStamp);
 
             return acc;
         }, chartData);

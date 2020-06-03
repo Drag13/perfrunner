@@ -9,7 +9,11 @@
 |--report-only| - |Skips profiling session and only generates report|false|
 |--runs| - |Number of runs you want to be performed|3|
 | --throttling| -T | CPU slowdown multiplier | 2 |
+| --test-name| - | |
 
 ## Installation
 
 ## Reporters
+
+## Thank You
+

@@ -1,23 +1,17 @@
 import Chart from 'chart.js';
-import { AbstractReporter, MsChart } from "./abstract-reporter";
-import { IPerformanceResult, IChartOptions, IUtils } from './typings';
-
-const colors = [
-    `#375E97`,
-    `#FB6542`,
-    `#FFBB00`,
-    `#3f681C`,
-    `#000000`,
-];
+import { AbstractChart, MsChart } from "./abstract-chart";
+import { IPerformanceResult } from './typings';
+import { PColor, PFormat } from './utils';
+import { PArr } from '../utils';
 
 type ChartData = Record<string, any[]>;
 
-export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement, IChartOptions> {
+export class CustomMarksChartReporter extends AbstractChart {
 
     name = 'marks';
     type: 'chart' = 'chart';
 
-    render(container: HTMLElement, data: IPerformanceResult, _: IUtils, defaultOptions?: IChartOptions | undefined): void {
+    render(container: HTMLElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
@@ -31,11 +25,11 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
                 datasets
             },
             options: {
-                ...defaultOptions,
+                ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
+                        label: MsChart.diffLabel(PFormat.toMs),
                         afterBody: this.renderComment(comments),
-                        label: MsChart.diffLabel(this._utils.formatters.toMs)
                     }
                 },
                 title: {
@@ -52,7 +46,8 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
             throw new Error('data is not in array format')
         };
 
-        const result: ChartData = { labels: [] }
+        const length = rawData.length;
+        const result: ChartData = { labels: PArr.init0(length) }
 
         return rawData.reduce((acc, v, i) => {
             const marks = v.performanceEntries.filter(x => x.entryType === 'mark');
@@ -62,13 +57,13 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
                 const startTime = m.startTime;
 
                 if (acc[name] == null) {
-                    acc[name] = new Array(rawData.length).fill(0);
+                    acc[name] = PArr.init0(length);
                 }
 
                 acc[name][i] = startTime;
             });
 
-            acc.labels.push(`#${i + 1}`);
+            acc.labels[i] = new Date(v.timeStamp);
 
             return acc;
         }, result);
@@ -78,9 +73,9 @@ export class CustomMarksChartReporter extends AbstractReporter<HTMLCanvasElement
         return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => ({
             label: key,
             data: entries,
-            borderColor: colors[i],
-            backgroundColor: this._utils.colors.transparent,
-            borderWidth: 2
+            borderColor: PColor.pick(i),
+            backgroundColor: PColor.transparent,
+            borderWidth: this.DEFAULT_LINE_WIDTH
         }));
     }
 }
