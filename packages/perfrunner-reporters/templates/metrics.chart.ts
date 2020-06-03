@@ -1,19 +1,23 @@
-import { AbstractReporter, MsChart } from './abstract-reporter';
-import Chart, { ChartOptions } from 'chart.js';
-import { IPerformanceResult, IChartOptions, IUtils } from './typings';
+import { AbstractChart, MsChart } from './abstract-chart';
+import Chart from 'chart.js';
+import { IPerformanceResult } from './typings';
+
+import { PColor, PFormat } from "./utils";
+import { PArr } from '../utils';
 
 type ChartData = {
     layoutDuration: number[],
     recalcStyleDuration: number[],
     scriptDuration: number[],
-    labels: string[]
+    taskDuration: number[],
+    labels: Date[]
 }
 
-export class MetricsChartReporter extends AbstractReporter<HTMLCanvasElement, IChartOptions>{
+export class MetricsChartReporter extends AbstractChart {
     type: 'chart' = 'chart';
     name: string = 'metrics';
 
-    render(container: HTMLCanvasElement, data: IPerformanceResult, _: IUtils, defaultOptions?: ChartOptions): void {
+    render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
@@ -23,41 +27,25 @@ export class MetricsChartReporter extends AbstractReporter<HTMLCanvasElement, IC
             type: 'line',
             data: {
                 labels: viewData.labels,
-                datasets: [{
-                    label: 'Layout Duration',
-                    data: viewData.layoutDuration,
-                    borderColor: `#375E97`,
-                    backgroundColor: this._utils.colors.transparent,
-                    borderWidth: 2
-                },
-                {
-                    label: 'Recalculation Style Duration',
-                    data: viewData.recalcStyleDuration,
-                    borderColor: `#FB6542`,
-                    backgroundColor: this._utils.colors.transparent,
-                    borderWidth: 2
-                },
-                {
-                    label: 'Script Duration',
-                    data: viewData.scriptDuration,
-                    borderColor: `#FFBB00`,
-                    backgroundColor: this._utils.colors.transparent,
-                    borderWidth: 2
-                }
+                datasets: [
+                    this.withDefaults('Layout Duration', viewData.layoutDuration, PColor.pick(0)),
+                    this.withDefaults('Recalculation Style Duration', viewData.recalcStyleDuration, PColor.pick(1)),
+                    this.withDefaults('Script Duration', viewData.scriptDuration, PColor.pick(2)),
+                    this.withDefaults('Task duration', viewData.taskDuration, PColor.pick(3)),
                 ]
             },
             options: {
-                ...defaultOptions,
+                ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
+                        label: MsChart.diffLabel(PFormat.toMs),
                         afterBody: this.renderComment(comments),
-                        label: MsChart.diffLabel(this._utils.formatters.toMs)
                     }
                 },
                 title: {
                     display: true,
                     text: 'Common performance metrics'
-                }
+                },
             }
         });
     }
@@ -68,14 +56,25 @@ export class MetricsChartReporter extends AbstractReporter<HTMLCanvasElement, IC
             throw new Error('data is not in array format')
         };
 
-        const viewData = { layoutDuration: [], recalcStyleDuration: [], scriptDuration: [], labels: [] } as ChartData
+        const length = data.length;
+
+        const viewData: ChartData = {
+            layoutDuration: PArr.init0(length),
+            recalcStyleDuration: PArr.init0(length),
+            scriptDuration: PArr.init0(length),
+            taskDuration: PArr.init0(length),
+            labels: PArr.init0(length)
+        };
 
         return data.reduce((acc, v, i) => {
-            acc.layoutDuration.push(v.pageMetrics.LayoutDuration);
-            acc.recalcStyleDuration.push(v.pageMetrics.RecalcStyleDuration);
-            acc.scriptDuration.push(v.pageMetrics.ScriptDuration);
-            acc.labels.push(`#${i + 1}`);
+            acc.layoutDuration[i] = v.pageMetrics.LayoutDuration;
+            acc.recalcStyleDuration[i] = v.pageMetrics.RecalcStyleDuration;
+            acc.scriptDuration[i] = v.pageMetrics.ScriptDuration;
+            acc.taskDuration[i] = v.pageMetrics.TaskDuration;
+            acc.labels[i] = new Date(v.timeStamp);
+
             return acc;
+
         }, viewData);
     }
 }

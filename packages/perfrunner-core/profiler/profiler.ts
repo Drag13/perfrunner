@@ -13,9 +13,14 @@ async function startEmptyPage(browser: Browser) {
 
 async function setupPerformanceConditions(page: Page, { network, throttlingRate, useCache }: PerfOptions) {
 
-    page.setCacheEnabled(useCache);
-
     const session = await page.target().createCDPSession()
+
+    if (!useCache) {
+        await page.setCacheEnabled(false);
+        await session.send('Network.setCacheDisabled', { cacheDisabled: true, });
+    } else {
+        await page.setCacheEnabled(true);
+    }
 
     await session.send('Network.enable');
     await session.send('Emulation.setCPUThrottlingRate', { rate: throttlingRate });
