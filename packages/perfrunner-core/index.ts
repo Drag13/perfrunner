@@ -3,18 +3,18 @@ import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from "./processor/processor";
 import { Db } from './db';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
-import { report } from './log';
+import { log } from './log';
 
 export { PerfRunnerOptions }
 export { IPerformanceResult }
 
 function writeResult(db: Db, data: PerfRunResult, purge: boolean) {
-    report('saving data');
+    log('saving data');
     db.write(data, purge);
 }
 
 function readAllMetrics(db: Db) {
-    report('retrieving previous data');
+    log('retrieving previous data');
     return db.read();
 }
 
@@ -24,10 +24,10 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
     const isProfilingOn = !options.reportOnly;
 
     if (isProfilingOn) {
-        report('starting profile session');
+        log('starting profile session');
         const rawMetrics = await profilePage(options);
 
-        report('processing new data');
+        log('processing new data');
         const { pageMetrics, performanceEntries } = processPerfData(rawMetrics);
 
         const result: PerfRunResult = {
@@ -40,7 +40,7 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
 
         writeResult(db, result, options.purge)
     } else {
-        report('profling is tunred off, reading existing data')
+        log('profling is tunred off, reading existing data')
     }
 
     return readAllMetrics(db);

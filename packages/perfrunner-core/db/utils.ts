@@ -22,6 +22,7 @@ export function generateReportName({ url, downloadThroughput, uploadThroughput, 
     const meaningfulUrl = `${url.protocol}//${url.host}${url.pathname.endsWith('/') ? url.pathname : url.pathname + '/'}`;
     const hashedUrl = hash(meaningfulUrl);
     const fileName = `${hex(hashedUrl)}_${hex(downloadThroughput)}_${hex(uploadThroughput)}_${hex(latency)}_${throttlingRate}_${useCache ? 1 : 0}`;
+
     return fileName;
 }
 

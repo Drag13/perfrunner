@@ -10,7 +10,7 @@ type ChartData = {
     recalcStyleDuration: number[],
     scriptDuration: number[],
     taskDuration: number[],
-    labels: Date[]
+    labels: string[]
 }
 
 export class MetricsChartReporter extends AbstractChart {
@@ -71,7 +71,7 @@ export class MetricsChartReporter extends AbstractChart {
             acc.recalcStyleDuration[i] = v.pageMetrics.RecalcStyleDuration;
             acc.scriptDuration[i] = v.pageMetrics.ScriptDuration;
             acc.taskDuration[i] = v.pageMetrics.TaskDuration;
-            acc.labels[i] = new Date(v.timeStamp);
+            acc.labels[i] = `#${i + 1}`;
 
             return acc;
 

@@ -1,5 +1,3 @@
-import { getValuesByKey } from "./utils";
-
 type MergeFunc<T> = (values: T[]) => T | null;
 export type MergeMap<T> = { [key in keyof T]?: MergeFunc<T[key]> };
 
@@ -18,26 +16,42 @@ const getDefaultMergeFunc = <T>(value: T): MergeFunc<T> => {
     switch (valueType) {
         case 'string': return first;
         case 'number': return average as MergeFunc<any>;
-        default: return exclude;
     }
+
+    if (Object.prototype.toString.call(value) === '[object Object]') {
+        return (data: T[]) => mergeWithRules(data)
+    }
+
+    return exclude;
 }
 
 export function mergeWithRules<T>(data: T[], rules?: MergeMap<T>) {
 
-    const ideal = data[0]; // unsafe
-    const keys = Object.keys(ideal) as (keyof T)[];
+    // store for data from all runs
+    var accumulator: { [key: string]: any[] } = {};
 
-    const merged = keys.reduce((result, key) => {
+    // fill the store with key | values
+    data.forEach(obj => {
+        const entries = Object.entries(obj);
+        entries.forEach(([key, value]) => {
+            if (accumulator[key]) {
+                accumulator[key].push(value);
+            } else {
+                accumulator[key] = [value];
+            }
+        });
+    });
 
-        const rule = rules && typeof rules[key] === 'function' ? rules[key]! : getDefaultMergeFunc(ideal[key]);
-        const values = getValuesByKey(key, data);
+    // apply merge rule to the array of values
+    return Object.entries(accumulator).reduce((acc, [key, values]) => {
+
+        const definedValue = values.find(x => x != undefined);
+        const customRule = rules ? (rules as any).key : undefined;
+        const rule = typeof customRule === 'function' ? customRule : getDefaultMergeFunc(definedValue);
         const mergeResult = rule(values);
 
-        if (mergeResult != null) { result[key] = mergeResult }
+        if (mergeResult != null) { acc[key] = mergeResult }
 
-        return result;
-
-    }, {} as T);
-
-    return merged;
+        return acc;
+    }, {} as { [key: string]: any[] }) as unknown as T;
 }

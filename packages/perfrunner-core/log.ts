@@ -1,9 +1,11 @@
 const withReset = (color: string) => `${color}%s\x1b[0m`;
 
 const colors = {
-    report: withReset("\x1b[32m"),
-    trace: withReset("\x1b[34m")
+    log: withReset("\x1b[32m"),
+    debug: withReset("\x1b[34m"),
+    error: withReset("\x1b[31m")
 }
 
-export const report = (message: string) => console.log(colors.report, `prefrunner: ${message}`);
-export const trace = (message: string) => console.log(colors.trace, `prefrunner.trace: ${message}`);
+export const log = (message: string) => console.log(colors.log, `prefrunner: ${message}`);
+export const debug = (message: string) => console.log(colors.debug, `prefrunner.debug: ${message}`);
+export const error = (message: string) => console.log(colors.error, `prefrunner.error: ${message}`);

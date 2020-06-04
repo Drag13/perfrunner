@@ -8,5 +8,6 @@ export const PArr = {
         }
 
         return res;
-    }
+    },
+    includes: <T>(arr: T[], predicate: (arg: T) => boolean) => arr.some(predicate)
 };

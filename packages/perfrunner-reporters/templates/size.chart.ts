@@ -1,17 +1,19 @@
-import { AbstractChart } from './abstract-chart';
+import Chart from 'chart.js';
+import { AbstractChart, MsChart } from './abstract-chart';
 import { IPerformanceResult } from './typings';
 import { PArr } from '../utils';
-import Chart from 'chart.js';
-import { PColor } from './utils';
+import { PColor, PFormat } from './utils';
 
 const imgageFormats = ['.png', '.jpg', '.jpeg', '.tiff', '.webp', 'gif', 'svg'];
+const fontFormats = ['.woff', '.woff2', '.ttf', '.otf'];
 
 type ChartData = {
     jsSize: number[];
     imgSize: number[];
-    cssSize: number[],
-    fonts: number[],
-    labels: Date[];
+    cssSize: number[];
+    fontSize: number[];
+    indexSize: number[];
+    labels: string[];
 }
 
 export class ResourceSizeChart extends AbstractChart {
@@ -33,13 +35,15 @@ export class ResourceSizeChart extends AbstractChart {
                     this.withDefaults('Total JS Size', viewData.jsSize, PColor.pick(0)),
                     this.withDefaults('Total IMG Size', viewData.imgSize, PColor.pick(1)),
                     this.withDefaults('Total CSS Size', viewData.cssSize, PColor.pick(2)),
+                    this.withDefaults('Total Fonts Size', viewData.fontSize, PColor.pick(3)),
+                    this.withDefaults('Index.html Size', viewData.indexSize, PColor.pick(4)),
                 ]
             },
             options: {
                 ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
-                        // label: MsChart.diffLabel(PFormat.toMs),
+                        label: MsChart.diffLabel(PFormat.toBytes),
                         afterBody: this.renderComment(comments),
                     }
                 },
@@ -59,7 +63,8 @@ export class ResourceSizeChart extends AbstractChart {
             imgSize: PArr.init0(length),
             jsSize: PArr.init0(length),
             cssSize: PArr.init0(length),
-            fonts: PArr.init0(length),
+            fontSize: PArr.init0(length),
+            indexSize: PArr.init0(length),
 
             labels: PArr.init0(length),
         }
@@ -69,17 +74,16 @@ export class ResourceSizeChart extends AbstractChart {
             let imgSize = 0;
             let jsSize = 0;
             let cssSize = 0;
+            let fontSize = 0;
 
             v.performanceEntries.forEach((x) => {
                 if (x.entryType !== 'resource' || !x.name) { return; }
+
                 const pathname = new URL(x.name).pathname?.toLowerCase();
-
-                console.log(pathname);
-
 
                 if (pathname) {
 
-                    const isImage = imgageFormats.some(imgFormat => pathname.endsWith(imgFormat));
+                    const isImage = PArr.includes(imgageFormats, (format) => pathname.endsWith(format));
 
                     if (isImage) {
                         imgSize += x.encodedBodySize ?? 0;
@@ -99,6 +103,12 @@ export class ResourceSizeChart extends AbstractChart {
                         cssSize += x.encodedBodySize ?? 0;
                         return;
                     }
+                    const isFont = PArr.includes(fontFormats, (format) => pathname.endsWith(format));
+
+                    if (isFont) {
+                        fontSize += x.encodedBodySize ?? 0;
+                        return;
+                    }
 
                     console.warn(`unknown resource: ${pathname}`);
                 }
@@ -107,8 +117,10 @@ export class ResourceSizeChart extends AbstractChart {
             acc.imgSize[i] = imgSize;
             acc.jsSize[i] = jsSize;
             acc.cssSize[i] = cssSize;
+            acc.fontSize[i] = fontSize;
+            acc.indexSize[i] = v.performanceEntries.find(x => x.entryType === 'navigation')?.encodedBodySize;
 
-            acc.labels[i] = new Date(v.timeStamp);
+            acc.labels[i] = `#${i + 1}`;
 
             return acc;
 
