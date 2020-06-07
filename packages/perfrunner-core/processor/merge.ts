@@ -6,7 +6,7 @@ export const exclude = () => null;
 export const first = <T>(values: T[]) => values[0];
 
 export const average = (values: number[]) => {
-    const withoutNulls = values.filter(v => v != null);
+    const withoutNulls = values.filter(v => v != null && !isNaN(v));
     return withoutNulls.length ? withoutNulls.reduce((sum, v) => sum + v, 0) / withoutNulls.length : 0;
 }
 

@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import { profile as profilePage } from "./profiler/profiler";
 import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from "./processor/processor";
@@ -19,7 +20,7 @@ function readAllMetrics(db: Db) {
 }
 
 export async function profile(options: PerfRunnerOptions): Promise<IPerformanceResult> {
-    const db = Db.connect(options.output, options, options.testName);
+    const db = Db.connect(resolve(__dirname, options.output), options, options.testName);
 
     const isProfilingOn = !options.reportOnly;
 
