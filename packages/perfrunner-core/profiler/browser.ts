@@ -1,5 +1,6 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
 import { PerfOptions } from './perf-options';
+import { debug } from '../log';
 
 export interface ExtendedPerformanceEntry extends PerformanceEntry {
     initiatorType?: string;
@@ -73,6 +74,9 @@ export async function startApplication(page: Page, url: string, waitFor?: string
 export async function dumpMetrics(page: Page) {
     const performanceEntries: ExtendedPerformanceEntry[] = JSON.parse(await page.evaluate(() => JSON.stringify(performance.getEntries())));
     const metrics = await page.metrics();
+
+    const fcp = performanceEntries.find(x=>x.name==='first-contentful-paint');
+    debug(`timestamp: ${metrics.Timestamp} fcp: ${fcp?.startTime}`);
 
     return {
         metrics,
