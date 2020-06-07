@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { Page } from 'puppeteer';
 
-import { TRACE_PATH } from '../appsettings';
+import { TRACE_PATH } from '../config';
 
 type TraceEvents = TraceEvent[];
 

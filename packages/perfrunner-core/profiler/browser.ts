@@ -1,6 +1,6 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
 import { PerfOptions } from './perf-options';
-import { debug } from '../log';
+import { debug } from '../utils/log';
 
 export interface ExtendedPerformanceEntry extends PerformanceEntry {
     initiatorType?: string;

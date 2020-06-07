@@ -4,7 +4,7 @@ import lowdb, { LowdbSync } from 'lowdb';
 import { DbSchema, PerfRunResult } from "./scheme";
 import { createFolderIfNotExists, generateReportName } from './utils';
 import { PerfOptions } from '../profiler/perf-options';
-import { debug } from '../log';
+import { debug } from '../utils/log';
 
 class Db {
     private static _instance: Db | undefined;

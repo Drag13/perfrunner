@@ -3,7 +3,7 @@ import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from "./processor/processor";
 import { Db } from './db';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
-import { log } from './log';
+import { log } from './utils/log';
 
 export { PerfRunnerOptions }
 export { IPerformanceResult }

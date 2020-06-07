@@ -1,7 +1,7 @@
 import { Page } from 'puppeteer';
 import { RawPerfData } from './raw-perf-data';
 import { PerfRunnerOptions } from './perf-options';
-import { log, debug as t } from '../log';
+import { log, debug as t } from '../utils/log';
 import { startTracing, stopTracing, subsetTrace, extractResourceData, TraceEvent } from "./trace";
 import { ExtendedPerformanceEntry, startApplication, dumpMetrics, startBrowser, startEmptyPage, setupPerformanceConditions } from './browser';
 
