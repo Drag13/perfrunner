@@ -4,7 +4,7 @@ import lowdb, { LowdbSync } from 'lowdb';
 import { DbSchema, PerfRunResult } from "./scheme";
 import { createFolderIfNotExists, generateReportName } from './utils';
 import { PerfOptions } from '../profiler/perf-options';
-import { trace } from '../log';
+import { debug } from '../log';
 
 class Db {
     private static _instance: Db | undefined;
@@ -16,7 +16,7 @@ class Db {
         createFolderIfNotExists(outputFolder);
         const fullPath = `${outputFolder}/${testName ?? fileName}.json`;
         const adapter = new FileSync<DbSchema>(fullPath);
-        trace(`connecting to: ${fullPath}`);
+        debug(`connecting to: ${fullPath}`);
         this._db = lowdb(adapter);
     }
 
@@ -41,7 +41,7 @@ class Db {
     }
 
     purge() {
-        trace(`clearing old data`)
+        debug(`clearing old data`)
         this._db.get('profile').remove(() => true).write();
         this._db.update('count', _ => 0).write();
     }

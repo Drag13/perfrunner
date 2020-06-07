@@ -7,10 +7,10 @@ import { PArr } from '../utils';
 type ChartData = {
     fcp: number[],
     fp: number[],
-    labels: Date[],
+    labels: string[],
 }
 
-export class EntriesChartReporter extends AbstractChart{
+export class EntriesChartReporter extends AbstractChart {
 
     type: 'chart' = 'chart';
     name: string = 'entries';
@@ -71,7 +71,7 @@ export class EntriesChartReporter extends AbstractChart{
             const fpEvent = v.performanceEntries.find(x => x.name === 'first-paint');
             acc.fp[i] = (fpEvent ? fpEvent.startTime : 0);
 
-            acc.labels[i] = new Date(v.timeStamp);
+            acc.labels[i] = `#${i + 1}`;
 
             return acc;
         }, chartData);

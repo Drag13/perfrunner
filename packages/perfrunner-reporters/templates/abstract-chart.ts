@@ -11,7 +11,6 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
         elements: { line: { tension: 0 } },
         scales: {
             yAxes: [{ ticks: { beginAtZero: true } }],
-            xAxes: [{ type: 'time' }]
         }
     };
 
@@ -46,15 +45,15 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
     })
 }
 
-export class MsChart {
 
+export class MsChart {
 
     public static diffLabel(formatter: (v: number) => string): (t: ChartTooltipItem, d: ChartData) => string {
 
         return (t: ChartTooltipItem, d: ChartData, ) => {
 
             const entryIndex = t.index;
-            const currentValue = d.datasets[t.datasetIndex].data[t.index];
+            const currentValue = d.datasets[t.datasetIndex].data[entryIndex];
             const label = d.datasets![t.datasetIndex!].label;
 
             if (typeof currentValue !== "number") { return `${t.label}: ${t.value}`; }
@@ -64,9 +63,9 @@ export class MsChart {
             }
 
             if (entryIndex > 0) {
-                const first = d.datasets[t.datasetIndex].data[0] as number;
-                const diff = currentValue - (first as number);
-                const formmattedDiff = `(diff: ${diff > 0 ? '+' + formatter(diff) : formatter(diff)})`
+                const prev = d.datasets[t.datasetIndex].data[entryIndex - 1] as number;
+                const diff = currentValue - (prev as number);
+                const formmattedDiff = `(diff: ${diff > 0 ? '+' : ''} ${formatter(diff)})`
                 return `${label}: ${formatter(currentValue)} ${formmattedDiff}`;
             }
         }

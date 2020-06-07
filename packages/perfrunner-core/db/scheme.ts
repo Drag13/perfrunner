@@ -1,5 +1,4 @@
 import { Metrics } from 'puppeteer';
-import { ExtendedPerformanceEntry } from '../processor/perf-data';
 
 export interface PerfRunResult {
     timeStamp: number;
@@ -10,6 +9,7 @@ export interface PerfRunResult {
 }
 
 import { PerfOptions } from '../profiler/perf-options';
+import { ExtendedPerformanceEntry } from '../profiler/browser';
 
 export type IPerformanceResult = PerfRunResult[];
 

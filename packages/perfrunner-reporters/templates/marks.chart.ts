@@ -63,7 +63,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                 acc[name][i] = startTime;
             });
 
-            acc.labels[i] = new Date(v.timeStamp);
+            acc.labels[i] = `#${i + 1}`;
 
             return acc;
         }, result);

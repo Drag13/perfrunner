@@ -1,118 +1,190 @@
-import { AbstractChart } from './abstract-chart';
+import Chart from 'chart.js';
+import { AbstractChart, MsChart } from './abstract-chart';
 import { IPerformanceResult } from './typings';
 import { PArr } from '../utils';
-import Chart from 'chart.js';
-import { PColor } from './utils';
+import { PColor, PFormat } from './utils';
+import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
+import { PerfRunResult } from 'perfrunner-core/dist/db/scheme';
 
-const imgageFormats = ['.png', '.jpg', '.jpeg', '.tiff', '.webp', 'gif', 'svg'];
+type ChartData = { [key in ResourceType | 'labels']: number[] };
 
-type ChartData = {
-    jsSize: number[];
-    imgSize: number[];
-    cssSize: number[],
-    fonts: number[],
-    labels: Date[];
+type PathName = string;
+
+const getPathName = (url: string): PathName => {
+    try {
+        const u = new URL(url);
+        return u.pathname.toLowerCase();
+    }
+    catch (e) {
+        console.warn(`invalid url: ${url}`, e)
+        console.warn(e);
+        return ''
+    }
 }
+
+interface isResource {
+    (pathName: PathName, mimeType?: string): boolean;
+}
+
+const isType = (formats: string[], mimeTypes: string[]): isResource =>
+    (pathName, mimeType?) => (formats.some(type => pathName.endsWith(type)) || mimeTypes.includes(mimeType));
+
+const cssFormats = ['.css'];
+const cssMimeTypes = ['text/css'];
+const isCss = isType(cssFormats, cssMimeTypes)
+
+const jsMimeTypes = ['application/javascript', 'text/javascript'];
+const jsFormats = ['.js'];
+const isJs = isType(jsFormats, jsMimeTypes);
+
+const imgFormats = ['.png', '.jpg', '.jpeg', '.tiff', '.webp', 'gif', 'svg'];
+const imgMimeTypes = ['image/gif', 'image/png', 'image/jpeg']; // should be extended
+const isImg = isType(imgFormats, imgMimeTypes);
+
+const xhrFormats = [];
+const xhrMimeType = ['application/json'];
+const isXhr = isType(xhrFormats, xhrMimeType);
+
+const fontFormats = ['.woff', '.woff2', '.ttf', '.otf'];
+const fontMimeTypes = []; // should be extended
+const isFont = isType(fontFormats, fontMimeTypes)
+
+type ResourceType = 'js' | 'img' | 'css' | 'xhr' | 'font' | 'document' | 'unknown';
+
+const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
+
+    if (pEntry.entryType === 'navigation') {
+        return 'document';
+    }
+
+    if (pEntry.entryType === 'resource') {
+        const pathName = getPathName(pEntry.name);
+        const mimeType = pEntry.extension?.mimeType;
+
+        if (isJs(pathName, mimeType)) {
+            return 'js';
+        }
+
+        if (isCss(pathName, mimeType)) {
+            return 'css';
+        }
+
+        if (isImg(pathName, mimeType)) {
+            return 'img';
+        }
+
+        if (isXhr(pathName, mimeType)) {
+            return 'xhr';
+        }
+
+        if (isFont(pathName, mimeType)) {
+            return 'font';
+        }
+    }
+
+    return 'unknown';
+}
+
 
 export class ResourceSizeChart extends AbstractChart {
     type: 'chart' = 'chart'
 
     name: string = 'resource-size'
 
-    render(container: HTMLCanvasElement, data: import("./typings").IPerformanceResult): void {
+    render(container: HTMLCanvasElement, data: import('./typings').IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
         const comments = this.getComments(data);
+        const datasets = [
+            this.withDefaults('Total JS Size', viewData.js, PColor.pick(0)),
+            this.withDefaults('Total IMG Size', viewData.img, PColor.pick(1)),
+            this.withDefaults('Total CSS Size', viewData.css, PColor.pick(2)),
+            this.withDefaults('Total Fonts Size', viewData.font, PColor.pick(3)),
+            this.withDefaults('Index.html Size', viewData.document, PColor.pick(4)),
+        ]
+
+        const isOtherResourcesFound = viewData.unknown.some(x => x > 0);
+
+        if (isOtherResourcesFound) {
+            datasets.push(this.withDefaults('Others', viewData.unknown, PColor.pick(5)))
+        }
 
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: viewData.labels,
-                datasets: [
-                    this.withDefaults('Total JS Size', viewData.jsSize, PColor.pick(0)),
-                    this.withDefaults('Total IMG Size', viewData.imgSize, PColor.pick(1)),
-                    this.withDefaults('Total CSS Size', viewData.cssSize, PColor.pick(2)),
-                ]
+                datasets
             },
             options: {
                 ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
-                        // label: MsChart.diffLabel(PFormat.toMs),
+                        label: MsChart.diffLabel(PFormat.toBytes),
                         afterBody: this.renderComment(comments),
                     }
                 },
                 title: {
                     display: true,
-                    text: "Resource Size"
+                    text: 'Resource Size'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: (xValue) => typeof xValue === 'number' ? PFormat.toBytes(xValue) : PFormat.toBytes(parseFloat(xValue))
+                        }
+                    }]
                 }
             }
         });
     }
 
-    private transform(rawData: IPerformanceResult): ChartData {
+    // protected filter(rawData: ExtendedPerformanceEntry[]): ExtendedPerformanceEntry[] { TODO: I want to see only events vefore FCP. Create new Reporter and move it there
+    //     if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
+
+    //     const firstPaintEvent = rawData.find(x => x.name === 'first-contentful-paint') ?? rawData.find(x => x.name === 'first-paint');
+    //     const fpeTime = firstPaintEvent?.startTime ?? Number.POSITIVE_INFINITY;
+
+    //     return rawData.filter(x => x.name != null && (x.responseEnd || x.responseEnd < fpeTime));
+    // }
+
+    protected filter(rawData: ExtendedPerformanceEntry[]): ExtendedPerformanceEntry[] {
         if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
-        const length = rawData.length;
 
-        const data: ChartData = {
-            imgSize: PArr.init0(length),
-            jsSize: PArr.init0(length),
-            cssSize: PArr.init0(length),
-            fonts: PArr.init0(length),
-
-            labels: PArr.init0(length),
-        }
-
-        return rawData.reduce((acc, v, i) => {
-
-            let imgSize = 0;
-            let jsSize = 0;
-            let cssSize = 0;
-
-            v.performanceEntries.forEach((x) => {
-                if (x.entryType !== 'resource' || !x.name) { return; }
-                const pathname = new URL(x.name).pathname?.toLowerCase();
-
-                console.log(pathname);
-
-
-                if (pathname) {
-
-                    const isImage = imgageFormats.some(imgFormat => pathname.endsWith(imgFormat));
-
-                    if (isImage) {
-                        imgSize += x.encodedBodySize ?? 0;
-                        return;
-                    }
-
-                    const isJs = pathname.endsWith('.js');
-
-                    if (isJs) {
-                        jsSize += x.encodedBodySize ?? 0;
-                        return;
-                    }
-
-                    const isCss = pathname.endsWith('.css');
-
-                    if (isCss) {
-                        cssSize += x.encodedBodySize ?? 0;
-                        return;
-                    }
-
-                    console.warn(`unknown resource: ${pathname}`);
-                }
-            });
-
-            acc.imgSize[i] = imgSize;
-            acc.jsSize[i] = jsSize;
-            acc.cssSize[i] = cssSize;
-
-            acc.labels[i] = new Date(v.timeStamp);
-
-            return acc;
-
-        }, data);
+        return rawData.filter(x => x.name != null && x.name != '');
     }
 
+    private transform(rawData: IPerformanceResult): ChartData {
+        if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
+
+        const length = rawData.length;
+        const newArray = () => PArr.init0(length);
+
+        const data: ChartData = {
+            css: newArray(),
+            img: newArray(),
+            js: newArray(),
+            unknown: newArray(),
+            labels: newArray(),
+            document: newArray(),
+            font: newArray(),
+            xhr: newArray()
+        };
+
+        const performanceEntries = rawData.map(x => x.performanceEntries).filter(this.filter); // TODO: filter first
+
+        const datasets = performanceEntries.reduce((acc, entrySet, i) => {
+
+            entrySet.forEach(pEntry => {
+                const entryType = getResourceType(pEntry);
+                acc[entryType][i] += (pEntry.encodedBodySize ?? 0);
+            });
+
+            return acc;
+        }, data);
+
+        return datasets;
+
+    }
 }
