@@ -37,8 +37,9 @@ export interface ExtendedPerformanceEntry extends PerformanceEntry {
     }
 }
 
-export async function startBrowser(timeout: number, headless: boolean) {
-    return await puppeteer.launch({ headless, timeout, ignoreHTTPSErrors: true });
+export async function startBrowser(timeout: number, headless: boolean, ignoreDefaultArgs?: boolean, args?: string[]) {
+    debug(`running chrome with args: ${args && args.length ? args: `no args provided`}`);
+    return await puppeteer.launch({ headless, timeout, ignoreHTTPSErrors: true, ignoreDefaultArgs, args });
 }
 
 export async function startEmptyPage(browser: Browser) {
@@ -75,7 +76,7 @@ export async function dumpMetrics(page: Page) {
     const performanceEntries: ExtendedPerformanceEntry[] = JSON.parse(await page.evaluate(() => JSON.stringify(performance.getEntries())));
     const metrics = await page.metrics();
 
-    const fcp = performanceEntries.find(x=>x.name==='first-contentful-paint');
+    const fcp = performanceEntries.find(x => x.name === 'first-contentful-paint');
     debug(`timestamp: ${metrics.Timestamp} fcp: ${fcp?.startTime}`);
 
     return {

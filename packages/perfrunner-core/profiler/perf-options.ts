@@ -17,12 +17,14 @@ export interface RunnerOptions {
     timeout: number;
     headless: boolean;
     waitFor?: number | string;
-    reportOnly?: boolean;
+    chromeArgs?: string[];
+    ignoreDefaultArgs?: boolean;
 }
 
 export interface PerfRunnerOptions extends PerfOptions, RunnerOptions {
     output: string;
     purge: boolean;
     comment?: string;
-    testName?:string;
+    testName?: string;
+    reportOnly?: boolean;
 }

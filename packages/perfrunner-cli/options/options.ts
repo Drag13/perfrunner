@@ -2,11 +2,10 @@ import { OptionDefinition } from 'command-line-args';
 import { NetworkCondtionFactory, Fast3g } from './network';
 import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
 import { Url } from "./url";
+import { ArgsLikeString } from "./arg-like-string";
+import { argsLike } from "./../utils/args-like";
 
-type NotImplementedParams = {
-}
-
-export interface CliParams extends NotImplementedParams {
+export interface CliParams {
     url: URL;
     timeout: number;
     throttling: number;
@@ -20,11 +19,13 @@ export interface CliParams extends NotImplementedParams {
     comment: string;
     testName: string;
     reportOnly: boolean;
+    chromeArgs: string[];
+    ignoreDefaultArgs: boolean;
 }
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
     name: keyof CliParams;
-    type: (args?: string) => T,
+    type: (args?: string) => T extends Array<infer V> ? V : T,
     defaultValue?: T
 }
 
@@ -43,7 +44,9 @@ const map: ParamsMap = {
     noHeadless: { type: Boolean, defaultValue: false },
     comment: { type: String },
     testName: { type: String },
-    reportOnly: { type: Boolean }
+    reportOnly: { type: Boolean },
+    chromeArgs: { type: ArgsLikeString, multiple: true },
+    ignoreDefaultArgs: { type: Boolean },
 }
 
-export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: k.split(/(?=[A-Z])/g).join('-').toLowerCase() }));
+export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: argsLike(k) }));
