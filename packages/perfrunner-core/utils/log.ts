@@ -8,4 +8,4 @@ const colors = {
 
 export const log = (message: string) => console.log(colors.log, `prefrunner: ${message}`);
 export const debug = (message: string) => console.log(colors.debug, `prefrunner.debug: ${message}`);
-export const error = (message: string) => console.log(colors.error, `prefrunner.error: ${message}`);
+export const throwException = (message: string) => { throw `\x1b[31m${message}\x1b[0m`; }

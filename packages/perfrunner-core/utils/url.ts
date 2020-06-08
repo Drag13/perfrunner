@@ -1,6 +1,6 @@
 import { DEFAULT_HTTP_SCHEME } from '../config';
 
-export const Url = (mayBeUrl: string | undefined): URL => {
+export const normalizeUrl = (mayBeUrl: string | undefined): URL => {
     if (mayBeUrl == null || mayBeUrl === '') { throw new Error(`URL is required`) };
 
     const isSchemePresent = mayBeUrl.startsWith('https') || mayBeUrl.startsWith('http');

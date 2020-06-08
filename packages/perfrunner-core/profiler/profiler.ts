@@ -53,9 +53,9 @@ function updateMissingData(entries: ExtendedPerformanceEntry[], { traceEvents }:
     return entries;
 }
 
-export async function profile(options: PerfRunnerOptions): Promise<RawPerfData[]> {
-    const { useCache, url, waitFor, runs } = options;
-    const browser = await startBrowser(options.timeout, options.headless, options.ignoreDefaultArgs ,options.chromeArgs);
+export async function profile(url: URL, options: PerfRunnerOptions): Promise<RawPerfData[]> {
+    const { useCache, waitFor, runs } = options;
+    const browser = await startBrowser(options.timeout, options.headless, options.ignoreDefaultArgs, options.chromeArgs);
     const result = [];
 
     try {

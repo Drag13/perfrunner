@@ -4,12 +4,14 @@ import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from "./processor/processor";
 import { Db } from './db';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
-import { log } from './utils/log';
+import { log, throwException } from './utils/log';
+import { normalizeUrl } from "./utils/url";
+import validator from "./validation/validation";
 
 export { PerfRunnerOptions }
 export { IPerformanceResult }
 
-function writeResult(db: Db, data: PerfRunResult, purge: boolean) {
+function writeResult(db: Db, data: PerfRunResult, purge?: boolean) {
     log('saving data');
     db.write(data, purge);
 }
@@ -20,13 +22,17 @@ function readAllMetrics(db: Db) {
 }
 
 export async function profile(options: PerfRunnerOptions): Promise<IPerformanceResult> {
-    const db = Db.connect(resolve(__dirname, options.output), options, options.testName);
+    try { await validator.validate(options); } catch (e) { throwException(e); }
+
+    const url = normalizeUrl(options.url);
+    const db = Db.connect(url, resolve(__dirname, options.output), options, options.testName);
 
     const isProfilingOn = !options.reportOnly;
 
     if (isProfilingOn) {
         log('starting profile session');
-        const rawMetrics = await profilePage(options);
+
+        const rawMetrics = await profilePage(url, options);
 
         log('processing new data');
         const { pageMetrics, performanceEntries } = processPerfData(rawMetrics);
