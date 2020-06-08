@@ -10,7 +10,8 @@
     "cp": "copyfiles templates/**.* dist",
     "parcel": "parcel",
     "build:reporter": "parcel build templates/default.html --no-source-maps",
-    "build": "tsc -p . && npm run build:reporter"
+    "build": "tsc -p . && npm run build:reporter",
+    "pack": "npm pack"
   },
   "keywords": [],
   "author": "",
