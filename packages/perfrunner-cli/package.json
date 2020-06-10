@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "demo": "npm run build && node dist/cli \"https://drag13.github.io\" -- runs 1",
+    "demo": "npm run build && node dist/cli \"https://drag13.github.io\" --runs 1",
     "pack": "npm pack",
     "tsc": "tsc",
     "build": "tsc -p ."

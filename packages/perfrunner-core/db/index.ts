@@ -2,7 +2,7 @@ import FileSync from 'lowdb/adapters/FileSync';
 import lowdb, { LowdbSync } from 'lowdb';
 
 import { DbSchema, PerfRunResult } from "./scheme";
-import { createFolderIfNotExists, generateReportName } from './utils';
+import { generateReportName } from './utils';
 import { PerfOptions } from '../profiler/perf-options';
 import { debug } from '../utils/log';
 
@@ -13,7 +13,6 @@ class Db {
 
     private constructor(url: URL, outputFolder: string, options: PerfOptions, testName?: string) {
         const fileName = generateReportName(url, { ...options, ...options.network });
-        createFolderIfNotExists(outputFolder);
         const fullPath = `${outputFolder}/${testName ?? fileName}.json`;
         const adapter = new FileSync<DbSchema>(fullPath);
         debug(`connecting to: ${fullPath}`);

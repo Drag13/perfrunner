@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import { profile as profilePage } from "./profiler/profiler";
 import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from "./processor/processor";
@@ -25,7 +24,7 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
     try { await validator.validate(options); } catch (e) { throwException(e); }
 
     const url = normalizeUrl(options.url);
-    const db = Db.connect(url, resolve(__dirname, options.output), options, options.testName);
+    const db = Db.connect(url, options.output, options, options.testName);
 
     const isProfilingOn = !options.reportOnly;
 

@@ -6,7 +6,7 @@ import { IReporter } from '..';
 
 const getPathTo = (fileName: string) => join(__dirname, '..', fileName);
 
-const defaultReporter: IReporter = async (to, data, pathToTemplate) => {
+const defaultReporter: IReporter = async (outputFolder, data, pathToTemplate) => {
 
     const templatePath = pathToTemplate == null ? `${getPathTo('default.html')}` : pathToTemplate;
 
@@ -18,7 +18,7 @@ const defaultReporter: IReporter = async (to, data, pathToTemplate) => {
 
     const result = render(template, { data, payload: JSON.stringify(data) });
 
-    writeFileSync(`${to}.html`, result, { encoding: 'utf-8' });
+    writeFileSync(join(outputFolder, 'default-reporter.html'), result, { encoding: 'utf-8' });
 }
 
 const basic: IReporter = (to, data) => defaultReporter(to, data);
