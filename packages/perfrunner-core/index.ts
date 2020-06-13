@@ -4,7 +4,6 @@ import { processPerfData } from "./processor/processor";
 import { Db } from './db';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
 import { log, throwException } from './utils/log';
-import { normalizeUrl } from "./utils/url";
 import validator from "./validation/validation";
 
 export { PerfRunnerOptions }
@@ -23,13 +22,13 @@ function readAllMetrics(db: Db) {
 export async function profile(options: PerfRunnerOptions): Promise<IPerformanceResult> {
     try { await validator.validate(options); } catch (e) { throwException(e); }
 
-    const url = normalizeUrl(options.url);
+    const url = new URL(options.url);
     const db = Db.connect(url, options.output, options, options.testName);
 
     const isProfilingOn = !options.reportOnly;
 
     if (isProfilingOn) {
-        log('starting profile session');
+        log(`starting profile session for ${url.href}`);
 
         const rawMetrics = await profilePage(url, options);
 
