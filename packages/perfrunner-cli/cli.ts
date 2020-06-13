@@ -31,8 +31,11 @@ import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from "
             output: outputFolder
         });
 
-        const report = await loader(inputParams.reporter);
-        await report(outputFolder, performanceResult);
+        const reporterName = inputParams.reporter[0];
+        const reporterArgs = inputParams.reporter.slice(1, inputParams.reporter.length);
+
+        const report = await loader(reporterName);
+        await report(outputFolder, performanceResult, reporterArgs);
     }
     catch (error) {
         console.log(`\x1b[31m${error}\x1b[0m`);

@@ -27,9 +27,13 @@
 <body>
 
     <script>
-        const rawData = '\"{{{payload}}}\"';
-        const norm = rawData.substring(1, rawData.length - 1);
-        window.data = JSON.parse(norm);
+        var rawData = '\"{{{payload}}}\"';
+        var normalizedString = rawData.substring(1, rawData.length - 1);
+        window.data = JSON.parse(normalizedString);
+
+        var rawArgs = '\"{{{arguments}}}\"';
+        normalizedString  = rawArgs.substring(1, rawArgs.length - 1);
+        window.renderArgs = JSON.parse(normalizedString);
     </script>
 
     <div id="root"></div>

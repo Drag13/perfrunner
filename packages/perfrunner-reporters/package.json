@@ -3,13 +3,15 @@
   "version": "0.0.1",
   "description": "",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "copyfiles": "copyfiles",
     "cp": "copyfiles templates/**.* dist",
+    "copy:defaultReporter": "copyfiles src/default/template/index.html dist/default/template",
     "parcel": "parcel",
-    "build:reporter": "parcel build templates/default.html --no-source-maps",
+    "build:reporter": "parcel build src/reporters/default/template/index.html --no-source-maps --out-dir dist/src/reporters/default/template",
     "build": "tsc -p . && npm run build:reporter",
     "pack": "npm pack"
   },

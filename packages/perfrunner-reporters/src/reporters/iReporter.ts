@@ -1,5 +1,5 @@
 import { IPerformanceResult } from 'perfrunner-core';
 
 export interface IReporter {
-    (to: string, data: IPerformanceResult, pathToTemplate?: string): Promise<void>
+    (outputFolder: string, data: IPerformanceResult, args?: string[]): Promise<void>
 }

@@ -1,8 +1,7 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from "./abstract-chart";
-import { IPerformanceResult } from './typings';
-import { PColor, PFormat } from './utils';
-import { PArr } from '../utils';
+import { IPerformanceResult } from './types';
+import { color, TRANSPARENT, toMs, init0 } from '../../../utils';
 
 type ChartData = {
     fcp: number[],
@@ -29,16 +28,16 @@ export class EntriesChartReporter extends AbstractChart {
                     {
                         label: 'First Contentful Paint',
                         data: viewData.fcp,
-                        borderColor: PColor.pick(0),
+                        borderColor: color(0),
                         borderWidth: this.DEFAULT_LINE_WIDTH,
-                        backgroundColor: PColor.transparent,
+                        backgroundColor: TRANSPARENT,
                     },
                     {
                         label: "First Paint",
                         data: viewData.fp,
-                        borderColor: PColor.pick(1),
+                        borderColor: color(1),
                         borderWidth: this.DEFAULT_LINE_WIDTH,
-                        backgroundColor: PColor.transparent,
+                        backgroundColor: TRANSPARENT,
                     }
                 ]
             },
@@ -46,7 +45,7 @@ export class EntriesChartReporter extends AbstractChart {
                 ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
-                        label: MsChart.diffLabel(PFormat.toMs),
+                        label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
                     }
                 },
@@ -62,7 +61,7 @@ export class EntriesChartReporter extends AbstractChart {
         if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
 
         const length = rawData.length;
-        const chartData = { fcp: PArr.init0(length), fp: PArr.init0(length), labels: PArr.init0(length), } as ChartData;
+        const chartData = { fcp: init0(length), fp: init0(length), labels: init0(length), } as ChartData;
 
         return rawData.reduce((acc, v, i) => {
             const fcpEvent = v.performanceEntries.find(x => x.name === 'first-contentful-paint');

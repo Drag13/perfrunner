@@ -4,7 +4,8 @@
     "outDir": "./dist",
     "types": [
       "chart.js"
-    ]
+    ],
+    "declaration": true
   },
   "files": [
     "index.ts"

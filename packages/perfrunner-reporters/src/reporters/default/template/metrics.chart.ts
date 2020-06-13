@@ -1,9 +1,9 @@
 import { AbstractChart, MsChart } from './abstract-chart';
 import Chart from 'chart.js';
-import { IPerformanceResult } from './typings';
+import { IPerformanceResult } from './types';
 
-import { PColor, PFormat } from "./utils";
-import { PArr } from '../utils';
+import { PArr } from '../../../../utils';
+import { color, toMs } from '../../../utils';
 
 type ChartData = {
     layoutDuration: number[],
@@ -28,17 +28,17 @@ export class MetricsChartReporter extends AbstractChart {
             data: {
                 labels: viewData.labels,
                 datasets: [
-                    this.withDefaults('Layout Duration', viewData.layoutDuration, PColor.pick(0)),
-                    this.withDefaults('Recalculation Style Duration', viewData.recalcStyleDuration, PColor.pick(1)),
-                    this.withDefaults('Script Duration', viewData.scriptDuration, PColor.pick(2)),
-                    this.withDefaults('Task duration', viewData.taskDuration, PColor.pick(3)),
+                    this.withDefaults('Layout Duration', viewData.layoutDuration, color(0)),
+                    this.withDefaults('Recalculation Style Duration', viewData.recalcStyleDuration, color(1)),
+                    this.withDefaults('Script Duration', viewData.scriptDuration, color(2)),
+                    this.withDefaults('Task duration', viewData.taskDuration, color(3)),
                 ]
             },
             options: {
                 ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
-                        label: MsChart.diffLabel(PFormat.toMs),
+                        label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
                     }
                 },

@@ -13,7 +13,7 @@ export interface CliParams {
     output: string;
     runs: number;
     cache: boolean;
-    reporter: string;
+    reporter: string[];
     purge: boolean;
     noHeadless: boolean;
     comment: string;
@@ -27,7 +27,7 @@ export interface CliParams {
 interface ProfileOptionDefintion<T> extends OptionDefinition {
     name: keyof CliParams;
     type: (args?: string) => T extends Array<infer V> ? V : T,
-    defaultValue?: T
+    defaultValue?: T,
 }
 
 type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliParams[key]>, 'name'> }
@@ -40,7 +40,7 @@ const map: ParamsMap = {
     network: { type: NetworkCondtionFactory, defaultValue: Fast3g },
     output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
-    reporter: { type: String, defaultValue: 'basic' },
+    reporter: { type: String, multiple: true, defaultValue: ['basic'] },
     runs: { type: Number, defaultValue: 3 },
     noHeadless: { type: Boolean, defaultValue: false },
     comment: { type: String },

@@ -27,5 +27,20 @@
 
 ## Reporters
 
+Supported reporters:
+
+* toJson - simply saves all data to json file
+* basic - renders some basic metrics
+
+### toJson
+
+example:
+
+```perfrunner-cli drag13@github.io --report toJson```
+
+## Basic
+
+
+
 ## Thank You
 

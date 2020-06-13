@@ -1,8 +1,8 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from "./abstract-chart";
-import { IPerformanceResult } from './typings';
-import { PColor, PFormat } from './utils';
-import { PArr } from '../utils';
+import { IPerformanceResult } from './types';
+import { PArr } from '../../../../utils';
+import { toMs, color, TRANSPARENT } from '../../../utils';
 
 type ChartData = Record<string, any[]>;
 
@@ -28,7 +28,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                 ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
-                        label: MsChart.diffLabel(PFormat.toMs),
+                        label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
                     }
                 },
@@ -73,8 +73,8 @@ export class CustomMarksChartReporter extends AbstractChart {
         return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => ({
             label: key,
             data: entries,
-            borderColor: PColor.pick(i),
-            backgroundColor: PColor.transparent,
+            borderColor: color(i),
+            backgroundColor: TRANSPARENT,
             borderWidth: this.DEFAULT_LINE_WIDTH
         }));
     }
