@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
+import { join } from "path";
 import { Page } from 'puppeteer';
-
-import { TRACE_PATH } from '../config';
 
 type TraceEvents = TraceEvent[];
 
@@ -62,15 +61,38 @@ type TracedResourceData = {
     finish?: ResourceFinishTraceEvent
 }
 
-export async function startTracing(page: Page) {
-    await page.tracing.start({ categories: ['devtools.timeline'], path: TRACE_PATH })
-}
 
-export async function stopTracing(page: Page): Promise<Trace> {
-    await page.tracing.stop();
-    const tracing = JSON.parse(readFileSync(TRACE_PATH, { encoding: 'utf8' }));
+export class Tracer {
 
-    return tracing;
+    private _lastTraceName: string | undefined;
+    private _page: Page | undefined;
+
+    constructor(private readonly _outputFolder: string) { }
+
+    start = async (page: Page) => {
+        this._page = page;
+        this._lastTraceName = this.generateTraceName();
+        const path = this.generateTracePath();
+        await page.tracing.start({ path })
+    }
+
+    stop = async (): Promise<Trace> => {
+        if (this._page == null) { throw new Error('Page for tracing is null or undefined. Maybe you forget to start tracing before calling stop tracing') }
+
+        await this._page.tracing.stop();
+
+        const path = this.generateTracePath();
+        const tracing = JSON.parse(readFileSync(path, { encoding: 'utf8' }));
+
+        return tracing;
+    }
+
+    private generateTracePath = (): string => {
+        if (this._lastTraceName == null) { throw new Error('Trace name is not defined.') }
+        return join(this._outputFolder, this._lastTraceName);
+    }
+
+    private generateTraceName = () => `${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
 }
 
 export function subsetTrace(trc: TraceEvents) {

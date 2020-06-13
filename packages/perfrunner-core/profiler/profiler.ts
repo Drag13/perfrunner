@@ -2,16 +2,16 @@ import { Page } from 'puppeteer';
 import { RawPerfData } from './raw-perf-data';
 import { PerfRunnerOptions } from './perf-options';
 import { log, debug as t } from '../utils/log';
-import { startTracing, stopTracing, subsetTrace, extractResourceData, TraceEvent } from "./trace";
+import { subsetTrace, extractResourceData, TraceEvent, Tracer } from "./trace";
 import { ExtendedPerformanceEntry, startApplication, dumpMetrics, startBrowser, startEmptyPage, setupPerformanceConditions } from './browser';
 
-async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor: string | number | undefined) {
+async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor: string | number | undefined, tracer: Tracer) {
     for (let i = 0; i < runs; i++) {
 
         log(`running #${i + 1} profile session`);
 
         t(`start tracing`);
-        await startTracing(emptyPage);
+        await tracer.start(emptyPage);
 
         t(`start application`);
         await startApplication(emptyPage, url, waitFor);
@@ -20,7 +20,7 @@ async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor:
         const dump = await dumpMetrics(emptyPage);
 
         t(`getting trace data`);
-        const trace = await stopTracing(emptyPage);
+        const trace = await tracer.stop();
 
         yield { ...dump, trace };
     }
@@ -68,7 +68,9 @@ export async function profile(url: URL, options: PerfRunnerOptions): Promise<Raw
             await startApplication(page, url.href, waitFor)
         }
 
-        for await (const dump of profilePage(page, url.href, runs, waitFor)) {
+        const tracer = new Tracer(options.output);
+
+        for await (const dump of profilePage(page, url.href, runs, waitFor, tracer)) {
             const performanceEntries = updateMissingData(dump.performanceEntries, dump.trace);
             result.push({ metrics: dump.metrics, performanceEntries })
         }
