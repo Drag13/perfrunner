@@ -16,11 +16,11 @@ async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor:
         t(`start application`);
         await startApplication(emptyPage, url, waitFor);
 
-        t(`getting metrics`);
-        const dump = await dumpMetrics(emptyPage);
-
         t(`getting trace data`);
         const trace = await tracer.stop();
+
+        t(`getting metrics`);
+        const dump = await dumpMetrics(emptyPage);
 
         yield { ...dump, trace };
     }
@@ -54,7 +54,7 @@ function updateMissingData(entries: ExtendedPerformanceEntry[], { traceEvents }:
 }
 
 export async function profile(url: URL, options: PerfRunnerOptions): Promise<RawPerfData[]> {
-    const { useCache, waitFor, runs } = options;
+    const { waitFor, runs } = options;
     const browser = await startBrowser(options.timeout, options.headless, options.ignoreDefaultArgs, options.chromeArgs);
     const result = [];
 
@@ -63,10 +63,7 @@ export async function profile(url: URL, options: PerfRunnerOptions): Promise<Raw
         const page = await startEmptyPage(browser);
         await setupPerformanceConditions(page, options);
 
-        if (useCache) { // warm up application
-            log(`warming up cache`)
-            await startApplication(page, url.href, waitFor)
-        }
+        await startApplication(page, url.href, waitFor)
 
         const tracer = new Tracer(options.output);
 

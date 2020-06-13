@@ -1,36 +1,12 @@
 #!/usr/bin/env node
 
 import cmd from "command-line-args";
-import { params, CliParams } from "./options/options";
 import { resolve } from "path";
 import { profile } from "perfrunner-core";
+
+import { params, CliParams } from "./options/options";
 import { loader } from "./utils/reporter-loader";
-import { existsSync, mkdirSync } from 'fs';
-
-const HTTP_SCHEME = 'http://';
-const HTTPS_SCHEME = 'https://';
-const DEFAULT_HTTP_SCHEME = HTTP_SCHEME;
-
-const normalizeUrl = (url: string | undefined): string => {
-    if (!url) { throw new Error(`Url is required, got undefined`); }
-    const loweredUrl = url.toLowerCase();
-    const isHttpSchemeSet = loweredUrl.startsWith(HTTP_SCHEME) || loweredUrl.startsWith(HTTPS_SCHEME);
-
-    return isHttpSchemeSet ? url : `${DEFAULT_HTTP_SCHEME}url`
-}
-
-const generateFriendlyNameFromUrl = (url: URL): string => {
-    const friendlyHost = url.host.replace(/[\.:]/g, '_'); // remove . and : from host
-    const friendlyPath = url.pathname && url.pathname !== '/' ? `__${url.pathname.replace(/[\\]/g, '_')}` : ''; // remove /
-
-    return `${friendlyHost}${friendlyPath}`;
-}
-
-const ensureFolderCreated = (pathToFolder: string) => {
-    if (!existsSync(pathToFolder)) {
-        mkdirSync(pathToFolder, { recursive: true });
-    }
-}
+import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from "./utils";
 
 (async function (): Promise<number> {
 
@@ -48,6 +24,7 @@ const ensureFolderCreated = (pathToFolder: string) => {
 
         const performanceResult = await profile({
             ...inputParams,
+            url: url.href,
             useCache: inputParams.cache,
             throttlingRate: inputParams.throttling,
             headless: !inputParams.noHeadless,

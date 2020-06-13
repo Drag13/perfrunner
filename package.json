@@ -6,6 +6,7 @@
   },
   "scripts": {
     "lerna": "lerna",
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "pack": "lerna run pack"
   }
 }
