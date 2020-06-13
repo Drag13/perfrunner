@@ -1,1 +1,0 @@
-export const TRACE_PATH = './trace.json';

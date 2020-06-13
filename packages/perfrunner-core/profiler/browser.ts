@@ -1,6 +1,6 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
 import { PerfOptions } from './perf-options';
-import { debug } from '../log';
+import { debug } from '../utils/log';
 
 export interface ExtendedPerformanceEntry extends PerformanceEntry {
     initiatorType?: string;
@@ -37,8 +37,8 @@ export interface ExtendedPerformanceEntry extends PerformanceEntry {
     }
 }
 
-export async function startBrowser(timeout: number, headless: boolean, ignoreDefaultArgs?: boolean, args?: string[]) {
-    debug(`running chrome with args: ${args && args.length ? args: `no args provided`}`);
+export async function startBrowser(timeout: number, headless?: boolean, ignoreDefaultArgs?: boolean, args?: string[]) {
+    debug(`running chrome with args: ${args && args.length ? args : `no args provided`}`);
     return await puppeteer.launch({ headless, timeout, ignoreHTTPSErrors: true, ignoreDefaultArgs, args });
 }
 
@@ -61,7 +61,7 @@ export async function setupPerformanceConditions(page: Page, { network, throttli
 
     await session.send('Network.enable');
     await session.send('Emulation.setCPUThrottlingRate', { rate: throttlingRate });
-    await session.send('Network.emulateNetworkConditions', network);
+    await session.send('Network.emulateNetworkConditions', { ...network, offline: false });
 
     return session;
 }

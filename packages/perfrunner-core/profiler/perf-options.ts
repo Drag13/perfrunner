@@ -2,20 +2,19 @@ export type NetworkSetup = {
     latency: number,
     downloadThroughput: number
     uploadThroughput: number,
-    offline: false;
 }
 
 export interface PerfOptions {
-    url: URL,
+    url: string,
     network: NetworkSetup,
     throttlingRate: number,
-    useCache: boolean
+    useCache?: boolean
 };
 
 export interface RunnerOptions {
     runs: number;
     timeout: number;
-    headless: boolean;
+    headless?: boolean;
     waitFor?: number | string;
     chromeArgs?: string[];
     ignoreDefaultArgs?: boolean;
@@ -23,7 +22,7 @@ export interface RunnerOptions {
 
 export interface PerfRunnerOptions extends PerfOptions, RunnerOptions {
     output: string;
-    purge: boolean;
+    purge?: boolean;
     comment?: string;
     testName?: string;
     reportOnly?: boolean;

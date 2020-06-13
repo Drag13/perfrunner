@@ -1,7 +1,3 @@
-export const getValuesByKey = <T>(key: keyof T, arr: T[]): any[] => {
-    return arr.map(x => x[key]);
-}
-
 export const groupEntries = (rawPerformanceData: PerformanceEntry[][]): PerformanceEntry[][] => {
 
     const runs = rawPerformanceData;

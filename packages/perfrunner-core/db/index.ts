@@ -2,25 +2,24 @@ import FileSync from 'lowdb/adapters/FileSync';
 import lowdb, { LowdbSync } from 'lowdb';
 
 import { DbSchema, PerfRunResult } from "./scheme";
-import { createFolderIfNotExists, generateReportName } from './utils';
+import { generateReportName } from './utils';
 import { PerfOptions } from '../profiler/perf-options';
-import { debug } from '../log';
+import { debug } from '../utils/log';
 
 class Db {
     private static _instance: Db | undefined;
 
     private _db: LowdbSync<DbSchema>;
 
-    private constructor(outputFolder: string, options: PerfOptions, testName?: string) {
-        const fileName = generateReportName({ ...options, ...options.network });
-        createFolderIfNotExists(outputFolder);
+    private constructor(url: URL, outputFolder: string, options: PerfOptions, testName?: string) {
+        const fileName = generateReportName(url, { ...options, ...options.network });
         const fullPath = `${outputFolder}/${testName ?? fileName}.json`;
         const adapter = new FileSync<DbSchema>(fullPath);
         debug(`connecting to: ${fullPath}`);
         this._db = lowdb(adapter);
     }
 
-    write(data: PerfRunResult, purge: boolean): void {
+    write(data: PerfRunResult, purge?: boolean): void {
         const db = this._db;
 
         db.defaults({ profile: [], count: 0 }).write();
@@ -46,8 +45,8 @@ class Db {
         this._db.update('count', _ => 0).write();
     }
 
-    public static connect(outputFolder: string, perfRunParams: PerfOptions, testName?: string) {
-        return this._instance == null ? (this._instance = new Db(outputFolder, perfRunParams, testName)) : this._instance;
+    public static connect(url: URL, outputFolder: string, perfRunParams: PerfOptions, testName?: string) {
+        return this._instance == null ? (this._instance = new Db(url, outputFolder, perfRunParams, testName)) : this._instance;
     }
 }
 

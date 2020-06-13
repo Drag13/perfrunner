@@ -16,9 +16,9 @@ function hash(text: string) {
     return hash;
 }
 
-type ImportantParams = { url: URL, downloadThroughput: number, uploadThroughput: number, latency: number, throttlingRate: number, useCache: boolean };
+type ImportantParams = { downloadThroughput: number, uploadThroughput: number, latency: number, throttlingRate: number, useCache?: boolean };
 
-export function generateReportName({ url, downloadThroughput, uploadThroughput, latency, throttlingRate, useCache }: ImportantParams): string {
+export function generateReportName(url: URL, { downloadThroughput, uploadThroughput, latency, throttlingRate, useCache }: ImportantParams): string {
     const meaningfulUrl = `${url.protocol}//${url.host}${url.pathname.endsWith('/') ? url.pathname : url.pathname + '/'}`;
     const hashedUrl = hash(meaningfulUrl);
     const fileName = `${hex(hashedUrl)}_${hex(downloadThroughput)}_${hex(uploadThroughput)}_${hex(latency)}_${throttlingRate}_${useCache ? 1 : 0}`;

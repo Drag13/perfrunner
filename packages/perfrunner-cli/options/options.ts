@@ -1,12 +1,12 @@
 import { OptionDefinition } from 'command-line-args';
 import { NetworkCondtionFactory, Fast3g } from './network';
 import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
-import { Url } from "./url";
-import { ArgsLikeString } from "./arg-like-string";
-import { argsLike } from "./../utils/args-like";
+import { ArgsLikeString } from './arg-like-string';
+import { StringOrNumber } from "./string-number";
+import { argsLike } from './../utils/args-like';
 
 export interface CliParams {
-    url: URL;
+    url: string;
     timeout: number;
     throttling: number;
     network: NetworkSetup;
@@ -21,6 +21,7 @@ export interface CliParams {
     reportOnly: boolean;
     chromeArgs: string[];
     ignoreDefaultArgs: boolean;
+    waitFor: number | string;
 }
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
@@ -32,12 +33,12 @@ interface ProfileOptionDefintion<T> extends OptionDefinition {
 type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliParams[key]>, 'name'> }
 
 const map: ParamsMap = {
-    url: { type: Url, defaultOption: true },
+    url: { type: String, defaultOption: true },
     timeout: { type: Number, defaultValue: 60_000 },
     cache: { type: Boolean, defaultValue: false },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
     network: { type: NetworkCondtionFactory, defaultValue: Fast3g },
-    output: { type: String, defaultValue: './generated' },
+    output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
     reporter: { type: String, defaultValue: 'basic' },
     runs: { type: Number, defaultValue: 3 },
@@ -47,6 +48,7 @@ const map: ParamsMap = {
     reportOnly: { type: Boolean },
     chromeArgs: { type: ArgsLikeString, multiple: true },
     ignoreDefaultArgs: { type: Boolean },
+    waitFor: { type: StringOrNumber }
 }
 
 export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: argsLike(k) }));
