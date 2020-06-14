@@ -1,5 +1,5 @@
 import { OptionDefinition } from 'command-line-args';
-import { NetworkCondtionFactory, Fast3g } from './network';
+import { NetworkCondtionFactory, HSPA } from './network';
 import { NetworkSetup } from 'perfrunner-core';
 import { ArgsLikeString } from './arg-like-string';
 import { StringOrNumber } from './string-number';
@@ -37,7 +37,7 @@ const map: ParamsMap = {
     timeout: { type: Number, defaultValue: 60_000 },
     cache: { type: Boolean, defaultValue: false, alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
-    network: { type: NetworkCondtionFactory, defaultValue: Fast3g },
+    network: { type: NetworkCondtionFactory, defaultValue: HSPA },
     output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
     reporter: { type: String, multiple: true, defaultValue: ['basic'] },
