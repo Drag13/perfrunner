@@ -30,7 +30,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
-                        footer: this.renderRunParams(runParams)
+                        footer: this.renderRunParams(runParams),
                     },
                 },
                 title: {

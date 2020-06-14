@@ -3,12 +3,12 @@ import { TRANSPARENT, toBytes } from '../../../utils';
 import { IChartOptions, IPerformanceResult, IReporter } from './types';
 
 type RunParams = {
-    download: number,
-    upload: number,
-    latency: number,
-    useCache: boolean,
-    throttling: number
-}
+    download: number;
+    upload: number;
+    latency: number;
+    useCache: boolean;
+    throttling: number;
+};
 
 export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
     protected readonly DEFAULT_LINE_WIDTH = 2;
@@ -50,18 +50,19 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
         const param = runParams[index];
         return [
             `download: ${toBytes(param.download)} upload ${toBytes(param.upload)} latency: ${param.latency}`,
-            `throttling: ${param.throttling}x useCache: ${param.useCache}`
-        ]
-    }
+            `throttling: ${param.throttling}x useCache: ${param.useCache}`,
+        ];
+    };
 
     protected getComments = (rawData: IPerformanceResult) => rawData.map((x) => x.comment ?? '');
-    protected getRunParams = (rawData: IPerformanceResult): RunParams[] => rawData.map(x => ({
-        download: x.runParams.network.downloadThroughput,
-        upload: x.runParams.network.uploadThroughput,
-        useCache: x.runParams.useCache,
-        latency: x.runParams.network.latency,
-        throttling: x.runParams.throttlingRate
-    }))
+    protected getRunParams = (rawData: IPerformanceResult): RunParams[] =>
+        rawData.map((x) => ({
+            download: x.runParams.network.downloadThroughput,
+            upload: x.runParams.network.uploadThroughput,
+            useCache: x.runParams.useCache,
+            latency: x.runParams.network.latency,
+            throttling: x.runParams.throttlingRate,
+        }));
 
     protected withDefaults = (label: string, data: number[], color: string) => ({
         label,

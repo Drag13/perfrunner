@@ -25,7 +25,7 @@ export const HSPA_Plus: NetworkSetup = {
     downloadThroughput: (4 * 1024 * 1024) / 8,
     uploadThroughput: (1 * 1024 * 1024) / 8,
     latency: 100,
-}
+};
 
 export const FourG: NetworkSetup = {
     downloadThroughput: (12 * 1024 * 1024) / 8,
