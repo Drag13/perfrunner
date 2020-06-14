@@ -8,6 +8,7 @@
     ]
   },
   "files": [
-    "index.ts"
-  ]
+    "src/index.ts"
+  ],
+  "exclude": ["*.test.ts"]
 }

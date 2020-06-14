@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "demo": "npm run build && node dist/cli \"https://drag13.github.io\" --runs 1",
     "pack": "npm pack",
+    "prettier": "prettier --config ../../.prettierrc --write ./src/**/*.ts",
     "tsc": "tsc",
     "build": "tsc -p ."
   },
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/node": "^14.0.1",
+    "prettier": "^2.0.5",
     "typescript": "^3.9.2"
   },
   "dependencies": {

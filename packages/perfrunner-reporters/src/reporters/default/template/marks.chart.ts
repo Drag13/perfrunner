@@ -1,5 +1,5 @@
 import Chart from 'chart.js';
-import { AbstractChart, MsChart } from "./abstract-chart";
+import { AbstractChart, MsChart } from './abstract-chart';
 import { IPerformanceResult } from './types';
 import { PArr } from '../../../../utils';
 import { toMs, color, TRANSPARENT } from '../../../utils';
@@ -7,7 +7,6 @@ import { toMs, color, TRANSPARENT } from '../../../utils';
 type ChartData = Record<string, any[]>;
 
 export class CustomMarksChartReporter extends AbstractChart {
-
     readonly name = 'marks';
     readonly type: 'chart' = 'chart';
 
@@ -22,7 +21,7 @@ export class CustomMarksChartReporter extends AbstractChart {
             type: 'line',
             data: {
                 labels: viewData.labels,
-                datasets
+                datasets,
             },
             options: {
                 ...this.DEFAULT_CHART_OPTIONS,
@@ -30,27 +29,26 @@ export class CustomMarksChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
-                    }
+                    },
                 },
                 title: {
                     display: true,
-                    text: "Performance Marks"
-                }
-            }
-
+                    text: 'Performance Marks',
+                },
+            },
         });
     }
 
     private transform(rawData: IPerformanceResult) {
         if (!Array.isArray(rawData)) {
-            throw new Error('data is not in array format')
-        };
+            throw new Error('data is not in array format');
+        }
 
         const length = rawData.length;
-        const result: ChartData = { labels: PArr.init0(length) }
+        const result: ChartData = { labels: PArr.init0(length) };
 
         return rawData.reduce((acc, v, i) => {
-            const marks = v.performanceEntries.filter(x => x.entryType === 'mark');
+            const marks = v.performanceEntries.filter((x) => x.entryType === 'mark');
 
             marks.forEach((m) => {
                 const name = m.name;
@@ -70,6 +68,8 @@ export class CustomMarksChartReporter extends AbstractChart {
     }
 
     private toDataSet(viewData: ChartData) {
-        return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => this.withDefaults(key, entries, color(i)));
+        return Object.entries(viewData)
+            .filter(([key]) => key !== 'labels')
+            .map(([key, entries], i) => this.withDefaults(key, entries, color(i)));
     }
 }

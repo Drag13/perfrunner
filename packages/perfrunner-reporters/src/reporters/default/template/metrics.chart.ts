@@ -6,12 +6,12 @@ import { PArr } from '../../../../utils';
 import { color, toMs } from '../../../utils';
 
 type ChartData = {
-    layoutDuration: number[],
-    recalcStyleDuration: number[],
-    scriptDuration: number[],
-    taskDuration: number[],
-    labels: string[]
-}
+    layoutDuration: number[];
+    recalcStyleDuration: number[];
+    scriptDuration: number[];
+    taskDuration: number[];
+    labels: string[];
+};
 
 export class MetricsChartReporter extends AbstractChart {
     readonly type: 'chart' = 'chart';
@@ -32,7 +32,7 @@ export class MetricsChartReporter extends AbstractChart {
                     this.withDefaults('Recalculation Style Duration', viewData.recalcStyleDuration, color(1)),
                     this.withDefaults('Script Duration', viewData.scriptDuration, color(2)),
                     this.withDefaults('Task duration', viewData.taskDuration, color(3)),
-                ]
+                ],
             },
             options: {
                 ...this.DEFAULT_CHART_OPTIONS,
@@ -40,21 +40,20 @@ export class MetricsChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
-                    }
+                    },
                 },
                 title: {
                     display: true,
-                    text: 'Common performance metrics'
+                    text: 'Common performance metrics',
                 },
-            }
+            },
         });
     }
 
     private transform(data: IPerformanceResult): ChartData {
-
         if (!Array.isArray(data)) {
-            throw new Error('data is not in array format')
-        };
+            throw new Error('data is not in array format');
+        }
 
         const length = data.length;
 
@@ -63,7 +62,7 @@ export class MetricsChartReporter extends AbstractChart {
             recalcStyleDuration: PArr.init0(length),
             scriptDuration: PArr.init0(length),
             taskDuration: PArr.init0(length),
-            labels: PArr.init0(length)
+            labels: PArr.init0(length),
         };
 
         return data.reduce((acc, v, i) => {
@@ -74,7 +73,6 @@ export class MetricsChartReporter extends AbstractChart {
             acc.labels[i] = `#${i + 1}`;
 
             return acc;
-
         }, viewData);
     }
 }

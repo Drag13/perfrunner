@@ -1,13 +1,15 @@
-import { IReporter } from "../iReporter";
-import { writeFile } from "../../utils";
+import { IReporter } from '../iReporter';
+import { writeFile } from '../../utils';
 
 const toJson: IReporter = (outputFolder, result) => {
     return new Promise((resolve, reject) => {
         try {
-            writeFile(outputFolder, 'json-reporter.json', result)
+            writeFile(outputFolder, 'json-reporter.json', result);
             resolve();
-        } catch (error) { reject(error); }
-    })
-}
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 
-export { toJson }
+export { toJson };

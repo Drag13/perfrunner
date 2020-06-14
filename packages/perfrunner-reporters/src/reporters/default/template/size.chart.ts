@@ -12,24 +12,23 @@ const getPathName = (url: string): PathName => {
     try {
         const u = new URL(url);
         return u.pathname.toLowerCase();
-    }
-    catch (e) {
-        console.warn(`invalid url: ${url}`, e)
+    } catch (e) {
+        console.warn(`invalid url: ${url}`, e);
         console.warn(e);
-        return ''
+        return '';
     }
-}
+};
 
 interface isResource {
     (pathName: PathName, mimeType?: string): boolean;
 }
 
-const isType = (formats: string[], mimeTypes: string[]): isResource =>
-    (pathName, mimeType?) => (formats.some(type => pathName.endsWith(type)) || mimeTypes.includes(mimeType));
+const isType = (formats: string[], mimeTypes: string[]): isResource => (pathName, mimeType?) =>
+    formats.some((type) => pathName.endsWith(type)) || mimeTypes.includes(mimeType);
 
 const cssFormats = ['.css'];
 const cssMimeTypes = ['text/css'];
-const isCss = isType(cssFormats, cssMimeTypes)
+const isCss = isType(cssFormats, cssMimeTypes);
 
 const jsMimeTypes = ['application/javascript', 'text/javascript'];
 const jsFormats = ['.js'];
@@ -45,12 +44,11 @@ const isXhr = isType(xhrFormats, xhrMimeType);
 
 const fontFormats = ['.woff', '.woff2', '.ttf', '.otf'];
 const fontMimeTypes = []; // should be extended
-const isFont = isType(fontFormats, fontMimeTypes)
+const isFont = isType(fontFormats, fontMimeTypes);
 
 type ResourceType = 'js' | 'img' | 'css' | 'xhr' | 'font' | 'document' | 'unknown';
 
 const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
-
     if (pEntry.entryType === 'navigation') {
         return 'document';
     }
@@ -81,12 +79,11 @@ const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
     }
 
     return 'unknown';
-}
-
+};
 
 export class ResourceSizeChart extends AbstractChart {
-    readonly type: 'chart' = 'chart'
-    readonly name: string = 'size'
+    readonly type: 'chart' = 'chart';
+    readonly name: string = 'size';
 
     render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
@@ -99,19 +96,19 @@ export class ResourceSizeChart extends AbstractChart {
             this.withDefaults('Total CSS Size', viewData.css, color(2)),
             this.withDefaults('Total Fonts Size', viewData.font, color(3)),
             this.withDefaults('Index.html Size', viewData.document, color(4)),
-        ]
+        ];
 
-        const isOtherResourcesFound = viewData.unknown.some(x => x > 0);
+        const isOtherResourcesFound = viewData.unknown.some((x) => x > 0);
 
         if (isOtherResourcesFound) {
-            datasets.push(this.withDefaults('Others', viewData.unknown, color(5)))
+            datasets.push(this.withDefaults('Others', viewData.unknown, color(5)));
         }
 
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: viewData.labels,
-                datasets
+                datasets,
             },
             options: {
                 ...this.DEFAULT_CHART_OPTIONS,
@@ -119,21 +116,23 @@ export class ResourceSizeChart extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toBytes),
                         afterBody: this.renderComment(comments),
-                    }
+                    },
                 },
                 title: {
                     display: true,
-                    text: 'Resource Size'
+                    text: 'Resource Size',
                 },
                 scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            callback: (xValue) => typeof xValue === 'number' ? toBytes(xValue) : toBytes(parseFloat(xValue))
-                        }
-                    }]
-                }
-            }
+                    yAxes: [
+                        {
+                            ticks: {
+                                beginAtZero: true,
+                                callback: (xValue) => (typeof xValue === 'number' ? toBytes(xValue) : toBytes(parseFloat(xValue))),
+                            },
+                        },
+                    ],
+                },
+            },
         });
     }
 
@@ -147,13 +146,17 @@ export class ResourceSizeChart extends AbstractChart {
     // }
 
     protected filter(rawData: ExtendedPerformanceEntry[]): ExtendedPerformanceEntry[] {
-        if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
+        if (!Array.isArray(rawData)) {
+            throw new Error('data is not in array format');
+        }
 
-        return rawData.filter(x => x.name != null && x.name != '');
+        return rawData.filter((x) => x.name != null && x.name != '');
     }
 
     private transform(rawData: IPerformanceResult): ChartData {
-        if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
+        if (!Array.isArray(rawData)) {
+            throw new Error('data is not in array format');
+        }
 
         const length = rawData.length;
         const newArray = () => init0(length);
@@ -166,22 +169,20 @@ export class ResourceSizeChart extends AbstractChart {
             labels: newArray(),
             document: newArray(),
             font: newArray(),
-            xhr: newArray()
+            xhr: newArray(),
         };
 
-        const performanceEntries = rawData.map(x => x.performanceEntries).filter(this.filter); // TODO: filter first
+        const performanceEntries = rawData.map((x) => x.performanceEntries).filter(this.filter); // TODO: filter first
 
         const datasets = performanceEntries.reduce((acc, entrySet, i) => {
-
-            entrySet.forEach(pEntry => {
+            entrySet.forEach((pEntry) => {
                 const entryType = getResourceType(pEntry);
-                acc[entryType][i] += (pEntry.encodedBodySize ?? 0);
+                acc[entryType][i] += pEntry.encodedBodySize ?? 0;
             });
 
             return acc;
         }, data);
 
         return datasets;
-
     }
 }

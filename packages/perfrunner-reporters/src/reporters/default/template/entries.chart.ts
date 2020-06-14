@@ -1,19 +1,18 @@
 import Chart from 'chart.js';
-import { AbstractChart, MsChart } from "./abstract-chart";
+import { AbstractChart, MsChart } from './abstract-chart';
 import { IPerformanceResult } from './types';
 import { color, TRANSPARENT, toMs, init0 } from '../../../utils';
 
 type ChartData = {
-    fp: number[],
-    fcp: number[],
-    DOMContentLoaded: number[],
-    DOMInteractive: number[],
-    load: number[],
-    labels: string[],
-}
+    fp: number[];
+    fcp: number[];
+    DOMContentLoaded: number[];
+    DOMInteractive: number[];
+    load: number[];
+    labels: string[];
+};
 
 export class EntriesChartReporter extends AbstractChart {
-
     type: 'chart' = 'chart';
     name: string = 'entries';
 
@@ -31,8 +30,8 @@ export class EntriesChartReporter extends AbstractChart {
                     this.withDefaults('First Contentful Paint', viewData.fcp, color(0)),
                     this.withDefaults('First Paint', viewData.fp, color(1)),
                     this.withDefaults('DOM Content Loaded', viewData.DOMContentLoaded, color(2)),
-                    this.withDefaults('DOM Interactive', viewData.DOMInteractive, color(3))
-                ]
+                    this.withDefaults('DOM Interactive', viewData.DOMInteractive, color(3)),
+                ],
             },
             options: {
                 ...this.DEFAULT_CHART_OPTIONS,
@@ -40,18 +39,20 @@ export class EntriesChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
-                    }
+                    },
                 },
                 title: {
                     display: true,
-                    text: "Application Events"
-                }
-            }
+                    text: 'Application Events',
+                },
+            },
         });
     }
 
     private transform(rawData: IPerformanceResult): ChartData {
-        if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
+        if (!Array.isArray(rawData)) {
+            throw new Error('data is not in array format');
+        }
 
         const length = rawData.length;
         const chartData: ChartData = {
@@ -60,17 +61,17 @@ export class EntriesChartReporter extends AbstractChart {
             load: init0(length), // out of render for now
             DOMContentLoaded: init0(length),
             DOMInteractive: init0(length),
-            labels: init0(length)
+            labels: init0(length),
         };
 
         return rawData.reduce((acc, v, i) => {
-            const fcpEvent = v.performanceEntries.find(x => x.name === 'first-contentful-paint');
+            const fcpEvent = v.performanceEntries.find((x) => x.name === 'first-contentful-paint');
             acc.fcp[i] = fcpEvent && fcpEvent.startTime ? fcpEvent.startTime : 0;
 
-            const fpEvent = v.performanceEntries.find(x => x.name === 'first-paint');
+            const fpEvent = v.performanceEntries.find((x) => x.name === 'first-paint');
             acc.fp[i] = fpEvent && fpEvent.startTime ? fpEvent.startTime : 0;
 
-            const navigationEvent = v.performanceEntries.find(x => x.entryType === 'navigation');
+            const navigationEvent = v.performanceEntries.find((x) => x.entryType === 'navigation');
 
             acc.load[i] = navigationEvent.loadEventEnd || 0;
             acc.DOMContentLoaded[i] = navigationEvent.domContentLoadedEventEnd || 0;
