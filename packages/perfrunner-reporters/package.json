@@ -27,6 +27,7 @@
     "copyfiles": "^2.2.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-inline-source": "^1.0.0",
+    "prettier": "^2.0.5",
     "typescript": "^3.9.2"
   },
   "dependencies": {
