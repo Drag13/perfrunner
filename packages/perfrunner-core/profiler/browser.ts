@@ -68,8 +68,8 @@ export async function setupPerformanceConditions(page: Page, { network, throttli
 
 export async function startApplication(page: Page, url: string, waitFor?: string | number) {
     await page.goto(url, { waitUntil: "networkidle2" });
-    if (typeof waitFor === 'number') { await page.waitFor(waitFor) };
-    if (typeof waitFor === 'string') { await page.waitForSelector(waitFor); }
+    if (typeof waitFor === 'number' && waitFor != 0 && !isNaN(waitFor)) { await page.waitFor(waitFor) };
+    if (typeof waitFor === 'string' && waitFor.trim() !== '') { await page.waitForSelector(waitFor); }
 }
 
 export async function dumpMetrics(page: Page) {

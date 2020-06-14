@@ -8,8 +8,8 @@ type ChartData = Record<string, any[]>;
 
 export class CustomMarksChartReporter extends AbstractChart {
 
-    name = 'marks';
-    type: 'chart' = 'chart';
+    readonly name = 'marks';
+    readonly type: 'chart' = 'chart';
 
     render(container: HTMLElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
@@ -70,12 +70,6 @@ export class CustomMarksChartReporter extends AbstractChart {
     }
 
     private toDataSet(viewData: ChartData) {
-        return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => ({
-            label: key,
-            data: entries,
-            borderColor: color(i),
-            backgroundColor: TRANSPARENT,
-            borderWidth: this.DEFAULT_LINE_WIDTH
-        }));
+        return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => this.withDefaults(key, entries, color(i)));
     }
 }

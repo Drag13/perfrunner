@@ -35,20 +35,20 @@ type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliPara
 const map: ParamsMap = {
     url: { type: String, defaultOption: true },
     timeout: { type: Number, defaultValue: 60_000 },
-    cache: { type: Boolean, defaultValue: false },
+    cache: { type: Boolean, defaultValue: false, alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
     network: { type: NetworkCondtionFactory, defaultValue: Fast3g },
     output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
     reporter: { type: String, multiple: true, defaultValue: ['basic'] },
-    runs: { type: Number, defaultValue: 3 },
+    runs: { type: Number, defaultValue: 3, alias: 'R' },
     noHeadless: { type: Boolean, defaultValue: false },
     comment: { type: String },
     testName: { type: String },
     reportOnly: { type: Boolean },
     chromeArgs: { type: ArgsLikeString, multiple: true },
     ignoreDefaultArgs: { type: Boolean },
-    waitFor: { type: StringOrNumber }
+    waitFor: { type: StringOrNumber, alias: 'W' }
 }
 
 export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: argsLike(k) }));

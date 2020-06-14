@@ -14,8 +14,8 @@ type ChartData = {
 }
 
 export class MetricsChartReporter extends AbstractChart {
-    type: 'chart' = 'chart';
-    name: string = 'metrics';
+    readonly type: 'chart' = 'chart';
+    readonly name: string = 'metrics';
 
     render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);

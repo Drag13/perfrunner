@@ -3,11 +3,9 @@ import { CustomMarksChartReporter } from './marks.chart';
 import { MetricsChartReporter } from './metrics.chart';
 import { ResourceSizeChart } from './size.chart';
 import { IReporter, IPerformanceResult } from './types';
-import { splitBy } from '../../../utils';
+import { splitBy, defined } from '../../../utils';
 
 const allReporters = [new EntriesChartReporter(), new CustomMarksChartReporter(), new MetricsChartReporter(), new ResourceSizeChart()];
-
-const notUndefined = <T>(x: T | undefined): x is T => x !== undefined;
 
 function renderChartRow(parent: Node, charts: IReporter<HTMLElement>[]) {
     const canvases: { canvas: HTMLCanvasElement, chart: IReporter<HTMLElement> }[] = []
@@ -48,9 +46,9 @@ function renderCharts(root: Node, charts: IReporter<HTMLElement>[], data: IPerfo
         throw new Error(`Report rendering failed, root node: "${root}" not found`);
     }
 
-    const names = reporters && reporters.length ? reporters : ['entries', 'marks', 'metrics', 'resource-size'];
+    const names = reporters && reporters.length ? reporters : ['entries', 'marks', 'metrics', 'size'];
 
-    const plugins = names.map(pluginName => allReporters.find(pl => pl.name === pluginName)).filter(notUndefined);
+    const plugins = names.map(pluginName => allReporters.find(pl => pl.name === pluginName.toLowerCase())).filter(defined);
 
     renderCharts(rootNode, plugins.filter(x => x.type === 'chart'), data);
 }('root', (window as any).renderArgs, (window as any).data));

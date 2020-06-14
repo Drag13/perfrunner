@@ -85,9 +85,8 @@ const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
 
 
 export class ResourceSizeChart extends AbstractChart {
-    type: 'chart' = 'chart'
-
-    name: string = 'resource-size'
+    readonly type: 'chart' = 'chart'
+    readonly name: string = 'size'
 
     render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);

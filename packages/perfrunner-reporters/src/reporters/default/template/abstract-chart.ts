@@ -3,7 +3,7 @@ import { TRANSPARENT } from '../../../utils';
 import { IChartOptions, IPerformanceResult, IReporter } from "./types";
 
 export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
-    protected readonly DEFAULT_LINE_WIDTH = 2;;
+    protected readonly DEFAULT_LINE_WIDTH = 2;
     protected readonly DEFAULT_CHART_OPTIONS: IChartOptions = {
         animation: { duration: 0 },
         hover: { animationDuration: 0 },
@@ -14,8 +14,8 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
         }
     };
 
-    abstract type: 'chart';
-    abstract name: string;
+    abstract readonly type: 'chart';
+    abstract readonly name: string;
 
     public getSafeCanvasContext(container: HTMLElement | undefined): CanvasRenderingContext2D {
         const canvas = container as HTMLCanvasElement;
