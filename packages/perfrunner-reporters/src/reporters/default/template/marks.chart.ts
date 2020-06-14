@@ -16,6 +16,7 @@ export class CustomMarksChartReporter extends AbstractChart {
         const viewData = this.transform(data);
         const datasets = this.toDataSet(viewData);
         const comments = this.getComments(data);
+        const runParams = this.getRunParams(data);
 
         new Chart(ctx, {
             type: 'line',
@@ -29,6 +30,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
+                        footer: this.renderRunParams(runParams)
                     },
                 },
                 title: {

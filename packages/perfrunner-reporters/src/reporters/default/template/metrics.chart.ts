@@ -22,6 +22,7 @@ export class MetricsChartReporter extends AbstractChart {
 
         const viewData = this.transform(data);
         const comments = this.getComments(data);
+        const runParams = this.getRunParams(data);
 
         new Chart(ctx, {
             type: 'line',
@@ -40,6 +41,7 @@ export class MetricsChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
+                        footer: this.renderRunParams(runParams)
                     },
                 },
                 title: {

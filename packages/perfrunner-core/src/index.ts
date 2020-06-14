@@ -27,7 +27,7 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
     }
 
     const url = new URL(options.url);
-    const db = Db.connect(url, options.output, options, options.testName);
+    const db = Db.connect(url, options.output, options.testName);
 
     const isProfilingOn = !options.reportOnly;
 
