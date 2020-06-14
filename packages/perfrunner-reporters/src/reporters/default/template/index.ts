@@ -3,7 +3,7 @@ import { CustomMarksChartReporter } from './marks.chart';
 import { MetricsChartReporter } from './metrics.chart';
 import { ResourceSizeChart } from './size.chart';
 import { IReporter, IPerformanceResult } from './types';
-import { splitBy, defined } from '../../../utils';
+import { defined } from '../../../utils';
 
 const allReporters = [new EntriesChartReporter(), new CustomMarksChartReporter(), new MetricsChartReporter(), new ResourceSizeChart()];
 
@@ -13,12 +13,9 @@ function renderChartRow(parent: Node, charts: IReporter<HTMLElement>[]) {
     const row = document.createElement(`div`);
     row.className = 'charts';
 
-    const maxWidth = `${100 / charts.length}%`;
-
     charts.forEach((chart) => {
         const container = document.createElement('div');
         container.className = `chart-container`;
-        container.style.maxWidth = maxWidth;
         const canvas = document.createElement('canvas');
         container.appendChild(canvas);
         row.append(container);
@@ -31,11 +28,7 @@ function renderChartRow(parent: Node, charts: IReporter<HTMLElement>[]) {
 }
 
 function renderCharts(root: Node, charts: IReporter<HTMLElement>[], data: IPerformanceResult) {
-    const maxChartsInRow = 3;
-
-    splitBy(charts, maxChartsInRow)
-        .map((chartGroup) => renderChartRow(root, chartGroup))
-        .forEach((charts) => charts.forEach(({ canvas, chart }) => chart.render(canvas, data)));
+    renderChartRow(root, charts).forEach(({ canvas, chart }) => chart.render(canvas, data));
 }
 
 (function render(root: string, reporters: string[], data: IPerformanceResult) {

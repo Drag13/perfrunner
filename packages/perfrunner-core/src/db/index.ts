@@ -3,7 +3,6 @@ import lowdb, { LowdbSync } from 'lowdb';
 
 import { DbSchema, PerfRunResult } from './scheme';
 import { generateReportName } from './utils';
-import { PerfOptions } from '../profiler/perf-options';
 import { debug } from '../utils/log';
 
 class Db {
@@ -11,9 +10,8 @@ class Db {
 
     private _db: LowdbSync<DbSchema>;
 
-    private constructor(url: URL, outputFolder: string, options: PerfOptions, testName?: string) {
-        const fileName = generateReportName(url, { ...options, ...options.network });
-        const fullPath = `${outputFolder}/${testName ?? fileName}.json`;
+    private constructor(url: URL, outputFolder: string, testName?: string) {
+        const fullPath = `${outputFolder}/${testName ?? generateReportName(url)}.json`;
         const adapter = new FileSync<DbSchema>(fullPath);
         debug(`connecting to: ${fullPath}`);
         this._db = lowdb(adapter);
@@ -48,8 +46,8 @@ class Db {
         this._db.update('count', (_) => 0).write();
     }
 
-    public static connect(url: URL, outputFolder: string, perfRunParams: PerfOptions, testName?: string) {
-        return this._instance == null ? (this._instance = new Db(url, outputFolder, perfRunParams, testName)) : this._instance;
+    public static connect(url: URL, outputFolder: string, testName?: string) {
+        return this._instance == null ? (this._instance = new Db(url, outputFolder, testName)) : this._instance;
     }
 }
 

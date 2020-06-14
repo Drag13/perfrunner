@@ -7,18 +7,22 @@
     <title>Reporter</title>
 
     <style>
-        .charts {
+         .charts {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap
         }
 
         .chart-container {
+            position: relative;
             flex: 1 1 auto;
+            width: 33%;
+            max-width:50%;
         }
 
-        @media screen and (max-width: 992px) {
+        @media screen and (max-width:992px) {
             .chart-container {
-                max-width: 100% !important;
+                width: 100%;
+                max-width: 100% !important
             }
         }
     </style>
@@ -32,7 +36,7 @@
         window.data = JSON.parse(normalizedString);
 
         var rawArgs = '\"{{{arguments}}}\"';
-        normalizedString  = rawArgs.substring(1, rawArgs.length - 1);
+        normalizedString = rawArgs.substring(1, rawArgs.length - 1);
         window.renderArgs = JSON.parse(normalizedString);
     </script>
 

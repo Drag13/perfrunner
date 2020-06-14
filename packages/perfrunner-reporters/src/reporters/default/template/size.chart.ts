@@ -90,6 +90,8 @@ export class ResourceSizeChart extends AbstractChart {
 
         const viewData = this.transform(data);
         const comments = this.getComments(data);
+        const runParams = this.getRunParams(data);
+
         const datasets = [
             this.withDefaults('Total JS Size', viewData.js, color(0)),
             this.withDefaults('Total IMG Size', viewData.img, color(1)),
@@ -116,6 +118,7 @@ export class ResourceSizeChart extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toBytes),
                         afterBody: this.renderComment(comments),
+                        footer: this.renderRunParams(runParams)
                     },
                 },
                 title: {
