@@ -13,13 +13,12 @@ const defaultReporter: IReporter = async (outputFolder, data, args) => {
     }
 
     const template = readFileSync(templatePath, { encoding: 'utf-8' });
-    const result = render(template, { data, payload: JSON.stringify(data), arguments:  JSON.stringify(args) });
+    const result = render(template, { data, payload: JSON.stringify(data), arguments: JSON.stringify(args) });
 
     writeFileSync(join(outputFolder, 'default-reporter.html'), result, { encoding: 'utf-8' });
 }
 
-const basic: IReporter = (outputFolder, data, args?: string[]) => defaultReporter(outputFolder, data, args);
 
 export {
-    basic
+    defaultReporter
 }
