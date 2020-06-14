@@ -1,10 +1,8 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from './abstract-chart';
-import { IPerformanceResult } from './typings';
-import { PArr } from '../utils';
-import { PColor, PFormat } from './utils';
 import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
-import { PerfRunResult } from 'perfrunner-core/dist/db/scheme';
+import { color, toBytes, init0 } from '../../../utils';
+import { IPerformanceResult } from './types';
 
 type ChartData = { [key in ResourceType | 'labels']: number[] };
 
@@ -87,27 +85,26 @@ const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
 
 
 export class ResourceSizeChart extends AbstractChart {
-    type: 'chart' = 'chart'
+    readonly type: 'chart' = 'chart'
+    readonly name: string = 'size'
 
-    name: string = 'resource-size'
-
-    render(container: HTMLCanvasElement, data: import('./typings').IPerformanceResult): void {
+    render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
         const comments = this.getComments(data);
         const datasets = [
-            this.withDefaults('Total JS Size', viewData.js, PColor.pick(0)),
-            this.withDefaults('Total IMG Size', viewData.img, PColor.pick(1)),
-            this.withDefaults('Total CSS Size', viewData.css, PColor.pick(2)),
-            this.withDefaults('Total Fonts Size', viewData.font, PColor.pick(3)),
-            this.withDefaults('Index.html Size', viewData.document, PColor.pick(4)),
+            this.withDefaults('Total JS Size', viewData.js, color(0)),
+            this.withDefaults('Total IMG Size', viewData.img, color(1)),
+            this.withDefaults('Total CSS Size', viewData.css, color(2)),
+            this.withDefaults('Total Fonts Size', viewData.font, color(3)),
+            this.withDefaults('Index.html Size', viewData.document, color(4)),
         ]
 
         const isOtherResourcesFound = viewData.unknown.some(x => x > 0);
 
         if (isOtherResourcesFound) {
-            datasets.push(this.withDefaults('Others', viewData.unknown, PColor.pick(5)))
+            datasets.push(this.withDefaults('Others', viewData.unknown, color(5)))
         }
 
         new Chart(ctx, {
@@ -120,7 +117,7 @@ export class ResourceSizeChart extends AbstractChart {
                 ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
-                        label: MsChart.diffLabel(PFormat.toBytes),
+                        label: MsChart.diffLabel(toBytes),
                         afterBody: this.renderComment(comments),
                     }
                 },
@@ -132,7 +129,7 @@ export class ResourceSizeChart extends AbstractChart {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            callback: (xValue) => typeof xValue === 'number' ? PFormat.toBytes(xValue) : PFormat.toBytes(parseFloat(xValue))
+                            callback: (xValue) => typeof xValue === 'number' ? toBytes(xValue) : toBytes(parseFloat(xValue))
                         }
                     }]
                 }
@@ -159,7 +156,7 @@ export class ResourceSizeChart extends AbstractChart {
         if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
 
         const length = rawData.length;
-        const newArray = () => PArr.init0(length);
+        const newArray = () => init0(length);
 
         const data: ChartData = {
             css: newArray(),

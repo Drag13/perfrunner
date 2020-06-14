@@ -1,7 +1,9 @@
-type PerformanceResult = import("perfrunner-core").IPerformanceResult;
+import { IPerformanceResult as PerformanceResult } from "perfrunner-core";
 
 export interface IPerformanceResult extends PerformanceResult { }
+
 export interface IChartOptions extends Chart.ChartOptions { }
+
 export interface IReporter<TTarget> {
     type: 'chart' | 'text';
     name: string;

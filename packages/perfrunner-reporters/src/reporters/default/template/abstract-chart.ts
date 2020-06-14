@@ -1,9 +1,9 @@
 import { ChartTooltipItem, ChartData } from 'chart.js';
-import { IPerformanceResult, IChartOptions, IReporter } from './typings';
-import { PColor } from './utils';
+import { TRANSPARENT } from '../../../utils';
+import { IChartOptions, IPerformanceResult, IReporter } from "./types";
 
 export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
-    protected readonly DEFAULT_LINE_WIDTH = 2;;
+    protected readonly DEFAULT_LINE_WIDTH = 2;
     protected readonly DEFAULT_CHART_OPTIONS: IChartOptions = {
         animation: { duration: 0 },
         hover: { animationDuration: 0 },
@@ -14,8 +14,8 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
         }
     };
 
-    abstract type: 'chart';
-    abstract name: string;
+    abstract readonly type: 'chart';
+    abstract readonly name: string;
 
     public getSafeCanvasContext(container: HTMLElement | undefined): CanvasRenderingContext2D {
         const canvas = container as HTMLCanvasElement;
@@ -40,7 +40,7 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement>{
         label,
         data,
         borderColor: color,
-        backgroundColor: PColor.transparent,
+        backgroundColor: TRANSPARENT,
         borderWidth: this.DEFAULT_LINE_WIDTH
     })
 }
@@ -50,7 +50,7 @@ export class MsChart {
 
     public static diffLabel(formatter: (v: number) => string): (t: ChartTooltipItem, d: ChartData) => string {
 
-        return (t: ChartTooltipItem, d: ChartData, ) => {
+        return (t: ChartTooltipItem, d: ChartData,) => {
 
             const entryIndex = t.index;
             const currentValue = d.datasets[t.datasetIndex].data[entryIndex];

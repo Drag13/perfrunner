@@ -1,15 +1,15 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from "./abstract-chart";
-import { IPerformanceResult } from './typings';
-import { PColor, PFormat } from './utils';
-import { PArr } from '../utils';
+import { IPerformanceResult } from './types';
+import { PArr } from '../../../../utils';
+import { toMs, color, TRANSPARENT } from '../../../utils';
 
 type ChartData = Record<string, any[]>;
 
 export class CustomMarksChartReporter extends AbstractChart {
 
-    name = 'marks';
-    type: 'chart' = 'chart';
+    readonly name = 'marks';
+    readonly type: 'chart' = 'chart';
 
     render(container: HTMLElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
@@ -28,7 +28,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                 ...this.DEFAULT_CHART_OPTIONS,
                 tooltips: {
                     callbacks: {
-                        label: MsChart.diffLabel(PFormat.toMs),
+                        label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
                     }
                 },
@@ -70,12 +70,6 @@ export class CustomMarksChartReporter extends AbstractChart {
     }
 
     private toDataSet(viewData: ChartData) {
-        return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => ({
-            label: key,
-            data: entries,
-            borderColor: PColor.pick(i),
-            backgroundColor: PColor.transparent,
-            borderWidth: this.DEFAULT_LINE_WIDTH
-        }));
+        return Object.entries(viewData).filter(([key]) => key !== 'labels').map(([key, entries], i) => this.withDefaults(key, entries, color(i)));
     }
 }
