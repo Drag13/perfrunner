@@ -1,24 +1,24 @@
-import { existsSync } from "fs";
-import { IReporter } from "perfrunner-reporters";
+import { existsSync } from 'fs';
+import { IReporter } from 'perfrunner-reporters';
 
 async function loadExternalReporter(path: string): Promise<IReporter> {
     const isFileExists = existsSync(path);
     if (!isFileExists) {
-        throw new Error(`'External reporter not found in: ${path}`)
+        throw new Error(`'External reporter not found in: ${path}`);
     }
 
     const module = await import(path);
-    const isFunction = typeof module !== 'function'
+    const isFunction = typeof module !== 'function';
 
     if (!isFunction) {
-        throw new Error('External reporter found, but it is not a function')
+        throw new Error('External reporter found, but it is not a function');
     }
 
     return module as IReporter;
 }
 
 async function loadReporterFromReporters(path: string): Promise<IReporter> {
-    const module = await import('perfrunner-reporters') as { [key: string]: unknown };
+    const module = (await import('perfrunner-reporters')) as { [key: string]: unknown };
     const reporter = module[path];
     const exists = typeof reporter === 'function';
 

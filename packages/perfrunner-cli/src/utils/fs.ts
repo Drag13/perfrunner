@@ -4,4 +4,4 @@ export const ensureFolderCreated = (pathToFolder: string) => {
     if (!existsSync(pathToFolder)) {
         mkdirSync(pathToFolder, { recursive: true });
     }
-}
+};

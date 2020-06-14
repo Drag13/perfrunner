@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 
-import cmd from "command-line-args";
-import { resolve } from "path";
-import { profile } from "perfrunner-core";
+import cmd from 'command-line-args';
+import { resolve } from 'path';
+import { profile } from 'perfrunner-core';
 
-import { params, CliParams } from "./options/options";
-import { loader } from "./utils/reporter-loader";
-import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from "./utils";
-
+import { params, CliParams } from './options/options';
+import { loader } from './utils/reporter-loader';
+import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from './utils';
 (async function (): Promise<number> {
-
     const inputParams = cmd(params, { camelCase: true }) as CliParams;
 
     const urlString = normalizeUrl(inputParams.url);
@@ -21,14 +19,13 @@ import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from "
     ensureFolderCreated(outputFolder);
 
     try {
-
         const performanceResult = await profile({
             ...inputParams,
             url: url.href,
             useCache: inputParams.cache,
             throttlingRate: inputParams.throttling,
             headless: !inputParams.noHeadless,
-            output: outputFolder
+            output: outputFolder,
         });
 
         const reporterName = inputParams.reporter[0];
@@ -36,8 +33,7 @@ import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from "
 
         const report = await loader(reporterName);
         await report(outputFolder, performanceResult, reporterArgs);
-    }
-    catch (error) {
+    } catch (error) {
         console.log(`\x1b[31m${error}\x1b[0m`);
         return -1;
     }

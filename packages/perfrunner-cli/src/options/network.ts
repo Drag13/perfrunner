@@ -3,11 +3,10 @@
 
 import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
 
-
 export const NoThrottlingConditions: NetworkSetup = {
     downloadThroughput: -1,
     uploadThroughput: -1,
-    latency: 0
+    latency: 0,
 };
 
 export const FourG: NetworkSetup = {
@@ -17,22 +16,26 @@ export const FourG: NetworkSetup = {
 };
 
 export const Fast3g: NetworkSetup = {
-    downloadThroughput: 1.6 * 1024 * 1024 / 8 * .9,
-    uploadThroughput: 750 * 1024 / 8 * .9,
+    downloadThroughput: ((1.6 * 1024 * 1024) / 8) * 0.9,
+    uploadThroughput: ((750 * 1024) / 8) * 0.9,
     latency: 150 * 3.75,
 };
 
 export const Slow3g: NetworkSetup = {
-    downloadThroughput: 500 * 1024 / 8 * .8,
-    uploadThroughput: 500 * 1024 / 8 * .8,
+    downloadThroughput: ((500 * 1024) / 8) * 0.8,
+    uploadThroughput: ((500 * 1024) / 8) * 0.8,
     latency: 400 * 5,
 };
 
 export const NetworkCondtionFactory = (networkType: string | undefined) => {
     switch (networkType) {
-        case 'no-throttling': return NoThrottlingConditions
-        case 'slow-3g': return Slow3g;
-        case 'regular-4g': return FourG;
-        default: return Fast3g;
+        case 'no-throttling':
+            return NoThrottlingConditions;
+        case 'slow-3g':
+            return Slow3g;
+        case 'regular-4g':
+            return FourG;
+        default:
+            return Fast3g;
     }
 };
