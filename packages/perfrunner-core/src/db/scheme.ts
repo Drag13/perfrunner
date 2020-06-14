@@ -14,6 +14,6 @@ import { ExtendedPerformanceEntry } from '../profiler/browser';
 export type IPerformanceResult = PerfRunResult[];
 
 export type DbSchema = {
-    profile: PerfRunResult[],
-    count: number
-}
+    profile: PerfRunResult[];
+    count: number;
+};

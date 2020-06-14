@@ -3,7 +3,6 @@ type MapFunc<T> = (v: T) => T;
 type TransformMap<T> = { [key in keyof T]?: MapFunc<T[key]> };
 
 export const transform = <T extends { [key: string]: any }>(obj: T, map: TransformMap<T>): T => {
-
     const result = {} as T;
 
     Object.entries(obj).forEach(([key, value]) => {
@@ -13,4 +12,4 @@ export const transform = <T extends { [key: string]: any }>(obj: T, map: Transfo
     });
 
     return result;
-}
+};

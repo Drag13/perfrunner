@@ -1,15 +1,15 @@
 export type NetworkSetup = {
-    latency: number,
-    downloadThroughput: number
-    uploadThroughput: number,
-}
+    latency: number;
+    downloadThroughput: number;
+    uploadThroughput: number;
+};
 
 export interface PerfOptions {
-    url: string,
-    network: NetworkSetup,
-    throttlingRate: number,
-    useCache?: boolean
-};
+    url: string;
+    network: NetworkSetup;
+    throttlingRate: number;
+    useCache?: boolean;
+}
 
 export interface RunnerOptions {
     runs: number;

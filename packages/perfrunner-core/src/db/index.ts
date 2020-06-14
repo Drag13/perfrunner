@@ -1,7 +1,7 @@
 import FileSync from 'lowdb/adapters/FileSync';
 import lowdb, { LowdbSync } from 'lowdb';
 
-import { DbSchema, PerfRunResult } from "./scheme";
+import { DbSchema, PerfRunResult } from './scheme';
 import { generateReportName } from './utils';
 import { PerfOptions } from '../profiler/perf-options';
 import { debug } from '../utils/log';
@@ -29,7 +29,7 @@ class Db {
         }
 
         db.get('profile').push(data).write();
-        db.update('count', n => n + 1).write();
+        db.update('count', (n) => n + 1).write();
     }
 
     read() {
@@ -40,9 +40,12 @@ class Db {
     }
 
     purge() {
-        debug(`clearing old data`)
-        this._db.get('profile').remove(() => true).write();
-        this._db.update('count', _ => 0).write();
+        debug(`clearing old data`);
+        this._db
+            .get('profile')
+            .remove(() => true)
+            .write();
+        this._db.update('count', (_) => 0).write();
     }
 
     public static connect(url: URL, outputFolder: string, perfRunParams: PerfOptions, testName?: string) {

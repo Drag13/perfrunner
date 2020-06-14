@@ -1,5 +1,4 @@
 export const groupEntries = (rawPerformanceData: PerformanceEntry[][]): PerformanceEntry[][] => {
-
     const runs = rawPerformanceData;
 
     const combined = runs[0].reduce((result, pEntry) => {
@@ -12,7 +11,7 @@ export const groupEntries = (rawPerformanceData: PerformanceEntry[][]): Performa
         result.push(sameEntries);
 
         return result;
-    }, [] as PerformanceEntry[][])
+    }, [] as PerformanceEntry[][]);
 
     return combined;
-}
+};

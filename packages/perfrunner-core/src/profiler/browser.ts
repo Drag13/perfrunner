@@ -34,7 +34,7 @@ export interface ExtendedPerformanceEntry extends PerformanceEntry {
     redirectCount?: number;
     extension?: {
         mimeType: string;
-    }
+    };
 }
 
 export async function startBrowser(timeout: number, headless?: boolean, ignoreDefaultArgs?: boolean, args?: string[]) {
@@ -47,12 +47,11 @@ export async function startEmptyPage(browser: Browser) {
 }
 
 export async function setupPerformanceConditions(page: Page, { network, throttlingRate, useCache }: PerfOptions) {
-
-    const session = await page.target().createCDPSession()
+    const session = await page.target().createCDPSession();
 
     if (!useCache) {
         await page.setCacheEnabled(false);
-        await session.send('Network.setCacheDisabled', { cacheDisabled: true, });
+        await session.send('Network.setCacheDisabled', { cacheDisabled: true });
     } else {
         await page.setCacheEnabled(true);
     }
@@ -67,20 +66,26 @@ export async function setupPerformanceConditions(page: Page, { network, throttli
 }
 
 export async function startApplication(page: Page, url: string, waitFor?: string | number) {
-    await page.goto(url, { waitUntil: "networkidle2" });
-    if (typeof waitFor === 'number' && waitFor != 0 && !isNaN(waitFor)) { await page.waitFor(waitFor) };
-    if (typeof waitFor === 'string' && waitFor.trim() !== '') { await page.waitForSelector(waitFor); }
+    await page.goto(url, { waitUntil: 'networkidle2' });
+    if (typeof waitFor === 'number' && waitFor != 0 && !isNaN(waitFor)) {
+        await page.waitFor(waitFor);
+    }
+    if (typeof waitFor === 'string' && waitFor.trim() !== '') {
+        await page.waitForSelector(waitFor);
+    }
 }
 
 export async function dumpMetrics(page: Page) {
-    const performanceEntries: ExtendedPerformanceEntry[] = JSON.parse(await page.evaluate(() => JSON.stringify(performance.getEntries())));
+    const performanceEntries: ExtendedPerformanceEntry[] = JSON.parse(
+        await page.evaluate(() => JSON.stringify(performance.getEntries()))
+    );
     const metrics = await page.metrics();
 
-    const fcp = performanceEntries.find(x => x.name === 'first-contentful-paint');
+    const fcp = performanceEntries.find((x) => x.name === 'first-contentful-paint');
     debug(`timestamp: ${metrics.Timestamp} fcp: ${fcp?.startTime}`);
 
     return {
         metrics,
-        performanceEntries
+        performanceEntries,
     };
 }

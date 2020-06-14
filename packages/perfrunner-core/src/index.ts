@@ -1,14 +1,13 @@
-import { profile as profilePage } from "./profiler/profiler";
+import { profile as profilePage } from './profiler/profiler';
 import { PerfRunnerOptions, NetworkSetup } from './profiler/perf-options';
-import { processPerfData } from "./processor/processor";
+import { processPerfData } from './processor/processor';
 import { Db } from './db';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
 import { log, throwException } from './utils/log';
-import validator from "./validation/validation";
+import validator from './validation/validation';
 
-export { PerfRunnerOptions, NetworkSetup }
-export { IPerformanceResult }
-// export { PerfRunnerOptions } from './profiler/perf-options'
+export { PerfRunnerOptions, NetworkSetup };
+export { IPerformanceResult };
 
 function writeResult(db: Db, data: PerfRunResult, purge?: boolean) {
     log('saving data');
@@ -21,7 +20,11 @@ function readAllMetrics(db: Db) {
 }
 
 export async function profile(options: PerfRunnerOptions): Promise<IPerformanceResult> {
-    try { await validator.validate(options); } catch (e) { throwException(e); }
+    try {
+        await validator.validate(options);
+    } catch (e) {
+        throwException(e);
+    }
 
     const url = new URL(options.url);
     const db = Db.connect(url, options.output, options, options.testName);
@@ -40,13 +43,18 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
             timeStamp: Date.now(),
             pageMetrics,
             performanceEntries,
-            runParams: { useCache: options.useCache, network: options.network, throttlingRate: options.throttlingRate, url: options.url },
-            comment: options.comment
-        }
+            runParams: {
+                useCache: options.useCache,
+                network: options.network,
+                throttlingRate: options.throttlingRate,
+                url: options.url,
+            },
+            comment: options.comment,
+        };
 
-        writeResult(db, result, options.purge)
+        writeResult(db, result, options.purge);
     } else {
-        log('profling is tunred off, reading existing data')
+        log('profling is tunred off, reading existing data');
     }
 
     return readAllMetrics(db);

@@ -6,32 +6,33 @@ export const exclude = () => null;
 export const first = <T>(values: T[]) => values[0];
 
 export const average = (values: number[]) => {
-    const withoutNulls = values.filter(v => v != null && !isNaN(v));
+    const withoutNulls = values.filter((v) => v != null && !isNaN(v));
     return withoutNulls.length ? withoutNulls.reduce((sum, v) => sum + v, 0) / withoutNulls.length : 0;
-}
+};
 
 const getDefaultMergeFunc = <T>(value: T): MergeFunc<T> => {
     const valueType = typeof value;
 
     switch (valueType) {
-        case 'string': return first;
-        case 'number': return average as MergeFunc<any>;
+        case 'string':
+            return first;
+        case 'number':
+            return average as MergeFunc<any>;
     }
 
     if (Object.prototype.toString.call(value) === '[object Object]') {
-        return (data: T[]) => mergeWithRules(data)
+        return (data: T[]) => mergeWithRules(data);
     }
 
     return exclude;
-}
+};
 
 export function mergeWithRules<T>(data: T[], rules?: MergeMap<T>) {
-
     // store for data from all runs
     var accumulator: { [key: string]: any[] } = {};
 
     // fill the store with key | values
-    data.forEach(obj => {
+    data.forEach((obj) => {
         const entries = Object.entries(obj);
         entries.forEach(([key, value]) => {
             if (accumulator[key]) {
@@ -43,15 +44,16 @@ export function mergeWithRules<T>(data: T[], rules?: MergeMap<T>) {
     });
 
     // apply merge rule to the array of values
-    return Object.entries(accumulator).reduce((acc, [key, values]) => {
-
-        const definedValue = values.find(x => x != undefined);
+    return (Object.entries(accumulator).reduce((acc, [key, values]) => {
+        const definedValue = values.find((x) => x != undefined);
         const customRule = rules ? (rules as any).key : undefined;
         const rule = typeof customRule === 'function' ? customRule : getDefaultMergeFunc(definedValue);
         const mergeResult = rule(values);
 
-        if (mergeResult != null) { acc[key] = mergeResult }
+        if (mergeResult != null) {
+            acc[key] = mergeResult;
+        }
 
         return acc;
-    }, {} as { [key: string]: any[] }) as unknown as T;
+    }, {} as { [key: string]: any[] }) as unknown) as T;
 }

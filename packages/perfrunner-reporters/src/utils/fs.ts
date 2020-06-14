@@ -6,4 +6,4 @@ export const writeFile = <T extends {}>(outputFolder: string, fileName: string, 
     const content = typeof data === 'string' ? data : JSON.stringify(data, null, ' ');
 
     writeFileSync(fullPath, content, { encoding: 'utf-8' });
-}
+};

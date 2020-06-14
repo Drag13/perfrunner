@@ -1,5 +1,5 @@
-import { object, boolean, Schema, string, number, lazy, array } from "yup";
-import { PerfRunnerOptions } from "../index";
+import { object, boolean, Schema, string, number, lazy, array } from 'yup';
+import { PerfRunnerOptions } from '../index';
 
 type ValidationScheme = {
     [key in keyof PerfRunnerOptions]: Schema<PerfRunnerOptions[key]>;
@@ -14,11 +14,13 @@ const requiredPositiveInteger = () => number().required().strict(true).positive(
 const optionsValidationScheme: ValidationScheme = {
     url: requiredString().url(),
     runs: requiredPositiveInteger(),
-    network: object().required().shape({
-        downloadThroughput: number().required().strict(true),
-        latency: number().required().strict(true),
-        uploadThroughput: number().required().strict(true)
-    }),
+    network: object()
+        .required()
+        .shape({
+            downloadThroughput: number().required().strict(true),
+            latency: number().required().strict(true),
+            uploadThroughput: number().required().strict(true),
+        }),
     throttlingRate: number().required().positive().integer(),
     testName: optionalString(),
     comment: optionalString(),
@@ -30,13 +32,16 @@ const optionsValidationScheme: ValidationScheme = {
     useCache: optionalBool(),
     chromeArgs: array().of(requiredString()),
     timeout: requiredPositiveInteger(),
-    waitFor: lazy(value => {
+    waitFor: lazy((value) => {
         switch (typeof value) {
-            case 'number': return optionalPositiveInteger();
-            case 'string': return optionalString();
-            default: return optionalString()
+            case 'number':
+                return optionalPositiveInteger();
+            case 'string':
+                return optionalString();
+            default:
+                return optionalString();
         }
-    })
-}
+    }),
+};
 
-export default object().shape(optionsValidationScheme)
+export default object().shape(optionsValidationScheme);

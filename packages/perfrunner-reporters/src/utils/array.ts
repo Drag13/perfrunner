@@ -3,7 +3,6 @@ const initArrayWith = <T>(initValue: T, length: number) => Array(length).fill(in
 export const init0 = (length: number) => initArrayWith(0, length);
 
 export const splitBy = <T>(arr: T[], min: number): T[][] => {
-
     const res = [];
     while (arr.length > 0) {
         res.push(arr.splice(0, min));
