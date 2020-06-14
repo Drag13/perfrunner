@@ -118,7 +118,7 @@ export class ResourceSizeChart extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toBytes),
                         afterBody: this.renderComment(comments),
-                        footer: this.renderRunParams(runParams)
+                        footer: this.renderRunParams(runParams),
                     },
                 },
                 title: {

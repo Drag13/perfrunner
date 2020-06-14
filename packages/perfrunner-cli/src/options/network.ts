@@ -9,22 +9,28 @@ export const NoThrottlingConditions: NetworkSetup = {
     latency: 0,
 };
 
-export const FourG: NetworkSetup = {
-    downloadThroughput: 4 * 1024 * 1024,
-    uploadThroughput: 3 * 1024 * 1024,
-    latency: 20,
-};
-
-export const Fast3g: NetworkSetup = {
-    downloadThroughput: ((1.6 * 1024 * 1024) / 8) * 0.9,
-    uploadThroughput: ((750 * 1024) / 8) * 0.9,
-    latency: 150 * 3.75,
-};
-
 export const Slow3g: NetworkSetup = {
-    downloadThroughput: ((500 * 1024) / 8) * 0.8,
-    uploadThroughput: ((500 * 1024) / 8) * 0.8,
-    latency: 400 * 5,
+    downloadThroughput: (0.4 * 1024 * 1024) / 8,
+    uploadThroughput: (0.4 * 1024 * 1024) / 8,
+    latency: 2000,
+};
+
+export const HSPA: NetworkSetup = {
+    downloadThroughput: (1.44 * 1024 * 1024) / 8,
+    uploadThroughput: (0.675 * 1024 * 1024) / 8,
+    latency: 562.5,
+};
+
+export const HSPA_Plus: NetworkSetup = {
+    downloadThroughput: (4 * 1024 * 1024) / 8,
+    uploadThroughput: (1 * 1024 * 1024) / 8,
+    latency: 100,
+};
+
+export const FourG: NetworkSetup = {
+    downloadThroughput: (12 * 1024 * 1024) / 8,
+    uploadThroughput: (6 * 1024 * 1024) / 8,
+    latency: 50,
 };
 
 export const NetworkCondtionFactory = (networkType: string | undefined) => {
@@ -33,9 +39,13 @@ export const NetworkCondtionFactory = (networkType: string | undefined) => {
             return NoThrottlingConditions;
         case 'slow-3g':
             return Slow3g;
+        case 'hspa':
+            return HSPA;
+        case 'hspaplus':
+            return HSPA_Plus;
         case 'regular-4g':
             return FourG;
         default:
-            return Fast3g;
+            return HSPA;
     }
 };
