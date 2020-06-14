@@ -32,5 +32,8 @@
   "dependencies": {
     "puppeteer": "^3.0.4",
     "yup": "^0.29.1"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

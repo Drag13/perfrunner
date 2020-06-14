@@ -1,7 +1,7 @@
 // [https://github.com/ChromeDevTools/devtools-frontend/blob/80c102878fd97a7a696572054007d40560dcdd21/front_end/sdk/NetworkManager.js#L252-L274](Credits goes here)
 // [https://stackoverflow.com/questions/48367042/in-chrome-dev-tools-what-is-the-speed-of-each-preset-option-for-network-throttl](Credits goes here)
 
-import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
+import { NetworkSetup } from 'perfrunner-core';
 
 export const NoThrottlingConditions: NetworkSetup = {
     downloadThroughput: -1,

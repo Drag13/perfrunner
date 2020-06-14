@@ -1,13 +1,14 @@
 import { profile as profilePage } from "./profiler/profiler";
-import { PerfRunnerOptions } from './profiler/perf-options';
+import { PerfRunnerOptions, NetworkSetup } from './profiler/perf-options';
 import { processPerfData } from "./processor/processor";
 import { Db } from './db';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
 import { log, throwException } from './utils/log';
 import validator from "./validation/validation";
 
-export { PerfRunnerOptions }
+export { PerfRunnerOptions, NetworkSetup }
 export { IPerformanceResult }
+// export { PerfRunnerOptions } from './profiler/perf-options'
 
 function writeResult(db: Db, data: PerfRunResult, purge?: boolean) {
     log('saving data');

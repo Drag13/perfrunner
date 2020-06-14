@@ -1,6 +1,6 @@
 import { OptionDefinition } from 'command-line-args';
 import { NetworkCondtionFactory, Fast3g } from './network';
-import { NetworkSetup } from 'perfrunner-core/profiler/perf-options';
+import { NetworkSetup } from 'perfrunner-core';
 import { ArgsLikeString } from './arg-like-string';
 import { StringOrNumber } from './string-number';
 import { argsLike } from '../utils/args-like';

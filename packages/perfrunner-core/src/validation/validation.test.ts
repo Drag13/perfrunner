@@ -2,7 +2,7 @@ import 'mocha';
 import { expect, assert } from "chai";
 import { ValidationError } from "yup";
 
-import { PerfRunnerOptions } from "../";
+import { PerfRunnerOptions } from "../../dist";
 import validator from "./validation";
 
 const validModel = {
