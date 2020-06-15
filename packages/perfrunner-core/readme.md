@@ -1,6 +1,6 @@
 # Perfrunner-core
 
-Runs tests and aggregate result
+Runs tests and aggregates the result
 
 ## Installation
 
@@ -12,6 +12,7 @@ npm i perfrunner-core -D
 
 ```ts
 import { profile } from 'perfrunner-core';
+
 (async function (){
     const profilingResult = await profile(
         {
