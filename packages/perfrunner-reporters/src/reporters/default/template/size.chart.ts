@@ -3,8 +3,9 @@ import { AbstractChart, MsChart } from './abstract-chart';
 import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
 import { color, toBytes, init0 } from '../../../utils';
 import { IPerformanceResult } from './types';
+import { initWithEmptyString } from '../../../utils/array';
 
-type ChartData = { [key in ResourceType | 'labels']: number[] };
+type ChartData = { [key in ResourceType]: number[] } & { labels: string[] };
 
 type PathName = string;
 
@@ -118,7 +119,7 @@ export class ResourceSizeChart extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toBytes),
                         afterBody: this.renderComment(comments),
-                        footer: this.renderRunParams(runParams)
+                        footer: this.renderRunParams(runParams),
                     },
                 },
                 title: {
@@ -169,10 +170,10 @@ export class ResourceSizeChart extends AbstractChart {
             img: newArray(),
             js: newArray(),
             unknown: newArray(),
-            labels: newArray(),
             document: newArray(),
             font: newArray(),
             xhr: newArray(),
+            labels: initWithEmptyString(length),
         };
 
         const performanceEntries = rawData.map((x) => x.performanceEntries).filter(this.filter); // TODO: filter first
@@ -182,7 +183,7 @@ export class ResourceSizeChart extends AbstractChart {
                 const entryType = getResourceType(pEntry);
                 acc[entryType][i] += pEntry.encodedBodySize ?? 0;
             });
-
+            acc.labels[i] = `#${i + 1}`;
             return acc;
         }, data);
 

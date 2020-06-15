@@ -2,8 +2,8 @@ import { AbstractChart, MsChart } from './abstract-chart';
 import Chart from 'chart.js';
 import { IPerformanceResult } from './types';
 
-import { PArr } from '../../../../utils';
-import { color, toMs } from '../../../utils';
+import { color, toMs, init0 } from '../../../utils';
+import { initWithEmptyString } from '../../../utils/array';
 
 type ChartData = {
     layoutDuration: number[];
@@ -41,7 +41,7 @@ export class MetricsChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
-                        footer: this.renderRunParams(runParams)
+                        footer: this.renderRunParams(runParams),
                     },
                 },
                 title: {
@@ -60,11 +60,11 @@ export class MetricsChartReporter extends AbstractChart {
         const length = data.length;
 
         const viewData: ChartData = {
-            layoutDuration: PArr.init0(length),
-            recalcStyleDuration: PArr.init0(length),
-            scriptDuration: PArr.init0(length),
-            taskDuration: PArr.init0(length),
-            labels: PArr.init0(length),
+            layoutDuration: init0(length),
+            recalcStyleDuration: init0(length),
+            scriptDuration: init0(length),
+            taskDuration: init0(length),
+            labels: initWithEmptyString(length),
         };
 
         return data.reduce((acc, v, i) => {

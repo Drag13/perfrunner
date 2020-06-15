@@ -1,8 +1,8 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from './abstract-chart';
 import { IPerformanceResult } from './types';
-import { PArr } from '../../../../utils';
-import { toMs, color, TRANSPARENT } from '../../../utils';
+import { toMs, color, init0 } from '../../../utils';
+import { initWithEmptyString } from '../../../utils/array';
 
 type ChartData = Record<string, any[]>;
 
@@ -30,7 +30,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
-                        footer: this.renderRunParams(runParams)
+                        footer: this.renderRunParams(runParams),
                     },
                 },
                 title: {
@@ -47,7 +47,7 @@ export class CustomMarksChartReporter extends AbstractChart {
         }
 
         const length = rawData.length;
-        const result: ChartData = { labels: PArr.init0(length) };
+        const result: ChartData = { labels: initWithEmptyString(length) };
 
         return rawData.reduce((acc, v, i) => {
             const marks = v.performanceEntries.filter((x) => x.entryType === 'mark');
@@ -57,7 +57,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                 const startTime = m.startTime;
 
                 if (acc[name] == null) {
-                    acc[name] = PArr.init0(length);
+                    acc[name] = init0(length);
                 }
 
                 acc[name][i] = startTime;

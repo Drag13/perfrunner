@@ -3,12 +3,14 @@ import { TRANSPARENT, toBytes } from '../../../utils';
 import { IChartOptions, IPerformanceResult, IReporter } from './types';
 
 type RunParams = {
-    download: number,
-    upload: number,
-    latency: number,
-    useCache: boolean,
-    throttling: number
-}
+    download: number;
+    upload: number;
+    latency: number;
+    useCache: boolean;
+    throttling: number;
+};
+
+const DEFAULT_FONT_FAMILY = `'monospace', 'Verdana', 'sans-serif'`;
 
 export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
     protected readonly DEFAULT_LINE_WIDTH = 2;
@@ -18,14 +20,22 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
         responsiveAnimationDuration: 0,
         elements: { line: { tension: 0 } },
         scales: {
-            yAxes: [{ ticks: { beginAtZero: true } }],
+            yAxes: [{ ticks: { beginAtZero: true, fontFamily: DEFAULT_FONT_FAMILY } }],
+        },
+        legend: {
+            labels: {
+                fontFamily: DEFAULT_FONT_FAMILY,
+            },
+        },
+        title: {
+            fontFamily: DEFAULT_FONT_FAMILY,
         },
     };
 
     abstract readonly type: 'chart';
     abstract readonly name: string;
 
-    public getSafeCanvasContext(container: HTMLElement | undefined): CanvasRenderingContext2D {
+    protected getSafeCanvasContext(container: HTMLElement | undefined): CanvasRenderingContext2D {
         const canvas = container as HTMLCanvasElement;
 
         if (canvas == null || typeof canvas.getContext !== 'function') {
@@ -50,18 +60,19 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
         const param = runParams[index];
         return [
             `download: ${toBytes(param.download)} upload ${toBytes(param.upload)} latency: ${param.latency}`,
-            `throttling: ${param.throttling}x useCache: ${param.useCache}`
-        ]
-    }
+            `throttling: ${param.throttling}x useCache: ${param.useCache}`,
+        ];
+    };
 
     protected getComments = (rawData: IPerformanceResult) => rawData.map((x) => x.comment ?? '');
-    protected getRunParams = (rawData: IPerformanceResult): RunParams[] => rawData.map(x => ({
-        download: x.runParams.network.downloadThroughput,
-        upload: x.runParams.network.uploadThroughput,
-        useCache: x.runParams.useCache,
-        latency: x.runParams.network.latency,
-        throttling: x.runParams.throttlingRate
-    }))
+    protected getRunParams = (rawData: IPerformanceResult): RunParams[] =>
+        rawData.map((x) => ({
+            download: x.runParams.network.downloadThroughput,
+            upload: x.runParams.network.uploadThroughput,
+            useCache: x.runParams.useCache,
+            latency: x.runParams.network.latency,
+            throttling: x.runParams.throttlingRate,
+        }));
 
     protected withDefaults = (label: string, data: number[], color: string) => ({
         label,
