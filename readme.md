@@ -2,7 +2,7 @@
 
 ## Why
 
-Help you to track performance your web application
+Helps you to track the performance your web application
 
 ## Features
 
@@ -21,7 +21,7 @@ Help you to track performance your web application
 npx perfrunner-cli https://drag13.github.io/
 ```
 
-### With network
+### With the network setup
 
 ```cmd
 npx perfrunner-cli https://drag13.github.io/ --network slow-3g
@@ -33,7 +33,7 @@ npx perfrunner-cli https://drag13.github.io/ --network slow-3g
 npx perfrunner-cli https://drag13.github.io/ --network slow-3g -T 4
 ```
 
-### With network, throttling and cache
+### With network, throttling, and cache
 
 ```cmd
 npx perfrunner-cli https://drag13.github.io/ --network slow-3g -T 4 --cache
