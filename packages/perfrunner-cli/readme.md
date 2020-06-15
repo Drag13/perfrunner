@@ -1,6 +1,6 @@
 # Perfrunner-CLI
 
-Perfrunner command line interface
+Perfrunner command-line interface
 
 ## Options
 
@@ -46,8 +46,8 @@ Supported reporters:
 
 ## Basic
 
-Generates output as HTML file. Includes:
-* Performance Entreis Chart (DOM Content Loaded, First Paint, First Contentful Paint, DOM Interactive)
+Generates output as an HTML file. Includes:
+* Performance Entries Chart (DOM Content Loaded, First Paint, First Contentful Paint, DOM Interactive)
 * Default Performance Metrics Chart - Layout Duration, Recalculation Style Duration, Script Duration, Task duration
 * Resource Size Chart (JS, CSS ,IMG, Fonts, XHR)
 * Performance Marks Chart - shows performance marks from application
@@ -60,7 +60,7 @@ This is default reporter so you don't need to name it
 perfrunner-cli drag13@github.io
 ```
 
-You also can specify exact charts you want to see:
+You also can specify the exact charts you want to see:
 
 ```cmd
 perfrunner-cli drag13@github.io --reporter basic entries marks metrics size
@@ -68,7 +68,7 @@ perfrunner-cli drag13@github.io --reporter basic entries marks metrics size
 
 ### toJson
 
-Generates output as json file
+Generates output as JSON file
 
 Example:
 
@@ -113,4 +113,3 @@ You also can use perfrunner without headless mode
 ```cmd
 npx perfrunner-cli https://drag13.github.io --no-headless
 ```
-
