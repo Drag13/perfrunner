@@ -18,31 +18,31 @@ Helps you to track the performance your web application
 ### Simple
 
 ```cmd
-npx perfrunner-cli https://drag13.github.io/
+npx perfrunner-cli https://drag13.io/
 ```
 
 ### With the network setup
 
 ```cmd
-npx perfrunner-cli https://drag13.github.io/ --network slow-3g
+npx perfrunner-cli https://drag13.io/ --network slow-3g
 ```
 
 ### With network and throttling
 
 ```cmd
-npx perfrunner-cli https://drag13.github.io/ --network slow-3g -T 4
+npx perfrunner-cli https://drag13.io/ --network slow-3g -T 4
 ```
 
 ### With network, throttling, and cache
 
 ```cmd
-npx perfrunner-cli https://drag13.github.io/ --network slow-3g -T 4 --cache
+npx perfrunner-cli https://drag13.io/ --network slow-3g -T 4 --cache
 ```
 
 ### Generate json instead of HTML
 
 ```
-npx perfrunner-cli https://drag13.github.io/ --reporter toJson
+npx perfrunner-cli https://drag13.io/ --reporter toJson
 ```
 
 For other commands check [perfrunner-cli]()

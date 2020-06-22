@@ -4,8 +4,8 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "demo": "npm run build && node dist/cli \"https://drag13.github.io\" --runs 1",
+    "test": "exit 0",
+    "demo": "npm run build && node dist/cli \"https://drag13.io\" --runs 1",
     "pack": "npm pack",
     "prettier": "prettier --config ../../.prettierrc --write ./src/**/*.ts",
     "tsc": "tsc",

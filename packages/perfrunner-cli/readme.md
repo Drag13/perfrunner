@@ -89,7 +89,7 @@ perfrunner-cli drag13@github.io --report toCsv
 You also can use your own custom reporter
 
 ```cmd
-npx perfrunner-cli https://drag13.github.io -- --reporter my-custom-reporter.js
+npx perfrunner-cli https://drag13.io -- --reporter my-custom-reporter.js
 ```
 
 where reporter should looks like:
@@ -105,11 +105,11 @@ Internally, perfrunner uses [puppeteer](https://github.com/puppeteer/puppeteer),
 Perfrunner supports passing chromeArgs and ignoreDefaults flags for better control from your side:
 
 ```cmd
-npx perfrunner-cli https://drag13.github.io --ignore-default-args --chrome-args noSandbox
+npx perfrunner-cli https://drag13.io --ignore-default-args --chrome-args noSandbox
 ```
 
 You also can use perfrunner without headless mode
 
 ```cmd
-npx perfrunner-cli https://drag13.github.io --no-headless
+npx perfrunner-cli https://drag13.io --no-headless
 ```
