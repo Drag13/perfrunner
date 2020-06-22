@@ -1,86 +1,11 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from './abstract-chart';
 import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
-import { color, toBytes, init0 } from '../../../utils';
+import { color, toBytes, init0, ResourceType, getResourceType } from '../../../utils';
 import { IPerformanceResult } from './types';
 import { initWithEmptyString } from '../../../utils/array';
 
 type ChartData = { [key in ResourceType]: number[] } & { labels: string[] };
-
-type PathName = string;
-
-const getPathName = (url: string): PathName => {
-    try {
-        const u = new URL(url);
-        return u.pathname.toLowerCase();
-    } catch (e) {
-        console.warn(`invalid url: ${url}`, e);
-        console.warn(e);
-        return '';
-    }
-};
-
-interface isResource {
-    (pathName: PathName, mimeType?: string): boolean;
-}
-
-const isType = (formats: string[], mimeTypes: string[]): isResource => (pathName, mimeType?) =>
-    formats.some((type) => pathName.endsWith(type)) || mimeTypes.includes(mimeType);
-
-const cssFormats = ['.css'];
-const cssMimeTypes = ['text/css'];
-const isCss = isType(cssFormats, cssMimeTypes);
-
-const jsMimeTypes = ['application/javascript', 'text/javascript'];
-const jsFormats = ['.js'];
-const isJs = isType(jsFormats, jsMimeTypes);
-
-const imgFormats = ['.png', '.jpg', '.jpeg', '.tiff', '.webp', 'gif', 'svg'];
-const imgMimeTypes = ['image/gif', 'image/png', 'image/jpeg']; // should be extended
-const isImg = isType(imgFormats, imgMimeTypes);
-
-const xhrFormats = [];
-const xhrMimeType = ['application/json'];
-const isXhr = isType(xhrFormats, xhrMimeType);
-
-const fontFormats = ['.woff', '.woff2', '.ttf', '.otf'];
-const fontMimeTypes = []; // should be extended
-const isFont = isType(fontFormats, fontMimeTypes);
-
-type ResourceType = 'js' | 'img' | 'css' | 'xhr' | 'font' | 'document' | 'unknown';
-
-const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
-    if (pEntry.entryType === 'navigation') {
-        return 'document';
-    }
-
-    if (pEntry.entryType === 'resource') {
-        const pathName = getPathName(pEntry.name);
-        const mimeType = pEntry.extension?.mimeType;
-
-        if (isJs(pathName, mimeType)) {
-            return 'js';
-        }
-
-        if (isCss(pathName, mimeType)) {
-            return 'css';
-        }
-
-        if (isImg(pathName, mimeType)) {
-            return 'img';
-        }
-
-        if (isXhr(pathName, mimeType)) {
-            return 'xhr';
-        }
-
-        if (isFont(pathName, mimeType)) {
-            return 'font';
-        }
-    }
-
-    return 'unknown';
-};
 
 export class ResourceSizeChart extends AbstractChart {
     readonly type: 'chart' = 'chart';

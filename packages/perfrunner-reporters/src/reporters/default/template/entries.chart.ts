@@ -1,7 +1,7 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from './abstract-chart';
 import { IPerformanceResult } from './types';
-import { color, TRANSPARENT, toMs, init0 } from '../../../utils';
+import { color, toMs, init0, initWithEmptyString } from '../../../utils';
 
 type ChartData = {
     fp: number[];
@@ -63,7 +63,7 @@ export class EntriesChartReporter extends AbstractChart {
             load: init0(length), // out of render for now
             DOMContentLoaded: init0(length),
             DOMInteractive: init0(length),
-            labels: init0(length),
+            labels: initWithEmptyString(length),
         };
 
         return rawData.reduce((acc, v, i) => {
