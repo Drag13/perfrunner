@@ -1,7 +1,7 @@
 import Chart from 'chart.js';
 import { AbstractChart, MsChart } from './abstract-chart';
 import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
-import { color, toBytes, init0, ResourceType, getResourceType } from '../../../utils';
+import { color, toBytes, init0, ResourceType, getResourceType, isNullOrEmpty } from '../../../utils';
 import { IPerformanceResult } from './types';
 import { initWithEmptyString } from '../../../utils/array';
 
@@ -10,12 +10,12 @@ type ChartData = { [key in ResourceType]: number[] } & { labels: string[] };
 export class ResourceSizeChart extends AbstractChart {
     readonly type: 'chart' = 'chart';
     readonly name: string = 'size';
+    readonly title: string = 'Resource Size';
 
     render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
-        const comments = this.getComments(data);
         const runParams = this.getRunParams(data);
 
         const datasets = [
@@ -39,16 +39,12 @@ export class ResourceSizeChart extends AbstractChart {
                 datasets,
             },
             options: {
-                ...this.DEFAULT_CHART_OPTIONS,
+                ...this.getDefaultChartOptions(),
                 tooltips: {
                     callbacks: {
                         label: MsChart.diffLabel(toBytes),
                         footer: this.renderRunParams(runParams),
                     },
-                },
-                title: {
-                    display: true,
-                    text: 'Resource Size',
                 },
                 scales: {
                     yAxes: [
@@ -64,21 +60,12 @@ export class ResourceSizeChart extends AbstractChart {
         });
     }
 
-    // protected filter(rawData: ExtendedPerformanceEntry[]): ExtendedPerformanceEntry[] { TODO: I want to see only events vefore FCP. Create new Reporter and move it there
-    //     if (!Array.isArray(rawData)) { throw new Error('data is not in array format') };
-
-    //     const firstPaintEvent = rawData.find(x => x.name === 'first-contentful-paint') ?? rawData.find(x => x.name === 'first-paint');
-    //     const fpeTime = firstPaintEvent?.startTime ?? Number.POSITIVE_INFINITY;
-
-    //     return rawData.filter(x => x.name != null && (x.responseEnd || x.responseEnd < fpeTime));
-    // }
-
     protected filter(rawData: ExtendedPerformanceEntry[]): ExtendedPerformanceEntry[] {
         if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format');
         }
 
-        return rawData.filter((x) => x.name != null && x.name != '');
+        return rawData.filter((x) => isNullOrEmpty(x.name));
     }
 
     private transform(rawData: IPerformanceResult): ChartData {

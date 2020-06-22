@@ -13,14 +13,14 @@ type ChartData = {
 };
 
 export class EntriesChartReporter extends AbstractChart {
-    type: 'chart' = 'chart';
-    name: string = 'entries';
+    readonly type: 'chart' = 'chart';
+    readonly name: string = 'entries';
+    readonly title = 'Application Events';
 
     render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
-        const comments = this.getComments(data);
         const runParams = this.getRunParams(data);
 
         new Chart(ctx, {
@@ -35,16 +35,12 @@ export class EntriesChartReporter extends AbstractChart {
                 ],
             },
             options: {
-                ...this.DEFAULT_CHART_OPTIONS,
+                ...this.getDefaultChartOptions(),
                 tooltips: {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         footer: this.renderRunParams(runParams),
                     },
-                },
-                title: {
-                    display: true,
-                    text: 'Application Events',
                 },
             },
         });
@@ -74,9 +70,12 @@ export class EntriesChartReporter extends AbstractChart {
 
             const navigationEvent = v.performanceEntries.find((x) => x.entryType === 'navigation');
 
-            acc.load[i] = navigationEvent.loadEventEnd || 0;
-            acc.DOMContentLoaded[i] = navigationEvent.domContentLoadedEventEnd || 0;
-            acc.DOMInteractive[i] = navigationEvent.domInteractive || 0;
+            if (navigationEvent != null) {
+                acc.load[i] = navigationEvent.loadEventEnd || 0;
+                acc.DOMContentLoaded[i] = navigationEvent.domContentLoadedEventEnd || 0;
+                acc.DOMInteractive[i] = navigationEvent.domInteractive || 0;
+            }
+
             acc.labels[i] = this.getLabel(i, rawData[i].comment);
 
             return acc;

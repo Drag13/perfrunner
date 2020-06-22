@@ -1,5 +1,5 @@
 import { ChartTooltipItem, ChartData } from 'chart.js';
-import { TRANSPARENT, toBytes, isNullOrEmpty } from '../../../utils';
+import { TRANSPARENT, toBytes, isNullOrEmpty, defined } from '../../../utils';
 import { IChartOptions, IPerformanceResult, IReporter } from './types';
 
 type RunParams = {
@@ -13,8 +13,11 @@ type RunParams = {
 const DEFAULT_FONT_FAMILY = `'monospace', 'Verdana', 'sans-serif'`;
 
 export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
+    protected abstract readonly title: string;
+
     protected readonly DEFAULT_LINE_WIDTH = 2;
-    protected readonly DEFAULT_CHART_OPTIONS: IChartOptions = {
+
+    protected getDefaultChartOptions = (): IChartOptions => ({
         animation: { duration: 0 },
         hover: { animationDuration: 0 },
         responsiveAnimationDuration: 0,
@@ -28,9 +31,11 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
             },
         },
         title: {
+            text: this.title,
+            display: true,
             fontFamily: DEFAULT_FONT_FAMILY,
         },
-    };
+    });
 
     abstract readonly type: 'chart';
     abstract readonly name: string;
@@ -71,7 +76,7 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
         rawData.map((x) => ({
             download: x.runParams.network.downloadThroughput,
             upload: x.runParams.network.uploadThroughput,
-            useCache: x.runParams.useCache,
+            useCache: !!x.runParams.useCache,
             latency: x.runParams.network.latency,
             throttling: x.runParams.throttlingRate,
         }));
@@ -89,8 +94,15 @@ export class MsChart {
     public static diffLabel(formatter: (v: number) => string): (t: ChartTooltipItem, d: ChartData) => string {
         return (t: ChartTooltipItem, d: ChartData) => {
             const entryIndex = t.index;
-            const currentValue = d.datasets[t.datasetIndex].data[entryIndex];
-            const label = d.datasets![t.datasetIndex!].label;
+            const dIndex = t.datasetIndex;
+            const data = d.datasets && d.datasets[dIndex!] ? d.datasets[dIndex!]?.data : undefined;
+
+            if (!defined(entryIndex) || !defined(dIndex) || !defined(data)) {
+                throw new Error('Something went wrong with labels');
+            }
+
+            const currentValue = data[entryIndex];
+            const label = d.datasets![dIndex].label;
 
             if (typeof currentValue !== 'number') {
                 return `${t.label}: ${t.value}`;
@@ -101,11 +113,13 @@ export class MsChart {
             }
 
             if (entryIndex > 0) {
-                const prev = d.datasets[t.datasetIndex].data[entryIndex - 1] as number;
+                const prev = data[entryIndex - 1] as number;
                 const diff = currentValue - (prev as number);
                 const formmattedDiff = `(diff: ${diff > 0 ? '+' : ''} ${formatter(diff)})`;
                 return `${label}: ${formatter(currentValue)} ${formmattedDiff}`;
             }
+
+            return label ?? '';
         };
     }
 }

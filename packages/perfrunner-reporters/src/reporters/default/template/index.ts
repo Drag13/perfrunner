@@ -4,8 +4,15 @@ import { MetricsChartReporter } from './metrics.chart';
 import { ResourceSizeChart } from './size.chart';
 import { IReporter, IPerformanceResult } from './types';
 import { defined } from '../../../utils';
+import { ResourceSizeBeforeFCPChart } from './size-fcp.chart';
 
-const allReporters = [new EntriesChartReporter(), new CustomMarksChartReporter(), new MetricsChartReporter(), new ResourceSizeChart()];
+const allReporters = [
+    new EntriesChartReporter(),
+    new CustomMarksChartReporter(),
+    new MetricsChartReporter(),
+    new ResourceSizeChart(),
+    new ResourceSizeBeforeFCPChart(),
+];
 
 function renderChartRow(parent: Node, charts: IReporter<HTMLElement>[]) {
     const canvases: { canvas: HTMLCanvasElement; chart: IReporter<HTMLElement> }[] = [];
@@ -38,7 +45,7 @@ function renderCharts(root: Node, charts: IReporter<HTMLElement>[], data: IPerfo
         throw new Error(`Report rendering failed, root node: "${root}" not found`);
     }
 
-    const names = reporters && reporters.length ? reporters : ['entries', 'marks', 'metrics', 'size'];
+    const names = reporters && reporters.length ? reporters : ['entries', 'marks', 'metrics', 'size', 'size-fcp'];
 
     const plugins = names.map((pluginName) => allReporters.find((pl) => pl.name === pluginName.toLowerCase())).filter(defined);
 

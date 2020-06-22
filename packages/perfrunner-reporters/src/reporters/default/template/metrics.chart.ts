@@ -16,6 +16,7 @@ type ChartData = {
 export class MetricsChartReporter extends AbstractChart {
     readonly type: 'chart' = 'chart';
     readonly name: string = 'metrics';
+    readonly title = 'Common performance metrics';
 
     render(container: HTMLCanvasElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
@@ -36,17 +37,13 @@ export class MetricsChartReporter extends AbstractChart {
                 ],
             },
             options: {
-                ...this.DEFAULT_CHART_OPTIONS,
+                ...this.getDefaultChartOptions(),
                 tooltips: {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         afterBody: this.renderComment(comments),
                         footer: this.renderRunParams(runParams),
                     },
-                },
-                title: {
-                    display: true,
-                    text: 'Common performance metrics',
                 },
             },
         });

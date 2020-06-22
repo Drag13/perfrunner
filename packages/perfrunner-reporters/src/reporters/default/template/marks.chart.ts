@@ -9,13 +9,13 @@ type ChartData = Record<string, any[]>;
 export class CustomMarksChartReporter extends AbstractChart {
     readonly name = 'marks';
     readonly type: 'chart' = 'chart';
+    readonly title = 'Performance Marks';
 
     render(container: HTMLElement, data: IPerformanceResult): void {
         const ctx = this.getSafeCanvasContext(container);
 
         const viewData = this.transform(data);
         const datasets = this.toDataSet(viewData);
-        const comments = this.getComments(data);
         const runParams = this.getRunParams(data);
 
         new Chart(ctx, {
@@ -25,16 +25,12 @@ export class CustomMarksChartReporter extends AbstractChart {
                 datasets,
             },
             options: {
-                ...this.DEFAULT_CHART_OPTIONS,
+                ...this.getDefaultChartOptions(),
                 tooltips: {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
                         footer: this.renderRunParams(runParams),
                     },
-                },
-                title: {
-                    display: true,
-                    text: 'Performance Marks',
                 },
             },
         });
