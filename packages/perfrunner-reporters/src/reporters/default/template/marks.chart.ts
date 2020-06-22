@@ -29,7 +29,6 @@ export class CustomMarksChartReporter extends AbstractChart {
                 tooltips: {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
-                        afterBody: this.renderComment(comments),
                         footer: this.renderRunParams(runParams),
                     },
                 },
@@ -63,7 +62,7 @@ export class CustomMarksChartReporter extends AbstractChart {
                 acc[name][i] = startTime;
             });
 
-            acc.labels[i] = `#${i + 1}`;
+            acc.labels[i] = this.getLabel(i, rawData[i].comment);
 
             return acc;
         }, result);

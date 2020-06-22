@@ -43,7 +43,6 @@ export class ResourceSizeChart extends AbstractChart {
                 tooltips: {
                     callbacks: {
                         label: MsChart.diffLabel(toBytes),
-                        afterBody: this.renderComment(comments),
                         footer: this.renderRunParams(runParams),
                     },
                 },
@@ -108,7 +107,7 @@ export class ResourceSizeChart extends AbstractChart {
                 const entryType = getResourceType(pEntry);
                 acc[entryType][i] += pEntry.encodedBodySize ?? 0;
             });
-            acc.labels[i] = `#${i + 1}`;
+            acc.labels[i] = this.getLabel(i, rawData[i].comment);
             return acc;
         }, data);
 

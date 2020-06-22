@@ -52,12 +52,12 @@ export class MetricsChartReporter extends AbstractChart {
         });
     }
 
-    private transform(data: IPerformanceResult): ChartData {
-        if (!Array.isArray(data)) {
+    private transform(rawData: IPerformanceResult): ChartData {
+        if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format');
         }
 
-        const length = data.length;
+        const length = rawData.length;
 
         const viewData: ChartData = {
             layoutDuration: init0(length),
@@ -67,12 +67,12 @@ export class MetricsChartReporter extends AbstractChart {
             labels: initWithEmptyString(length),
         };
 
-        return data.reduce((acc, v, i) => {
+        return rawData.reduce((acc, v, i) => {
             acc.layoutDuration[i] = v.pageMetrics.LayoutDuration;
             acc.recalcStyleDuration[i] = v.pageMetrics.RecalcStyleDuration;
             acc.scriptDuration[i] = v.pageMetrics.ScriptDuration;
             acc.taskDuration[i] = v.pageMetrics.TaskDuration;
-            acc.labels[i] = `#${i + 1}`;
+            acc.labels[i] = this.getLabel(i, rawData[i].comment);
 
             return acc;
         }, viewData);

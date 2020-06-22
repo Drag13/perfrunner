@@ -1,5 +1,5 @@
 import { ChartTooltipItem, ChartData } from 'chart.js';
-import { TRANSPARENT, toBytes } from '../../../utils';
+import { TRANSPARENT, toBytes, isNullOrEmpty } from '../../../utils';
 import { IChartOptions, IPerformanceResult, IReporter } from './types';
 
 type RunParams = {
@@ -51,6 +51,8 @@ export abstract class AbstractChart implements IReporter<HTMLCanvasElement> {
         const index = t[0].index;
         return index == null || index >= comments.length ? '' : comments[index] ?? '';
     };
+
+    protected getLabel = (index: number, comment: string | undefined) => `#${index + 1}${isNullOrEmpty(comment) ? '' : ` ${comment}`}`;
 
     protected renderRunParams = (runParams: RunParams[]) => (t: ChartTooltipItem[]) => {
         const index = t[0].index;

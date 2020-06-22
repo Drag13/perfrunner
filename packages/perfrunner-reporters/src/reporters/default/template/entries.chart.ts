@@ -39,7 +39,6 @@ export class EntriesChartReporter extends AbstractChart {
                 tooltips: {
                     callbacks: {
                         label: MsChart.diffLabel(toMs),
-                        afterBody: this.renderComment(comments),
                         footer: this.renderRunParams(runParams),
                     },
                 },
@@ -78,8 +77,7 @@ export class EntriesChartReporter extends AbstractChart {
             acc.load[i] = navigationEvent.loadEventEnd || 0;
             acc.DOMContentLoaded[i] = navigationEvent.domContentLoadedEventEnd || 0;
             acc.DOMInteractive[i] = navigationEvent.domInteractive || 0;
-
-            acc.labels[i] = `#${i + 1}`;
+            acc.labels[i] = this.getLabel(i, rawData[i].comment);
 
             return acc;
         }, chartData);
