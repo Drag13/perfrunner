@@ -1,4 +1,4 @@
-# Perfrunner
+# Perfrunner [![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master)](https://travis-ci.org/Drag13/perfrunner)
 
 ## Why
 
