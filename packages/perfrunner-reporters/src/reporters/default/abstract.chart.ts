@@ -54,6 +54,7 @@ export abstract class AbstractChart<TData> {
                         footer: this.tooltipFooter(viewData),
                     },
                 },
+                maintainAspectRatio:false
             },
         });
     }
