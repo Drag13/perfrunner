@@ -111,7 +111,7 @@ export abstract class AbstractChart<TData> {
 }
 
 type TooltipLabelCallback = (t: ChartTooltipItem, d: ChartData) => string;
-const diffLabel = (formatter: (v: number) => string): TooltipLabelCallback => {
+export const diffLabel = (formatter: (v: number) => string): TooltipLabelCallback => {
     return (t: ChartTooltipItem, d: ChartData) => {
         const entryIndex = t.index;
         const dIndex = t.datasetIndex;

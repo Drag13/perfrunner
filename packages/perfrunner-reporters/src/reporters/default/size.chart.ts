@@ -1,4 +1,4 @@
-import { AbstractChart, IViewData } from './abstract.chart';
+import { AbstractChart, IViewData, diffLabel } from './abstract.chart';
 import { ResourceType, isNullOrEmpty, color, toBytes, init0, initWithEmptyString, getResourceType } from '../../utils';
 import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
 import { IPerformanceResult } from './types';
@@ -79,5 +79,5 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
         },
     ];
 
-    // tooltipLabel: MsChart.diffLabel(toBytes)
+    tooltipLabel = () => diffLabel(toBytes);
 }
