@@ -4,6 +4,7 @@ node_js:
   - stable
 
 install:
+  - npm ci
   - npm run lerna bootstrap
 
 script:
