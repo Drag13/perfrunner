@@ -68,6 +68,7 @@ export async function profile(url: URL, options: PerfRunnerOptions): Promise<Raw
         const page = await startEmptyPage(browser);
         await setupPerformanceConditions(page, options);
 
+        t('warming up the page');
         await startApplication(page, url.href, waitFor);
 
         const tracer = new Tracer(options.output);
