@@ -1,6 +1,6 @@
 import { ResourceSizeChart } from './size.chart';
 import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
-import { isNullOrNaN } from '../../../utils';
+import { isNullOrNaN } from '../../utils';
 
 export class ResourceSizeBeforeFCPChart extends ResourceSizeChart {
     readonly name = 'size-fcp';

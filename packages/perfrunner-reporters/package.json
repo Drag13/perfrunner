@@ -9,9 +9,9 @@
     "prettier": "prettier --config ../../.prettierrc --write ./src/**/*.ts",
     "tsc": "tsc",
     "copyfiles": "copyfiles",
-    "copy:defaultReporter": "copyfiles src/default/template/index.html dist/default/template",
+    "copy:defaultReporter": "copyfiles src/default/index.html dist/default",
     "parcel": "parcel",
-    "build:reporter": "parcel build src/reporters/default/template/index.html --no-source-maps --out-dir dist/reporters/default/template",
+    "build:reporter": "parcel build src/reporters/default/index.html --no-source-maps --out-dir dist/reporters/default",
     "build": "tsc -p . && npm run build:reporter",
     "pack": "npm pack"
   },
