@@ -5,7 +5,7 @@ import { render } from 'mustache';
 import { IReporter } from '../iReporter';
 
 const defaultReporter: IReporter = async (outputFolder, data, args) => {
-    const templatePath = join(__dirname, 'template', 'index.html');
+    const templatePath = join(__dirname, 'index.html');
 
     if (!existsSync(templatePath)) {
         throw new Error(`Template not exists on ${templatePath}`);

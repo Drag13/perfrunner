@@ -1,6 +1,7 @@
-const initArrayWith = <T>(initValue: T, length: number) => Array(length).fill(initValue);
+const initArrayWith = <T>(initValue: T, length: number): Array<T> => Array(length).fill(initValue);
 
 export const init0 = (length: number) => initArrayWith(0, length);
+export const initWithEmptyString = (length: number) => initArrayWith('', length);
 
 export const splitBy = <T>(arr: T[], min: number): T[][] => {
     const res = [];
@@ -10,5 +11,3 @@ export const splitBy = <T>(arr: T[], min: number): T[][] => {
 
     return res;
 };
-
-// const includes = <T>(arr: T[], predicate: (arg: T) => boolean) => arr.some(predicate);

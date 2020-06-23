@@ -4,25 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporter</title>
+    <title>Perfrunner - {{data.0.runParams.url}}</title>
 
     <style>
-         .charts {
+        body {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: monospace, Verdana, sans-serif;
+            margin: 0;
+            font-size: 1.5em
+        }
+
+        .charts {
             display: flex;
             flex-wrap: wrap
         }
 
         .chart-container {
             position: relative;
-            flex: 1 1 auto;
-            width: 33%;
-            max-width:50%;
+            min-height: 300px;
+            width: 100%;
+            max-width: 100%
         }
 
-        @media screen and (max-width:992px) {
+        @media screen and (min-width:768px) {
             .chart-container {
-                width: 100%;
-                max-width: 100% !important
+                max-width: 50%;
+            }
+        }
+
+        @media screen and (min-width: 1200px) {
+            .chart-container {
+                max-width: 33%;
             }
         }
     </style>
@@ -40,9 +58,10 @@
         window.renderArgs = JSON.parse(normalizedString);
     </script>
 
+    <h1> {{data.0.runParams.url}} </h1>
     <div id="root"></div>
 
-    <script inline="inline" src="./index.ts"></script>
+    <script inline="inline" src="./render.ts"></script>
 </body>
 
 </html>

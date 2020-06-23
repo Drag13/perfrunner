@@ -82,7 +82,7 @@ export async function dumpMetrics(page: Page) {
     const metrics = await page.metrics();
 
     const fcp = performanceEntries.find((x) => x.name === 'first-contentful-paint');
-    debug(`timestamp: ${metrics.Timestamp} fcp: ${fcp?.startTime}`);
+    debug(`fcp: ${fcp ? fcp.startTime : 'undefined'}`);
 
     return {
         metrics,

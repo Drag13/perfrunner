@@ -1,6 +1,6 @@
 import { IReporter } from './reporters/iReporter';
-import { toJson } from './reporters/json';
-import { toCsv } from './reporters/csv';
-import { defaultReporter as basic } from './reporters/default';
+import { toJson as json } from './reporters/json';
+import { toCsv as csv } from './reporters/csv';
+import { defaultReporter as html } from './reporters/default';
 
-export { IReporter, toJson, toCsv, basic };
+export { IReporter, json, csv, html };

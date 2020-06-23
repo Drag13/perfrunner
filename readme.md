@@ -1,77 +1,64 @@
 # Perfrunner
 
-## Key Features
+## Why
 
-## Options
+Helps you to track the performance your web application and compare different solutions.
 
-|Command | Alias | Description | Default value | IsRequired |
-| - | - | - | - | - |
-| --url | - | Url to profile | **This option is required** | Required |
-| --runs | -R | Number of runs you want to be performed| ```3``` | Optional |
-| --network | - | Network setup: <```no-throttling```/```regular-4g```/```fast-3g```/```slow-3g```> | ```fast-3g``` | Optional
-| --cache | -C | Using browser cahce | ```false``` | Optional
-| --throttling | -T | CPU slowdown multiplier | ```2``` | Optional |
-| --test-name | - | | ```undefined``` | Optional |
-| --comment | - | Provide additional information about test. May be used from reporter | ```undefined``` | Optional
-| --purge | - | Remove old data before the test run | ```false``` | Optional
-| --report-only | - |Skips profiling session and only generates report| ```false``` | Optional |
-| --wait-for | W | Specify selector or time in miliseconds to wait | ```undefined``` | Optional
-| --timeout |  - | Set timeout for the single test run in miliseconds | ```60_000``` | Optional
-| --no-headless | - | Disables headless mode |  ```false``` | Optional |
-| --chrome-args | - | Additional arguments to pass to the browser instance. Should be passed using camelCase style like: ```"noSandbox"``` | ```undefined``` | Optional |
-| --ignore-default-args | - | Ignore defaultArgs for launching Chromium | ```false``` | Optional |
+## Performance data for Angular vs React vs Vue
 
+![default-html-reporter-example-angular-react-vue.PNG](./packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
 
-## Installation
+## Features
 
-## Reporters
+* Simple UI to track performance changes
+* Various output - html, json, csv
+* Good precision with automated multiple reruns
+* Saving all traces for further investigation
+* Supports multiple network conditions - slow3g, fast3g, 4g
+* Test your app with or without cache
 
-Supported reporters:
+## How to start
 
-* basic - renders basic metrics (FCP, DCL, Size, etc)
-* toJson - saves all data to json
-* toCsv - saves all data to csv
-
-## Basic
-
-Generates output as HTML file. Includes:
-* Performance Entreis Chart (DOM Content Loaded, First Paint, First Contentful Paint, DOM Interactive)
-* Default Performance Metrics Chart - Layout Duration, Recalculation Style Duration, Script Duration, Task duration
-* Resource Size Chart (JS, CSS ,IMG, Fonts, XHR)
-* Performance Marks Chart - shows performance marks from application
-
-Example:
-
-This is default reporter so you don't need to name it
+### Run the performance test
 
 ```cmd
-perfrunner-cli drag13@github.io
+npx perfrunner-cli https://drag13.io/
 ```
 
-You also can specify exact charts you want to see:
+Change something and run it again to check the difference
+
+### With the network setup
 
 ```cmd
-perfrunner-cli drag13@github.io --reporter basic entries marks metrics size
+npx perfrunner-cli https://drag13.io/ --network slow-3g
 ```
 
-### toJson
-
-Generates output as json file
-
-Example:
+### With network and throttling
 
 ```cmd
-perfrunner-cli drag13@github.io --report toJson
+npx perfrunner-cli https://drag13.io/ --network slow-3g -T 4
 ```
 
-## toCsv
-
-Generates output as CSV file
+### With network, throttling, and cache
 
 ```cmd
-perfrunner-cli drag13@github.io --report toCsv
+npx perfrunner-cli https://drag13.io/ --network slow-3g -T 4 --cache
 ```
 
-## Thank You
+### Generate json instead of HTML
+
+```
+npx perfrunner-cli https://drag13.io/ --reporter toJson
+```
+
+For other commands check [perfrunner-cli](./packages/perfrunner-cli)
+
+## Related packages
+
+* [perfrunner-cli](./packages/perfrunner-cli) - command line interface for the perfrunner
+* [perfrunner-core](./packages/perfrunner-core) - runs tests and aggregate result
+* [perfrunner-reporters](./packages/perfrunner-reporters) - process result
+
+## Credits
 
 * [raharrison](https://github.com/raharrison) for inspiration and examples
