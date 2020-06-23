@@ -51,13 +51,13 @@ npx perfrunner-cli https://drag13.io/ --network slow-3g -T 4 --cache
 npx perfrunner-cli https://drag13.io/ --reporter toJson
 ```
 
-For other commands check [perfrunner-cli]()
+For other commands check [perfrunner-cli](./packages/perfrunner-cli)
 
 ## Related packages
 
-* [perfrunner-cli]() - command line interface for the perfrunner
-* [perfrunner-core]() - runs tests and aggregate result
-* [perfrunner-reporters]() - process result
+* [perfrunner-cli](./packages/perfrunner-cli) - command line interface for the perfrunner
+* [perfrunner-core](./packages/perfrunner-core) - runs tests and aggregate result
+* [perfrunner-reporters](./packages/perfrunner-reporters) - process result
 
 ## Credits
 
