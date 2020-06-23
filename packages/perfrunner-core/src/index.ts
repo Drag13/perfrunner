@@ -15,7 +15,6 @@ function writeResult(db: Db, data: PerfRunResult, purge?: boolean) {
 }
 
 function readAllMetrics(db: Db) {
-    log('retrieving previous data');
     return db.read();
 }
 
