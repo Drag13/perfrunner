@@ -2,12 +2,16 @@
 
 ## Why
 
-Helps you to track the performance your web application
+Helps you to track the performance your web application and compare different solutions.
+
+## Performance data for Angular vs React vs Vue
+
+![default-html-reporter-example-angular-react-vue.PNG](./packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
 
 ## Features
 
 * Simple UI to track performance changes
-* Various output
+* Various output - html, json, csv
 * Good precision with automated multiple reruns
 * Saving all traces for further investigation
 * Supports multiple network conditions - slow3g, fast3g, 4g
@@ -15,11 +19,13 @@ Helps you to track the performance your web application
 
 ## How to start
 
-### Simple
+### Run the performance test
 
 ```cmd
 npx perfrunner-cli https://drag13.io/
 ```
+
+Change something and run it again to check the difference
 
 ### With the network setup
 

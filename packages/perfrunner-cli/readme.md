@@ -1,26 +1,10 @@
 # Perfrunner-CLI
 
-Perfrunner command-line interface
+Perfrunner command-line-interface
 
-## Options
+## Example
 
-|Command | Alias | Description | Default value | IsRequired |
-| - | - | - | - | - |
-| --url | - | Url to profile | **This option is required** | Required |
-| --runs | -R | Number of runs you want to be performed| ```3``` | Optional |
-| --network | - | Network setup: <```no-throttling```/```regular-4g```/```fast-3g```/```slow-3g```> | ```fast-3g``` | Optional
-| --cache | -C | Using browser cahce | ```false``` | Optional
-| --throttling | -T | CPU slowdown multiplier | ```2``` | Optional |
-| --test-name | - | | ```undefined``` | Optional |
-| --comment | - | Provide additional information about test. May be used from reporter | ```undefined``` | Optional
-| --purge | - | Remove old data before the test run | ```false``` | Optional
-| --report-only | - |Skips profiling session and only generates report| ```false``` | Optional |
-| --wait-for | W | Specify selector or time in miliseconds to wait | ```undefined``` | Optional
-| --timeout |  - | Set timeout for the single test run in miliseconds | ```60_000``` | Optional
-| --no-headless | - | Disables headless mode |  ```false``` | Optional |
-| --chrome-args | - | Additional arguments to pass to the browser instance. Should be passed using camelCase style like: ```"noSandbox"``` | ```undefined``` | Optional |
-| --ignore-default-args | - | Ignore defaultArgs for launching Chromium | ```false``` | Optional |
-
+![default-html-reporter-example-angular-react-vue](./docs/default-html-reporter-example-angular-react-vue.PNG)
 
 ## Installation
 
@@ -36,15 +20,36 @@ For one-time usage:
 npx perfrunner-cli
 ```
 
+## Options
+
+|Command | Alias | Description | Default value | IsRequired |
+| - | - | - | - | - |
+| --cache | -C | Using browser cahce | ```false``` | Optional
+| --chrome-args | - | Additional arguments to pass to the browser instance. Should be passed using camelCase style like: ```"noSandbox"``` | ```undefined``` | Optional |
+| --comment | - | Provide additional information about test. May be used from reporter | ```undefined``` | Optional
+| --ignore-default-args | - | Ignore defaultArgs for launching Chromium | ```false``` | Optional |
+| --network | - | Network setup: <```no-throttling```/```regular-4g```/```fast-3g```/```slow-3g```> | ```fast-3g``` | Optional
+| --no-headless | - | Disables headless mode |  ```false``` | Optional |
+| --purge | - | Remove old data before the test run | ```false``` | Optional
+| --reporter | - | Specify reporter | ```html``` | Optional |
+| --report-only | - |Skips profiling session and only generates report| ```false``` | Optional |
+| --runs | -R | Number of runs you want to be performed| ```3``` | Optional |
+| --test-name | - | | ```undefined``` | Optional |
+| --throttling | -T | CPU slowdown multiplier | ```2``` | Optional |
+| --timeout |  - | Set timeout for the single test run in miliseconds | ```60_000``` | Optional
+| --url | - | Url to profile | - | Required |
+| --wait-for | W | Specify selector or time in miliseconds to wait | ```undefined``` | Optional
+
 ## Reporters
 
 Supported reporters:
 
-* basic - renders basic metrics into HTML (FCP, DCL, Size, etc)
-* toJson - saves all data to json
-* toCsv - saves all data to csv
+* [html](#html) - renders basic metrics into HTML (FCP, DCL, Size, etc)
+* [json](#json) - saves all data to json
+* [csv](#csv) - saves all data to csv
+* [custom](#csv) - you can specify your own custom reporter
 
-## Basic
+## HTML
 
 Generates output as an HTML file. Includes:
 * Performance Entries Chart (DOM Content Loaded, First Paint, First Contentful Paint, DOM Interactive)
@@ -57,31 +62,25 @@ Example:
 This is default reporter so you don't need to name it
 
 ```cmd
-perfrunner-cli drag13@github.io
+npx perfrunner-cli drag13@github.io
 ```
 
-You also can specify the exact charts you want to see:
-
-```cmd
-perfrunner-cli drag13@github.io --reporter basic entries marks metrics size
-```
-
-### toJson
+### JSON
 
 Generates output as JSON file
 
 Example:
 
 ```cmd
-perfrunner-cli drag13@github.io --report toJson
+npx perfrunner-cli drag13@github.io --reporter json
 ```
 
-## toCsv
+## CSV
 
 Generates output as CSV file
 
 ```cmd
-perfrunner-cli drag13@github.io --report toCsv
+npx perfrunner-cli drag13@github.io --reporter csv
 ```
 
 ## Custom reporter
