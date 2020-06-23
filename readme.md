@@ -6,6 +6,8 @@ Helps you to track the performance your web application and compare different so
 
 ## Performance data for Angular vs React vs Vue
 
+This is a simple comparison of the three default builds for the Angular/React/Vue applications (no gzip), just to demonstrate how perfrunner works and looks.
+
 ![default-html-reporter-example-angular-react-vue.PNG](./packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
 
 ## Features
