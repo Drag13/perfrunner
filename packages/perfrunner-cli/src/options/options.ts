@@ -40,7 +40,7 @@ const map: ParamsMap = {
     network: { type: NetworkCondtionFactory, defaultValue: HSPA },
     output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
-    reporter: { type: String, multiple: true, defaultValue: ['basic'] },
+    reporter: { type: String, multiple: true, defaultValue: ['html'] },
     runs: { type: Number, defaultValue: 3, alias: 'R' },
     noHeadless: { type: Boolean, defaultValue: false },
     comment: { type: String },

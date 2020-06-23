@@ -1,7 +1,7 @@
 {
   "name": "perfrunner-reporters",
   "version": "0.0.1",
-  "description": "",
+  "description": "Home of the perfrunner reporters",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -16,25 +16,25 @@
     "pack": "npm pack"
   },
   "keywords": [],
-  "author": "",
+  "author": "drag13",
   "license": "ISC",
   "devDependencies": {
-    "@types/chart.js": "^2.9.21",
-    "@types/json2csv": "^5.0.1",
-    "@types/mustache": "^4.0.1",
-    "@types/node": "^14.0.1",
-    "@types/web-resource-inliner": "^4.2.0",
-    "copyfiles": "^2.2.0",
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-inline-source": "^1.0.0",
-    "prettier": "^2.0.5",
-    "typescript": "^3.9.2"
+    "@types/chart.js": "2.9.21",
+    "@types/json2csv": "5.0.1",
+    "@types/mustache": "4.0.1",
+    "@types/node": "14.0.1",
+    "@types/web-resource-inliner": "4.2.0",
+    "copyfiles": "2.2.0",
+    "parcel-bundler": "1.12.4",
+    "parcel-plugin-inline-source": "1.0.0",
+    "prettier": "2.0.5",
+    "typescript": "3.9.5"
   },
   "dependencies": {
-    "chart.js": "^2.9.3",
-    "json2csv": "^5.0.1",
-    "mustache": "^4.0.1",
-    "perfrunner-core": "^0.0.1"
+    "chart.js": "2.9.3",
+    "json2csv": "5.0.1",
+    "mustache": "4.0.1",
+    "perfrunner-core": "0.0.1"
   },
   "files": [
     "dist"

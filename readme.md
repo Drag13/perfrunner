@@ -1,10 +1,12 @@
-# Perfrunner
+# Perfrunner [![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master)](https://travis-ci.org/Drag13/perfrunner)
 
 ## Why
 
 Helps you to track the performance your web application and compare different solutions.
 
 ## Performance data for Angular vs React vs Vue
+
+This is a simple comparison of the three default builds for the Angular/React/Vue applications (no gzip), just to demonstrate how perfrunner works and looks.
 
 ![default-html-reporter-example-angular-react-vue.PNG](./packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
 
