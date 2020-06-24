@@ -33,7 +33,7 @@ export interface ExtendedPerformanceEntry extends PerformanceEntry {
     type?: string;
     redirectCount?: number;
     extension?: {
-        mimeType: string;
+        mimeType: string; // TODO: not all will have mime type, should be optional
     };
 }
 

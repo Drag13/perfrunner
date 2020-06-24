@@ -1,5 +1,5 @@
 {
-  "name": "perfrunner-cli",
+  "name": "perfrunner",
   "version": "0.0.1",
   "description": "Command-line-interface for the perfrunner - automated UI performance test tool",
   "main": "./dist/index.js",
@@ -21,7 +21,9 @@
     "puppeteer"
   ],
   "author": "drag13",
-  "license": "ISC",
+  "homepage": "https://github.com/Drag13/perfrunner",
+  "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-cli/readme.md",
+  "license": "MIT",
   "devDependencies": {
     "@types/command-line-args": "5.0.0",
     "@types/node": "14.0.13",

@@ -1,6 +1,14 @@
 # Perfrunner-core
 
-Runs tests and aggregates the result
+This package was written to simplify performance testing for the web application. It supports:
+
+* Network conditions - downloadThroughput: 1000, uploadThroughput: 500, latency: 200
+* CPU throttling
+* Browser caching and no caching
+* Multiple runs against the same URL for better precision
+* Chrome arguments
+* Storing data between test runs
+* Tracing in Chrome readable format for better investigation
 
 ## Installation
 
@@ -26,7 +34,6 @@ import { profile } from 'perfrunner-core';
     console.log(JSON.stringify(profilingResult));
 });
 ```
-
 ## Tracing
 
-After testing, you can find traces in chrome readable format inside the folder related to the test run (default - generated/<target_friendly_url>). This might be helpful for additional investigation
+After testing, you can find traces in Chrome readable format inside the folder related to the test run. This might be helpful for additional investigation

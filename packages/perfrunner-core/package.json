@@ -20,7 +20,9 @@
     "puppeteer"
   ],
   "author": "drag13",
-  "license": "ISC",
+  "license": "MIT",
+  "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-core/readme.md",
+  "homepage": "https://github.com/Drag13/perfrunner",
   "devDependencies": {
     "@types/chai": "4.2.11",
     "@types/lowdb": "1.0.9",
