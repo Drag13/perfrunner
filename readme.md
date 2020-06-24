@@ -64,3 +64,7 @@ For other commands check [perfrunner-cli](./packages/perfrunner-cli)
 ## Credits
 
 * [raharrison](https://github.com/raharrison) for inspiration and examples
+
+## License
+
+[MIT](./LICENSE)

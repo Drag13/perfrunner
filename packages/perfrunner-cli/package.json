@@ -21,7 +21,9 @@
     "puppeteer"
   ],
   "author": "drag13",
-  "license": "ISC",
+  "homepage": "https://github.com/Drag13/perfrunner",
+  "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-cli/readme.md",
+  "license": "MIT",
   "devDependencies": {
     "@types/command-line-args": "5.0.0",
     "@types/node": "14.0.13",

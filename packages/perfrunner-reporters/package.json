@@ -17,7 +17,9 @@
   },
   "keywords": [],
   "author": "drag13",
-  "license": "ISC",
+  "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-reporters/readme.md",
+  "homepage": "https://github.com/Drag13/perfrunner",
+  "license": "MIT",
   "devDependencies": {
     "@types/chart.js": "2.9.21",
     "@types/json2csv": "5.0.1",
