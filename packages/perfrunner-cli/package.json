@@ -2,7 +2,7 @@
   "name": "perfrunner",
   "version": "0.2.0",
   "description": "Command-line-interface for the perfrunner - automated UI performance test tool",
-  "main": "./dist/index.js",
+  "main": "./dist/cli.js",
   "scripts": {
     "test": "exit 0",
     "demo": "npm run build && node dist/cli \"https://drag13.io\" --runs 1",
