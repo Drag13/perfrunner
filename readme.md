@@ -24,7 +24,7 @@ This is a simple comparison of the three default builds for the Angular/React/Vu
 ### Run the performance test
 
 ```cmd
-npx perfrunner-cli https://drag13.io/
+npx perfrunner https://drag13.io/
 ```
 
 Change something and run it again to check the difference
@@ -32,25 +32,25 @@ Change something and run it again to check the difference
 ### With the network setup
 
 ```cmd
-npx perfrunner-cli https://drag13.io/ --network slow-3g
+npx perfrunner https://drag13.io/ --network slow-3g
 ```
 
 ### With network and throttling
 
 ```cmd
-npx perfrunner-cli https://drag13.io/ --network slow-3g -T 4
+npx perfrunner https://drag13.io/ --network slow-3g -T 4
 ```
 
 ### With network, throttling, and cache
 
 ```cmd
-npx perfrunner-cli https://drag13.io/ --network slow-3g -T 4 --cache
+npx perfrunner https://drag13.io/ --network slow-3g -T 4 --cache
 ```
 
 ### Generate json instead of HTML
 
 ```
-npx perfrunner-cli https://drag13.io/ --reporter toJson
+npx perfrunner https://drag13.io/ --reporter toJson
 ```
 
 For other commands check [perfrunner-cli](./packages/perfrunner-cli)

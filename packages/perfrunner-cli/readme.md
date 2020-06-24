@@ -11,13 +11,13 @@ Perfrunner command-line-interface
 To save it into your project:
 
 ```cmd
-npm i perfrunner-cli -D
+npm i perfrunner -D
 ```
 
 For one-time usage:
 
 ```cmd
-npx perfrunner-cli
+npx perfrunner https://drag13.io
 ```
 
 ## Options
@@ -62,7 +62,7 @@ Example:
 This is default reporter so you don't need to name it
 
 ```cmd
-npx perfrunner-cli drag13@github.io
+npx perfrunner drag13@github.io
 ```
 
 ### JSON
@@ -72,7 +72,7 @@ Generates output as JSON file
 Example:
 
 ```cmd
-npx perfrunner-cli drag13@github.io --reporter json
+npx perfrunner drag13@github.io --reporter json
 ```
 
 ## CSV
@@ -80,7 +80,7 @@ npx perfrunner-cli drag13@github.io --reporter json
 Generates output as CSV file
 
 ```cmd
-npx perfrunner-cli drag13@github.io --reporter csv
+npx perfrunner drag13@github.io --reporter csv
 ```
 
 ## Custom reporter
@@ -88,7 +88,7 @@ npx perfrunner-cli drag13@github.io --reporter csv
 You also can use your own custom reporter
 
 ```cmd
-npx perfrunner-cli https://drag13.io -- --reporter my-custom-reporter.js
+npx perfrunner https://drag13.io -- --reporter my-custom-reporter.js
 ```
 
 where reporter should looks like:
@@ -104,11 +104,11 @@ Internally, perfrunner uses [puppeteer](https://github.com/puppeteer/puppeteer),
 Perfrunner supports passing chromeArgs and ignoreDefaults flags for better control from your side:
 
 ```cmd
-npx perfrunner-cli https://drag13.io --ignore-default-args --chrome-args noSandbox
+npx perfrunner https://drag13.io --ignore-default-args --chrome-args noSandbox
 ```
 
 You also can use perfrunner without headless mode
 
 ```cmd
-npx perfrunner-cli https://drag13.io --no-headless
+npx perfrunner https://drag13.io --no-headless
 ```
