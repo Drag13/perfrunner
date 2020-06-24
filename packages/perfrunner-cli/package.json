@@ -9,6 +9,7 @@
     "pack": "npm pack",
     "prettier": "prettier --config ../../.prettierrc --write ./src/**/*.ts",
     "tsc": "tsc",
+    "prepublish": "npm run build",
     "build": "tsc -p ."
   },
   "keywords": [
