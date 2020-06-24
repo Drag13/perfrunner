@@ -4,7 +4,7 @@ Perfrunner command-line-interface
 
 ## Example
 
-![default-html-reporter-example-angular-react-vue](./docs/default-html-reporter-example-angular-react-vue.PNG)
+![default-html-reporter-example-angular-react-vue](https://raw.githubusercontent.com/Drag13/perfrunner/master/packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
 
 ## Installation
 

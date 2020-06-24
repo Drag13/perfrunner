@@ -37,8 +37,7 @@
     "perfrunner-reporters": "^0.2.1"
   },
   "files": [
-    "dist",
-    "docs"
+    "dist"
   ],
   "bin": "dist/cli.js"
 }
