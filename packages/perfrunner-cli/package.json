@@ -1,5 +1,5 @@
 {
-  "name": "perfrunner-cli",
+  "name": "perfrunner",
   "version": "0.0.1",
   "description": "Command-line-interface for the perfrunner - automated UI performance test tool",
   "main": "./dist/index.js",
