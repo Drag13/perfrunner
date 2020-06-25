@@ -6,7 +6,7 @@ const toCsv: IReporter = (outputFolder, data) =>
     new Promise((resolve, reject) => {
         try {
             const csv = parse(data);
-            writeFile(outputFolder, 'csv-reporter.csv', csv);
+            writeFile(outputFolder, 'default-report.csv', csv);
             resolve();
         } catch (e) {
             reject(e);
