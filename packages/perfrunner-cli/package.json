@@ -19,7 +19,11 @@
     "fcp",
     "first-contentful-paint",
     "performance-metrics",
-    "puppeteer"
+    "puppeteer",
+    "front-end",
+    "web",
+    "testing",
+    "performance-testing"
   ],
   "author": "drag13",
   "homepage": "https://github.com/Drag13/perfrunner",

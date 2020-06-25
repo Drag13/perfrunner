@@ -1,10 +1,10 @@
-# Perfrunner [![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master)](https://travis-ci.org/Drag13/perfrunner)
+# Perfrunner [![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master)](https://travis-ci.org/Drag13/perfrunner) ![npm](https://img.shields.io/npm/dw/perfrunner)
 
 ## Why
 
 Helps you to track the performance your web application and compare different solutions.
 
-## Performance data for Angular vs React vs Vue
+## Performance comparison: Angular vs React vs Vue
 
 This is a simple comparison of the three default builds for the Angular/React/Vue applications (no gzip), just to demonstrate how perfrunner works and looks.
 
@@ -50,10 +50,16 @@ npx perfrunner https://drag13.io/ --network slow-3g -T 4 --cache
 ### Generate json instead of HTML
 
 ```
-npx perfrunner https://drag13.io/ --reporter toJson
+npx perfrunner https://drag13.io/ --reporter json
 ```
 
 For other commands check [perfrunner-cli](./packages/perfrunner-cli)
+
+## What next
+
+* [Support test suite](https://github.com/Drag13/perfrunner/issues/37)
+* [Support CI](https://github.com/Drag13/perfrunner/issues/38)
+
 
 ## Related packages
 
