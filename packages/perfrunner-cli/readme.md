@@ -47,7 +47,7 @@ Supported reporters:
 * [html](#html) - renders basic metrics into HTML (FCP, DCL, Size, etc)
 * [json](#json) - saves all data to json
 * [csv](#csv) - saves all data to csv
-* [custom](#csv) - you can specify your own custom reporter
+* [custom](#custom) - you can specify your own custom reporter
 
 ## HTML
 
@@ -83,12 +83,12 @@ Generates output as CSV file
 npx perfrunner drag13@github.io --reporter csv
 ```
 
-## Custom reporter
+## Custom
 
 You also can use your own custom reporter
 
 ```cmd
-npx perfrunner https://drag13.io -- --reporter my-custom-reporter.js
+npx perfrunner https://drag13.io --reporter my-custom-reporter.js
 ```
 
 where reporter should looks like:
@@ -97,10 +97,9 @@ where reporter should looks like:
 module.exports = (outputFolder, data, args) => console.log(outputFolder, JSON.stringify(data), args);
 ```
 
-
 ## Troubleshooting
 
-Internally, perfrunner uses [puppeteer](https://github.com/puppeteer/puppeteer), so please check [this](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md) page for troubleshooting
+Internally, perfrunner uses [puppeteer](https://github.com/puppeteer/puppeteer), so please check [this](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md) page for troubleshooting.
 Perfrunner supports passing chromeArgs and ignoreDefaults flags for better control from your side:
 
 ```cmd
@@ -112,3 +111,7 @@ You also can use perfrunner without headless mode
 ```cmd
 npx perfrunner https://drag13.io --no-headless
 ```
+
+## What next
+
+For the next updates, please check the [project](https://github.com/Drag13/perfrunner/projects/1). It's not very well described but might give you an idea what is planned.
