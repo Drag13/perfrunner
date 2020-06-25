@@ -55,6 +55,12 @@ npx perfrunner https://drag13.io/ --reporter json
 
 For other commands check [perfrunner-cli](./packages/perfrunner-cli)
 
+## What next
+
+* [Support test suite](https://github.com/Drag13/perfrunner/issues/37)
+* [Support CI](https://github.com/Drag13/perfrunner/issues/38)
+
+
 ## Related packages
 
 * [perfrunner-cli](./packages/perfrunner-cli) - command line interface for the perfrunner
