@@ -62,36 +62,35 @@ type TracedResourceData = {
 };
 
 export class Tracer {
-    private _lastTraceName: string | undefined;
     private _page: Page | undefined;
+    private _path: string | undefined;
 
     constructor(private readonly _outputFolder: string) {}
 
     start = async (page: Page) => {
         this._page = page;
-        this._lastTraceName = this.generateTraceName();
-        const path = this.generateTracePath();
-        await page.tracing.start({ path });
+        const traceName = this.generateTraceName();
+        this._path = this.generateTracePath(traceName);
+        await page.tracing.start({ path: this._path });
     };
 
     stop = async (): Promise<Trace> => {
-        if (this._page == null) {
+        if (this._page == null || this._path == null) {
             throw new Error('Page for tracing is null or undefined. Maybe you forget to start tracing before calling stop tracing');
         }
 
         await this._page.tracing.stop();
 
-        const path = this.generateTracePath();
-        const tracing = JSON.parse(readFileSync(path, { encoding: 'utf8' }));
+        const tracing = JSON.parse(readFileSync(this._path, { encoding: 'utf8' }));
 
         return tracing;
     };
 
-    private generateTracePath = (): string => {
-        if (this._lastTraceName == null) {
+    private generateTracePath = (traceName: string): string => {
+        if (traceName == null) {
             throw new Error('Trace name is not defined.');
         }
-        return join(this._outputFolder, this._lastTraceName);
+        return join(this._outputFolder, traceName);
     };
 
     private generateTraceName = () => `${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
