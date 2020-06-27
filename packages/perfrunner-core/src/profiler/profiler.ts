@@ -1,15 +1,15 @@
 import { Page } from 'puppeteer';
-import { RawPerfData } from './raw-perf-data';
+import { RawPerfData, ExtendedPerformanceEntry } from './types';
 import { PerfRunnerOptions } from './perf-options';
-import { log, debug as t } from '../utils/log';
+import { log, debug as t } from '../utils';
 import { subsetTrace, extractResourceData, TraceEvent, Tracer } from './trace';
 import {
-    ExtendedPerformanceEntry,
     startApplication,
     dumpMetrics,
     startBrowser,
     startEmptyPage,
     setupPerformanceConditions,
+    setupPerformanceObservers,
 } from './browser';
 
 async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor: string | number | undefined, tracer: Tracer) {
@@ -66,6 +66,8 @@ export async function profile(url: URL, options: PerfRunnerOptions): Promise<Raw
 
     try {
         const page = await startEmptyPage(browser);
+        page.setDefaultNavigationTimeout(options.timeout);
+        await setupPerformanceObservers(page);
         await setupPerformanceConditions(page, options);
 
         t('warming up the page');

@@ -1,41 +1,8 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
 import { PerfOptions } from './perf-options';
-import { debug } from '../utils/log';
-
-export interface ExtendedPerformanceEntry extends PerformanceEntry {
-    initiatorType?: string;
-    nextHopProtocol?: string;
-    workerStart?: number;
-    redirectStart?: number;
-    redirectEnd?: number;
-    fetchStart?: number;
-    domainLookupStart?: number;
-    domainLookupEnd?: number;
-    connectStart?: number;
-    connectEnd?: number;
-    secureConnectionStart?: number;
-    requestStart?: number;
-    responseStart?: number;
-    responseEnd?: number;
-    transferSize?: number;
-    encodedBodySize?: number;
-    decodedBodySize?: number;
-    serverTiming?: any[];
-    workerTiming?: any[];
-    unloadEventStart?: number;
-    unloadEventEnd?: number;
-    domInteractive?: number;
-    domContentLoadedEventStart?: number;
-    domContentLoadedEventEnd?: number;
-    domComplete?: number;
-    loadEventStart?: number;
-    loadEventEnd?: number;
-    type?: string;
-    redirectCount?: number;
-    extension?: {
-        mimeType: string; // TODO: not all will have mime type, should be optional
-    };
-}
+import { measureLCP, setupObserversStorage, IWithObserver, LARGEST_CONTENTFUL_PAINT, onlyLatest } from './performance-observers';
+import { debug } from '../utils';
+import { ExtendedPerformanceEntry } from './types';
 
 export async function startBrowser(timeout: number, headless?: boolean, ignoreDefaultArgs?: boolean, args?: string[]) {
     debug(`running chrome with args: ${args && args.length ? args : `no args provided`}`);
@@ -65,6 +32,11 @@ export async function setupPerformanceConditions(page: Page, { network, throttli
     return session;
 }
 
+export async function setupPerformanceObservers(page: Page) {
+    await page.evaluateOnNewDocument(setupObserversStorage);
+    await page.evaluateOnNewDocument(measureLCP);
+}
+
 export async function startApplication(page: Page, url: string, waitFor?: string | number) {
     await page.goto(url, { waitUntil: 'networkidle2' });
     if (typeof waitFor === 'number' && waitFor != 0 && !isNaN(waitFor)) {
@@ -75,17 +47,37 @@ export async function startApplication(page: Page, url: string, waitFor?: string
     }
 }
 
+async function getMetrics(page: Page) {
+    return await page.metrics();
+}
+
+async function getPerformanceEntries(page: Page): Promise<PerformanceEntry[]> {
+    const rawMetrics = await page.evaluate(() => JSON.stringify(performance.getEntries()));
+
+    return JSON.parse(rawMetrics);
+}
+
+async function getObservablePerformanceEntries(page: Page): Promise<PerformanceEntry[]> {
+    const rawMetrics = await page.evaluate(() => JSON.stringify((<IWithObserver>window)._cpo?.getEntries() ?? []));
+
+    return JSON.parse(rawMetrics);
+}
+
 export async function dumpMetrics(page: Page) {
-    const performanceEntries: ExtendedPerformanceEntry[] = JSON.parse(
-        await page.evaluate(() => JSON.stringify(performance.getEntries()))
-    );
-    const metrics = await page.metrics();
+    const performanceEntries: ExtendedPerformanceEntry[] = await getPerformanceEntries(page);
+    const rawObservablePerformanceEntries = await getObservablePerformanceEntries(page);
+    const metrics = await getMetrics(page);
 
     const fcp = performanceEntries.find((x) => x.name === 'first-contentful-paint');
     debug(`fcp: ${fcp ? fcp.startTime : 'undefined'}`);
 
+    const latestObservables = onlyLatest(rawObservablePerformanceEntries);
+    const lcp = latestObservables.find((x) => x.entryType === LARGEST_CONTENTFUL_PAINT);
+
+    debug(`lcp: ${lcp ? JSON.stringify(lcp) : 'no lcp found'}`);
+
     return {
         metrics,
-        performanceEntries,
+        performanceEntries: [...performanceEntries, ...latestObservables],
     };
 }
