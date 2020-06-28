@@ -14,7 +14,8 @@
     "build:reporter": "parcel build src/reporters/default/index.html --no-source-maps --out-dir dist/reporters/default",
     "build": "tsc -p . && npm run build:reporter",
     "pack": "npm pack",
-    "prepublish": "npm run build"
+    "preversion": "npm run build && npm run test",
+    "prepublish": "npm run build && npm run test"
   },
   "keywords": [],
   "author": "drag13",

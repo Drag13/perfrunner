@@ -10,7 +10,8 @@
     "prettier": "prettier --config ../../.prettierrc --write ./src/**/*.ts",
     "build": "tsc -p .",
     "pack": "npm pack",
-    "prepublish": "npm run build"
+    "preversion": "npm run build && npm run test",
+    "prepublish": "npm run build && npm run test"
   },
   "keywords": [
     "perfrunner",
