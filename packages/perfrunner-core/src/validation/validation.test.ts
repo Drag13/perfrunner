@@ -35,8 +35,8 @@ class TestCase {
 
 const testSuite = [
     new TestCase(deepClone(validModel), true, 'Valid model should be valid'),
-    new TestCase({...deepClone(validModel), url: 'http://localhost:1234/'}, true, 'localhost should be valid url'),
-    new TestCase({...deepClone(validModel), url: 'testURl'}, false, 'When URL is not correct, error should be fired'),
+    new TestCase({ ...deepClone(validModel), url: 'http://localhost:1234/' }, true, 'localhost should be valid url'),
+    new TestCase({ ...deepClone(validModel), url: 'testURl' }, false, 'When URL is not correct, error should be fired'),
     new TestCase({ ...deepClone(validModel), testName: 5 }, false, 'When testName is not string, error should be fired'),
 ];
 

@@ -16,8 +16,6 @@ export function measureLCP() {
     observer.observe({ type: 'largest-contentful-paint', buffered: true });
 
     document.addEventListener('visibilitychange', () => {
-        const w = window as any;
-
         if (document.visibilityState === 'hidden') {
             observer.takeRecords();
             observer.disconnect();

@@ -5,9 +5,10 @@ import { Db } from './db';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
 import { log, throwException } from './utils/log';
 import validator from './validation/validation';
+import { ExtendedPerformanceEntry } from './profiler/types';
 
 export { PerfRunnerOptions, NetworkSetup };
-export { IPerformanceResult };
+export { IPerformanceResult, ExtendedPerformanceEntry };
 
 function writeResult(db: Db, data: PerfRunResult, purge?: boolean) {
     log('saving data');
