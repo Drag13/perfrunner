@@ -1,7 +1,7 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
 import { PerfOptions } from './perf-options';
 import { measureLCP, setupObserversStorage, IWithObserver } from './performance-observers';
-import { debug } from '../utils';
+import { debug } from '../logger';
 import { ExtendedPerformanceEntry } from './types';
 
 export async function startBrowser(timeout: number, headless?: boolean, ignoreDefaultArgs?: boolean, args?: string[]) {

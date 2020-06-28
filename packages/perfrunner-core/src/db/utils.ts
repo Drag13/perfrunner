@@ -16,14 +16,6 @@ function hash(text: string) {
     return hash;
 }
 
-// type ImportantParams = {
-//     downloadThroughput: number;
-//     uploadThroughput: number;
-//     latency: number;
-//     throttlingRate: number;
-//     useCache?: boolean;
-// };
-
 export function generateReportName(url: URL): string {
     const meaningfulUrl = `${url.protocol}//${url.host}${url.pathname.endsWith('/') ? url.pathname : url.pathname + '/'}`;
     const hashedUrl = hash(meaningfulUrl);
