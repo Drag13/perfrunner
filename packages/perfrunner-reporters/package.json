@@ -1,6 +1,6 @@
 {
   "name": "perfrunner-reporters",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Home of the perfrunner reporters",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -38,7 +38,7 @@
     "chart.js": "2.9.3",
     "json2csv": "5.0.1",
     "mustache": "4.0.1",
-    "perfrunner-core": "^0.3.0"
+    "perfrunner-core": "^0.3.1"
   },
   "files": [
     "dist"
