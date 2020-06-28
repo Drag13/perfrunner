@@ -1,4 +1,4 @@
-import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
+import { ExtendedPerformanceEntry } from 'perfrunner-core';
 
 type PathName = string;
 type ResourceType = 'js' | 'img' | 'css' | 'xhr' | 'font' | 'document' | 'unknown';

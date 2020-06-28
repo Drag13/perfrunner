@@ -1,6 +1,6 @@
 import { AbstractChart, IViewData, diffLabel } from './abstract.chart';
 import { ResourceType, isNullOrEmpty, color, toBytes, init0, initWithEmptyString, getResourceType } from '../../utils';
-import { ExtendedPerformanceEntry } from 'perfrunner-core/dist/profiler/browser';
+import { ExtendedPerformanceEntry } from 'perfrunner-core';
 import { IPerformanceResult } from './types';
 
 type ChartData = { [key in ResourceType]: number[] };

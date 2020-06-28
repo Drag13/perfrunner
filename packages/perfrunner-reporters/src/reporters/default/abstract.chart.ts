@@ -54,7 +54,7 @@ export abstract class AbstractChart<TData> {
                         footer: this.tooltipFooter(viewData),
                     },
                 },
-                maintainAspectRatio:false
+                maintainAspectRatio: false,
             },
         });
     }
@@ -65,7 +65,7 @@ export abstract class AbstractChart<TData> {
     protected elements = { line: { tension: 0 } };
 
     protected yAxes = (): Chart.ChartYAxe[] => [{ ticks: { beginAtZero: true, fontFamily: this.FONT_FAMILIY } }];
-    protected xAxes = ():Chart.ChartXAxe[] => [{ ticks: { callback: (v: string | number) => v.toString().substring(0, 30) } }];
+    protected xAxes = (): Chart.ChartXAxe[] => [{ ticks: { callback: (v: string | number) => v.toString().substring(0, 30) } }];
     protected legend = () => ({ labels: { fontFamily: this.FONT_FAMILIY } });
     protected chartTitle = () => ({ text: this.title, display: true, fontFamily: this.FONT_FAMILIY });
     protected getLabel = (index: number, comment: string | undefined) => `#${index + 1}${isNullOrEmpty(comment) ? '' : ` ${comment}`}`;

@@ -2,20 +2,30 @@
 
 ## Why
 
-Helps you to track the performance your web application and compare different solutions.
+Perfrunner helps you to track the performance of your web application or site and compare progress.
 
-## Performance comparison: Angular vs React vs Vue
+Tracks:
 
-This is a simple comparison of the three default builds for the Angular/React/Vue applications (no gzip), just to demonstrate how perfrunner works and looks.
+* First Contentful Paint
+* Largest Contentful Paint
+* Resources size (js, css, img, fonts)
+* Layout duration time
+* Script duration time
+* And much more!
 
-![default-html-reporter-example-angular-react-vue.PNG](./packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
+## Perfrunner example: Angular vs React vs Vue
+
+This is a simple comparison of the three default builds for the Angular/React/Vue applications (no gzip), just to demonstrate how Perfrunner works and looks.
+
+![perfrunner-example](./packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
 
 ## Features
 
 * Simple UI to track performance changes
-* Various output - html, json, csv
+* Various metrics (FCP, LCP, resources size, etc.)
+* Various output - HTML, JSON, CSV
 * Good precision with automated multiple reruns
-* Saving all traces for further investigation
+* Traces for further investigation
 * Supports multiple network conditions - slow3g, fast3g, 4g
 * Test your app with or without cache
 

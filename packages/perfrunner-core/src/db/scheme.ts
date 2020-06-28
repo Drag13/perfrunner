@@ -9,7 +9,7 @@ export interface PerfRunResult {
 }
 
 import { PerfOptions } from '../profiler/perf-options';
-import { ExtendedPerformanceEntry } from '../profiler/browser';
+import { ExtendedPerformanceEntry } from '../profiler/types';
 
 export type IPerformanceResult = PerfRunResult[];
 
