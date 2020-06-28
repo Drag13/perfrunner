@@ -3,7 +3,7 @@ import lowdb, { LowdbSync } from 'lowdb';
 
 import { DbSchema, PerfRunResult } from './scheme';
 import { generateReportName } from './utils';
-import { debug } from '../utils/log';
+import { debug } from '../logger';
 
 class Db {
     private static _instance: Db | undefined;

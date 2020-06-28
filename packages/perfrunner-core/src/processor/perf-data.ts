@@ -1,5 +1,5 @@
 import { Metrics } from 'puppeteer';
-import { ExtendedPerformanceEntry } from '../profiler/browser';
+import { ExtendedPerformanceEntry } from '../profiler/types';
 
 export type PerformanceData = {
     pageMetrics: Metrics;

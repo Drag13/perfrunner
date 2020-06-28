@@ -1,10 +1,10 @@
 import { groupEntries } from './utils';
-import { RawPerfData } from '../profiler/raw-perf-data';
+import { RawPerfData } from '../profiler/types';
 import { PerformanceData } from './perf-data';
 
 import { exclude, mergeWithRules as merge } from './merge';
 import { transform } from './transform';
-import { ExtendedPerformanceEntry } from '../profiler/browser';
+import { ExtendedPerformanceEntry } from '../profiler/types';
 
 const toMiliseconds = (v: number) => v * 1000;
 
