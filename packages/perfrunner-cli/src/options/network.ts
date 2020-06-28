@@ -36,6 +36,7 @@ export const FourG: NetworkSetup = {
 export const NetworkCondtionFactory = (networkType: string | undefined) => {
     switch (networkType) {
         case 'no-throttling':
+        case 'online':
             return NoThrottlingConditions;
         case 'slow-3g':
             return Slow3g;

@@ -1,8 +1,8 @@
-# Perfrunner-core
+# Perfrunner-core ![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master) ![npm](https://img.shields.io/npm/dm/perfrunner-core)
 
 This package was written to simplify performance testing for the web application. It supports:
 
-* Network conditions - downloadThroughput: 1000, uploadThroughput: 500, latency: 200
+* Network conditions - downloadThroughput, uploadThroughput, latency
 * CPU throttling
 * Browser caching and no caching
 * Multiple runs against the same URL for better precision
@@ -16,7 +16,7 @@ This package was written to simplify performance testing for the web application
 npm i perfrunner-core -D
 ```
 
-## Usage
+## Usage example
 
 ```ts
 import { profile } from 'perfrunner-core';
@@ -37,3 +37,9 @@ import { profile } from 'perfrunner-core';
 ## Tracing
 
 After testing, you can find traces in Chrome readable format inside the folder related to the test run. This might be helpful for additional investigation
+
+## Tests
+
+```cmd
+npm test
+```
