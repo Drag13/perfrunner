@@ -1,7 +1,8 @@
 import { Page } from 'puppeteer';
 import { RawPerfData, ExtendedPerformanceEntry } from './types';
 import { PerfRunnerOptions } from './perf-options';
-import { log, debug as t, orderByAscending } from '../utils';
+import { log, debug as t } from '../logger';
+import { orderByAscending } from '../utils';
 import { subsetTrace, extractResourceData, TraceEvent, Tracer } from './trace';
 import {
     startApplication,

@@ -4,6 +4,7 @@ import { NetworkSetup } from 'perfrunner-core';
 import { ArgsLikeString } from './arg-like-string';
 import { StringOrNumber } from './string-number';
 import { argsLike } from '../utils/args-like';
+import { LogLevel } from './log-level';
 
 export interface CliParams {
     url: string;
@@ -22,6 +23,7 @@ export interface CliParams {
     chromeArgs: string[];
     ignoreDefaultArgs: boolean;
     waitFor: number | string;
+    logLevel: string | undefined;
 }
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
@@ -49,6 +51,7 @@ const map: ParamsMap = {
     chromeArgs: { type: ArgsLikeString, multiple: true },
     ignoreDefaultArgs: { type: Boolean },
     waitFor: { type: StringOrNumber, alias: 'W' },
+    logLevel: { type: LogLevel, defaultValue: undefined },
 };
 
 export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: argsLike(k) }));

@@ -19,10 +19,7 @@ const testSuite = [
 describe('orderByAscending', () => {
     testSuite.forEach(({ expected, input }) => {
         it(`for ${JSON.stringify(input)} should return ${JSON.stringify(expected)}`, () => {
-            const [latest] = orderByAscending(
-                input,
-                (x) => x.age
-            );
+            const [latest] = orderByAscending(input, (x) => x.age);
 
             expect(latest).eqls(expected);
         });
