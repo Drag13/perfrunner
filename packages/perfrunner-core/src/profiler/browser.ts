@@ -74,7 +74,7 @@ export async function dumpMetrics(page: Page) {
     const latestObservables = onlyLatest(rawObservablePerformanceEntries);
     const lcp = latestObservables.find((x) => x.entryType === LARGEST_CONTENTFUL_PAINT);
 
-    debug(`lcp: ${lcp ? JSON.stringify(lcp) : 'no lcp found'}`);
+    debug(`lcp: ${lcp ? lcp.loadTime ?? lcp.startTime ?? 'LCP Time unknown' : 'No lcp event reported'}`);
 
     return {
         metrics,
