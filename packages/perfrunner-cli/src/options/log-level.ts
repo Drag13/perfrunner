@@ -5,7 +5,7 @@ export const LogLevel = (maybeLogLevel: string | undefined) => {
         return undefined;
     }
 
-    const logLevel = Object.values(logger.LOG_LEVEL).find((value) => value === maybeLogLevel);
+    const logLevel = Object.values(logger.LOG_LEVEL).find((value) => value.toLowerCase() === maybeLogLevel.toLowerCase());
 
     if (logLevel) {
         return logLevel;
