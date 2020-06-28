@@ -1,6 +1,6 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
 import { PerfOptions } from './perf-options';
-import { measureLCP, setupObserversStorage, IWithObserver, LARGEST_CONTENTFUL_PAINT, onlyLatest } from './performance-observers';
+import { measureLCP, setupObserversStorage, IWithObserver } from './performance-observers';
 import { debug } from '../utils';
 import { ExtendedPerformanceEntry } from './types';
 
@@ -65,19 +65,14 @@ async function getObservablePerformanceEntries(page: Page): Promise<PerformanceE
 
 export async function dumpMetrics(page: Page) {
     const performanceEntries: ExtendedPerformanceEntry[] = await getPerformanceEntries(page);
-    const rawObservablePerformanceEntries = await getObservablePerformanceEntries(page);
+    const obeservableEntries = await getObservablePerformanceEntries(page);
     const metrics = await getMetrics(page);
 
     const fcp = performanceEntries.find((x) => x.name === 'first-contentful-paint');
     debug(`fcp: ${fcp ? fcp.startTime : 'undefined'}`);
 
-    const latestObservables = onlyLatest(rawObservablePerformanceEntries);
-    const lcp = latestObservables.find((x) => x.entryType === LARGEST_CONTENTFUL_PAINT);
-
-    debug(`lcp: ${lcp ? lcp.loadTime ?? lcp.startTime ?? 'LCP Time unknown' : 'No lcp event reported'}`);
-
     return {
         metrics,
-        performanceEntries: [...performanceEntries, ...latestObservables],
+        performanceEntries: [...performanceEntries, ...obeservableEntries],
     };
 }
