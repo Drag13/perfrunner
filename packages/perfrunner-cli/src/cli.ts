@@ -12,6 +12,8 @@ import { generateFriendlyNameFromUrl, ensureFolderCreated, loader } from './util
     try {
         const inputParams = cmd(params, { camelCase: true }) as CliParams;
 
+
+
         const { logLevel, url, output } = inputParams;
 
         if (logLevel) {
