@@ -13,7 +13,6 @@ import { generateFriendlyNameFromUrl, ensureFolderCreated, loader } from './util
         const inputParams = cmd(params, { camelCase: true }) as CliParams;
 
 
-
         const { logLevel, url, output } = inputParams;
 
         if (logLevel) {
