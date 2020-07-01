@@ -6,19 +6,21 @@ import { profile } from 'perfrunner-core';
 import { logger } from 'perfrunner-core';
 
 import { params, CliParams } from './options/options';
-import { loader } from './utils/reporter-loader';
-import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from './utils';
+import { generateFriendlyNameFromUrl, ensureFolderCreated, loader } from './utils';
+
 (async function (): Promise<number> {
     try {
         const inputParams = cmd(params, { camelCase: true }) as CliParams;
 
-        inputParams.logLevel && (process.env.LOG_LEVEL = inputParams.logLevel);
+        const { logLevel, url, output } = inputParams;
 
-        const urlString = normalizeUrl(inputParams.url);
-        const url = new URL(urlString);
-        const endFolderName = generateFriendlyNameFromUrl(url);
+        if (logLevel) {
+            process.env.LOG_LEVEL = inputParams.logLevel;
+        }
 
-        const outputFolder = resolve(process.cwd(), inputParams.output, endFolderName);
+        const friendlyName = generateFriendlyNameFromUrl(url);
+
+        const outputFolder = resolve(process.cwd(), output, friendlyName);
 
         ensureFolderCreated(outputFolder);
 

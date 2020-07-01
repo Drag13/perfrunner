@@ -5,9 +5,10 @@ import { ArgsLikeString } from './arg-like-string';
 import { StringOrNumber } from './string-number';
 import { argsLike } from '../utils/args-like';
 import { LogLevel } from './log-level';
+import { Url } from './url';
 
 export interface CliParams {
-    url: string;
+    url: URL;
     timeout: number;
     throttling: number;
     network: NetworkSetup;
@@ -35,7 +36,7 @@ interface ProfileOptionDefintion<T> extends OptionDefinition {
 type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliParams[key]>, 'name'> };
 
 const map: ParamsMap = {
-    url: { type: String, defaultOption: true },
+    url: { type: Url, defaultOption: true },
     timeout: { type: Number, defaultValue: 60_000 },
     cache: { type: Boolean, defaultValue: false, alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
