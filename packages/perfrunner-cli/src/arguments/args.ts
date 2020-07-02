@@ -1,13 +1,9 @@
 import { OptionDefinition } from 'command-line-args';
-import { NetworkCondtionFactory, HSPA } from './network';
 import { NetworkSetup } from 'perfrunner-core';
-import { ArgsLikeString } from './arg-like-string';
-import { StringOrNumber } from './string-number';
-import { argsLike } from '../utils/args-like';
-import { LogLevel } from './log-level';
-import { Url } from './url';
+import { Url, Network, ArgsLikeString, StringOrNumber, LogLevel, HSPA } from './typeFactories';
+import { argsLike } from '../utils';
 
-export interface CliParams {
+export type ConsoleArguments = {
     url: URL;
     timeout: number;
     throttling: number;
@@ -25,25 +21,26 @@ export interface CliParams {
     ignoreDefaultArgs: boolean;
     waitFor: number | string;
     logLevel: string | undefined;
-}
+    test: { name: string };
+};
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
-    name: keyof CliParams;
+    name: keyof ConsoleArguments;
     type: (args?: string) => T extends Array<infer V> ? V : T;
     defaultValue?: T;
 }
 
-type ParamsMap = { [key in keyof CliParams]: Omit<ProfileOptionDefintion<CliParams[key]>, 'name'> };
+type ParamsMap = { [key in keyof ConsoleArguments]: Omit<ProfileOptionDefintion<ConsoleArguments[key]>, 'name'> };
 
-const map: ParamsMap = {
+const options: ParamsMap = {
     url: { type: Url, defaultOption: true },
     timeout: { type: Number, defaultValue: 60_000 },
     cache: { type: Boolean, defaultValue: false, alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
-    network: { type: NetworkCondtionFactory, defaultValue: HSPA },
+    network: { type: Network, defaultValue: HSPA },
     output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
-    reporter: { type: String, multiple: true, defaultValue: ['html'] },
+    reporter: { type: String as any, multiple: true, defaultValue: ['html'] },
     runs: { type: Number, defaultValue: 3, alias: 'R' },
     noHeadless: { type: Boolean, defaultValue: false },
     comment: { type: String },
@@ -53,6 +50,7 @@ const map: ParamsMap = {
     ignoreDefaultArgs: { type: Boolean },
     waitFor: { type: StringOrNumber, alias: 'W' },
     logLevel: { type: LogLevel, defaultValue: undefined },
+    test: { type: (_: string | undefined) => ({ name: 'tets' }), defaultValue: { name: 'test' } },
 };
 
-export const params = Object.entries(map).map(([k, v]) => ({ ...v, name: argsLike(k) }));
+export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));

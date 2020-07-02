@@ -1,46 +1,29 @@
 #!/usr/bin/env node
 
-import cmd from 'command-line-args';
-import { resolve } from 'path';
-import { profile } from 'perfrunner-core';
-import { logger } from 'perfrunner-core';
-
-import { params, CliParams } from './options/options';
-import { generateFriendlyNameFromUrl, ensureFolderCreated, loader } from './utils';
+import { profile, logger } from 'perfrunner-core';
+import { parseConsole } from './arguments/parser';
+import { mapArgs } from './mapper';
+import { setupLogLevel } from './logging';
+import { ensureFolderCreated } from './fs';
+import { loadReporter } from './reporter';
 
 (async function (): Promise<number> {
     try {
-        const inputParams = cmd(params, { camelCase: true }) as CliParams;
+        const args = parseConsole();
+        const { perfrunnerOptions, reporterOptions } = mapArgs(args);
 
+        setupLogLevel(args.logLevel);
+        ensureFolderCreated(perfrunnerOptions.output);
 
-        const { logLevel, url, output } = inputParams;
+        const performanceData = await profile(perfrunnerOptions);
 
-        if (logLevel) {
-            process.env.LOG_LEVEL = inputParams.logLevel;
-        }
+        logger.debug('loading reporter');
 
-        const friendlyName = generateFriendlyNameFromUrl(url);
-
-        const outputFolder = resolve(process.cwd(), output, friendlyName);
-
-        ensureFolderCreated(outputFolder);
-
-        const performanceResult = await profile({
-            ...inputParams,
-            url: url.href,
-            useCache: inputParams.cache,
-            throttlingRate: inputParams.throttling,
-            headless: !inputParams.noHeadless,
-            output: outputFolder,
-        });
-
-        const reporterName = inputParams.reporter[0];
-        const reporterArgs = inputParams.reporter.slice(1, inputParams.reporter.length);
-
-        const report = await loader(reporterName);
+        const reporter = await loadReporter(reporterOptions.name);
 
         logger.log('generating report');
-        await report(outputFolder, performanceResult, reporterArgs);
+
+        await reporter(perfrunnerOptions.output, performanceData, reporterOptions.params);
     } catch (error) {
         logger.error(error);
         return -1;
