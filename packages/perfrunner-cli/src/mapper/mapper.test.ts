@@ -28,6 +28,8 @@ describe('test', () => {
     const result = mapArgs(input);
 
     expect(result.perfrunnerOptions.testName).to.be.equal(input.testName);
+
+
     expect(result.reporterOptions.name).to.be.equal(input.reporter[0]);
     expect(result.reporterOptions.params).to.be.eqls(input.reporter.slice(1, input.reporter.length));
 });
