@@ -21,7 +21,6 @@ export type ConsoleArguments = {
     ignoreDefaultArgs: boolean;
     waitFor: number | string;
     logLevel: string | undefined;
-    test: { name: string };
 };
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
@@ -50,7 +49,6 @@ const options: ParamsMap = {
     ignoreDefaultArgs: { type: Boolean },
     waitFor: { type: StringOrNumber, alias: 'W' },
     logLevel: { type: LogLevel, defaultValue: undefined },
-    test: { type: (_: string | undefined) => ({ name: 'tets' }), defaultValue: { name: 'test' } },
 };
 
 export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { profile, logger } from 'perfrunner-core';
-import { parseConsole } from './arguments/parser';
+import { parseConsole } from './arguments';
 import { mapArgs } from './mapper';
 import { setupLogLevel } from './logging';
 import { ensureFolderCreated } from './fs';
