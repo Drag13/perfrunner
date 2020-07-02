@@ -29,5 +29,6 @@ import { loadReporter } from './reporter';
         return -1;
     }
 
+
     return 0;
 })();
