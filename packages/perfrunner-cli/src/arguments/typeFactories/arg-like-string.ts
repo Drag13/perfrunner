@@ -1,7 +1,3 @@
-const argsLike = (v: string) =>
-    v
-        .split(/(?=[A-Z])/g)
-        .join('-')
-        .toLowerCase();
+import { argsLike } from '../../utils/string';
 
 export const ArgsLikeString = (v: string | undefined) => (v ? `--${argsLike(v)}` : '');
