@@ -17,7 +17,7 @@ describe('URL type should', () => {
     describe('return', () => {
         it('expected url', () => {
             const url = Url('drag13.io');
-            expect(url.href).to.be.equal('http://drag13.io/')
+            expect(url.href).to.be.equal('http://drag13.io/');
         });
     });
 });

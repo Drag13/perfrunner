@@ -13,7 +13,7 @@ export class MetricsChartReporter extends AbstractChart<ChartData> {
     readonly type: 'chart' = 'chart';
     readonly name: string = 'metrics';
     readonly title = 'Common performance metrics';
-    yAxesLabelCalback = msLabel
+    yAxesLabelCalback = msLabel;
 
     protected getViewData = (rawData: IPerformanceResult) => {
         if (!Array.isArray(rawData)) {

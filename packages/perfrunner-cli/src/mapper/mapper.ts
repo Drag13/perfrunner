@@ -1,6 +1,6 @@
 import { PerfRunnerOptions } from 'perfrunner-core';
 import { ConsoleArguments } from '../arguments/args';
-import { getOutputPath } from "./output";
+import { getOutputPath } from './output';
 
 type ReporterOptions = { name: string; params: string[] };
 function getReporterOptions(args: string[]): ReporterOptions {
@@ -11,7 +11,9 @@ function getReporterOptions(args: string[]): ReporterOptions {
     };
 }
 
-export const mapArgs = (consoleArguments: ConsoleArguments): { perfrunnerOptions: PerfRunnerOptions; reporterOptions: ReporterOptions } => {
+export const mapArgs = (
+    consoleArguments: ConsoleArguments
+): { perfrunnerOptions: PerfRunnerOptions; reporterOptions: ReporterOptions } => {
     const { output, url } = consoleArguments;
 
     const outputPath = getOutputPath(output, url);

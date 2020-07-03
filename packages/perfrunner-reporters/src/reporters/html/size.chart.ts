@@ -70,6 +70,6 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
         return rawData.filter((x) => isNullOrEmpty(x.name));
     }
 
-    yAxesLabelCalback = kbLabel
+    yAxesLabelCalback = kbLabel;
     tooltipLabel = () => diffLabel(toBytes);
 }

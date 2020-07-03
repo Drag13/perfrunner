@@ -1,4 +1,4 @@
 import { parseConsole } from './parser';
-import { ConsoleArguments } from "./args";
+import { ConsoleArguments } from './args';
 
 export { parseConsole, ConsoleArguments };
