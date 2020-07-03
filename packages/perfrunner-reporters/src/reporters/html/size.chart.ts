@@ -1,4 +1,4 @@
-import { AbstractChart, IViewData, diffLabel } from './abstract.chart';
+import { AbstractChart, IViewData, diffLabel, kbLabel } from './abstract.chart';
 import { ResourceType, isNullOrEmpty, color, toBytes, init0, initWithEmptyString, getResourceType } from '../../utils';
 import { ExtendedPerformanceEntry } from 'perfrunner-core';
 import { IPerformanceResult } from './types';
@@ -70,14 +70,6 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
         return rawData.filter((x) => isNullOrEmpty(x.name));
     }
 
-    yAxes = () => [
-        {
-            ticks: {
-                beginAtZero: true,
-                callback: (xValue: number | string) => (typeof xValue === 'number' ? toBytes(xValue) : toBytes(parseFloat(xValue))),
-            },
-        },
-    ];
-
+    yAxesLabelCalback = kbLabel
     tooltipLabel = () => diffLabel(toBytes);
 }
