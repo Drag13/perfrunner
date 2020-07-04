@@ -42,6 +42,7 @@ export const NetworkCondtionFactory = (networkType: string | undefined) => {
             return Slow3g;
         case 'hspa':
             return HSPA;
+        case 'fast-3g':
         case 'hspaplus':
             return HSPA_Plus;
         case 'regular-4g':

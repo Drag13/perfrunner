@@ -29,7 +29,7 @@ npx perfrunner https://drag13.io
 | --comment | - | Provide additional information about test. May be used from reporter | ```undefined``` | Optional
 | --ignore-default-args | - | Ignore defaultArgs for launching Chromium | ```false``` | Optional |
 | --log-level| - | Setup log level: <```verbose```> | ```undefined``` | Optional |
-| --network | - | Network setup: <```online```/```regular-4g```/```fast-3g```/```slow-3g```> | ```fast-3g``` | Optional
+| --network | - | Network setup: <```online```/```regular-4g```/```fast-3g```/```hspa```/```slow-3g```> | ```fast-3g``` | Optional
 | --no-headless | - | Disables headless mode |  ```false``` | Optional |
 | --purge | - | Remove old data before the test run | ```false``` | Optional
 | --reporter | - | Specify reporter | ```html``` | Optional |
