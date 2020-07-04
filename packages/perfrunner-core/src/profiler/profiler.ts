@@ -69,10 +69,9 @@ function updateMissingData(entries: ExtendedPerformanceEntry[], { traceEvents }:
         const { finish, receiveResponse } = extractResourceData(entry.name, traceSubset);
 
         const mimeType = receiveResponse?.args.data.mimeType ?? 'unknown';
-        const encodedBodySize = finish?.args.data.encodedDataLength ?? 0;
 
         if (!entry.encodedBodySize) {
-            entry.encodedBodySize = encodedBodySize;
+            entry.encodedBodySize = finish?.args.data.encodedDataLength ?? 0;
         }
 
         if (!entry.extension?.mimeType) {

@@ -14,7 +14,7 @@ const cssFormats = ['.css'];
 const cssMimeTypes = ['text/css'];
 const isCss = isType(cssFormats, cssMimeTypes);
 
-const jsMimeTypes = ['application/javascript', 'text/javascript'];
+const jsMimeTypes = ['application/javascript', 'text/javascript', 'application/x-javascript'];
 const jsFormats = ['.js'];
 const isJs = isType(jsFormats, jsMimeTypes);
 

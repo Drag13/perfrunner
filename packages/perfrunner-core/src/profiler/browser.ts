@@ -58,7 +58,23 @@ async function getPerformanceEntries(page: Page): Promise<PerformanceEntry[]> {
 }
 
 async function getObservablePerformanceEntries(page: Page): Promise<PerformanceEntry[]> {
-    const rawMetrics = await page.evaluate(() => JSON.stringify((<IWithObserver>window)._cpo?.getEntries() ?? []));
+    const rawMetrics = await page.evaluate(function serializeObservableEntries() {
+        const data = (<IWithObserver>window)._cpo?.getEntries() ?? [];
+        function safeSerializer() {
+            const seen = new WeakSet();
+            return function serializer(_: string, value: any) {
+                if (typeof value === 'object' && value !== null) {
+                    if (seen.has(value)) {
+                        return;
+                    }
+                    seen.add(value);
+                }
+                return value;
+            };
+        }
+
+        return JSON.stringify(data, safeSerializer());
+    });
 
     return JSON.parse(rawMetrics);
 }
