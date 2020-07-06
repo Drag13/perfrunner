@@ -46,6 +46,7 @@
   "dependencies": {
     "command-line-args": "5.1.1",
     "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "perfrunner-core": "^0.3.2",
     "perfrunner-reporters": "^0.3.2"
   },
@@ -55,7 +56,12 @@
   "bin": "dist/cli.js",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettier"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,css,md}": [
+      "prettier --config ../../.prettierrc --write"
+    ]
   }
 }
