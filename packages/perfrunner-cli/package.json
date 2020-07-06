@@ -51,7 +51,8 @@
     "perfrunner-reporters": "^0.4.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/generated"
   ],
   "bin": "dist/cli.js",
   "husky": {
