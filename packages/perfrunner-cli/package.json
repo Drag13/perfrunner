@@ -4,7 +4,7 @@
   "description": "Command-line-interface for the perfrunner - automated UI performance test tool",
   "main": "./dist/cli.js",
   "scripts": {
-    "test": "exit 0",
+    "test": "ts-mocha -p ./tsconfig.json ./**/*.test.ts",
     "demo": "npm run build && node dist/cli \"https://drag13.io\" --runs 1",
     "pack": "npm pack",
     "prettier": "prettier --config ../../.prettierrc --write ./src/**/*.ts",
@@ -31,18 +31,37 @@
   "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-cli/readme.md",
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "4.2.11",
     "@types/command-line-args": "5.0.0",
+    "@types/lowdb": "1.0.9",
+    "@types/mocha": "7.0.2",
     "@types/node": "14.0.13",
+    "chai": "4.2.0",
+    "mocha": "7.2.0",
     "prettier": "2.0.5",
+    "ts-mocha": "7.0.0",
+    "ts-node": "8.10.2",
     "typescript": "3.9.5"
   },
   "dependencies": {
     "command-line-args": "5.1.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "perfrunner-core": "^0.3.2",
     "perfrunner-reporters": "^0.3.2"
   },
   "files": [
     "dist"
   ],
-  "bin": "dist/cli.js"
+  "bin": "dist/cli.js",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,css,md}": [
+      "prettier --config ../../.prettierrc --write"
+    ]
+  }
 }

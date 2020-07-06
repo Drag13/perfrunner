@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { Page } from 'puppeteer';
 
@@ -70,7 +70,10 @@ export class Tracer {
     start = async (page: Page) => {
         this._page = page;
         const traceName = this.generateTraceName();
-        this._path = this.generateTracePath(traceName);
+        const outputTo = join(this._outputFolder, 'traces');
+        this.ensureFolderCreated(outputTo);
+        this._path = this.generateTracePath(outputTo, traceName);
+
         await page.tracing.start({ path: this._path });
     };
 
@@ -86,14 +89,15 @@ export class Tracer {
         return tracing;
     };
 
-    private generateTracePath = (traceName: string): string => {
-        if (traceName == null) {
-            throw new Error('Trace name is not defined.');
-        }
-        return join(this._outputFolder, traceName);
-    };
+    private generateTracePath = (folder: string, traceName: string): string => join(folder, traceName);
 
     private generateTraceName = () => `${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+
+    private ensureFolderCreated(path: string) {
+        if (!existsSync(path)) {
+            mkdirSync(path);
+        }
+    }
 }
 
 export function subsetTrace(trc: TraceEvents) {

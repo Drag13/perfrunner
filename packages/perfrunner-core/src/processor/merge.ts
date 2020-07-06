@@ -28,7 +28,7 @@ const getDefaultMergeFunc = <T>(value: T): MergeFunc<T> => {
 };
 
 export function mergeWithRules<T>(data: T[], rules?: MergeMap<T>) {
-    // store for data from all runs
+    // store data from all runs
     var accumulator: { [key: string]: any[] } = {};
 
     // fill the store with key | values
