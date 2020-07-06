@@ -10,7 +10,7 @@ import { loadReporter } from './reporter';
 (async function (): Promise<number> {
     try {
         const args = parseConsole();
-        const { perfrunnerOptions, reporterOptions } = mapArgs(args)
+        const { perfrunnerOptions, reporterOptions } = mapArgs(args);;
 
         setupLogLevel(args.logLevel);
         ensureFolderCreated(perfrunnerOptions.output);

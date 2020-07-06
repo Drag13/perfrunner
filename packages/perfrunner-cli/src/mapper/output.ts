@@ -7,7 +7,7 @@ const generateFriendlyNameFromUrl = (url: URL): string => {
     return `${friendlyHost}${friendlyPath}`;
 };
 
-const santizePath = (path:string) => path; // TODO: implement sanitaze
+const santizePath = (path: string) => path; // TODO: implement sanitaze
 
 export function getOutputPath(rootOutputFolder: string, testName: string): string;
 export function getOutputPath(rootOutputFolder: string, url: URL): string;
