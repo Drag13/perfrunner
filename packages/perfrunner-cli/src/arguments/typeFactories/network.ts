@@ -33,7 +33,7 @@ export const FourG: NetworkSetup = {
     latency: 50,
 };
 
-export const NetworkCondtionFactory = (networkType: string | undefined) => {
+export const Network = (networkType: string | undefined) => {
     switch (networkType) {
         case 'no-throttling':
         case 'online':

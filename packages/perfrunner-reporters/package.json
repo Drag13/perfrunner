@@ -9,9 +9,8 @@
     "prettier": "prettier --config ../../.prettierrc --write ./src/**/*.ts",
     "tsc": "tsc",
     "copyfiles": "copyfiles",
-    "copy:defaultReporter": "copyfiles src/default/index.html dist/default",
     "parcel": "parcel",
-    "build:reporter": "parcel build src/reporters/default/index.html --no-source-maps --out-dir dist/reporters/default",
+    "build:reporter": "parcel build src/reporters/html/index.html --no-source-maps --out-dir dist/reporters/html",
     "build": "tsc -p . && npm run build:reporter",
     "pack": "npm pack",
     "preversion": "npm run build && npm run test",
@@ -36,6 +35,7 @@
   },
   "dependencies": {
     "chart.js": "2.9.3",
+    "husky": "^4.2.5",
     "json2csv": "5.0.1",
     "mustache": "4.0.1",
     "perfrunner-core": "^0.3.2"

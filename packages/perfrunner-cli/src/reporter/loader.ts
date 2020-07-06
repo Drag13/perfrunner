@@ -32,10 +32,8 @@ async function loadReporterFromReporters(path: string): Promise<IReporter> {
     return reporter as IReporter;
 }
 
-async function loader(path: string) {
+export async function loadReporter(path: string) {
     const isExternal = path.endsWith('.js');
 
     return isExternal ? await loadExternalReporter(path) : await loadReporterFromReporters(path);
 }
-
-export { loader };

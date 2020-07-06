@@ -1,4 +1,4 @@
-import { AbstractChart, IViewData } from './abstract.chart';
+import { AbstractChart, IViewData, msLabel } from './abstract.chart';
 import { IPerformanceResult } from './types';
 import { init0, initWithEmptyString, color } from '../../utils';
 
@@ -8,6 +8,7 @@ export class EntriesChartReporter extends AbstractChart<ChartData> {
     readonly type: 'chart' = 'chart';
     readonly name: string = 'entries';
     readonly title = 'Application Events';
+    protected yAxesLabelCalback = msLabel;
 
     protected getDatasetEntries = (data: ChartData) => {
         return [

@@ -26,6 +26,7 @@ export abstract class AbstractChart<TData> {
 
     protected abstract getViewData: (data: IPerformanceResult) => IViewData<TData>;
     protected abstract getDatasetEntries: (viewData: TData) => Array<any>;
+    protected abstract yAxesLabelCalback(value: string | number): string;
 
     public render(container: HTMLCanvasElement, rawData: IPerformanceResult) {
         const ctx = this.getCanvasContext(container);
@@ -64,7 +65,9 @@ export abstract class AbstractChart<TData> {
     protected responsiveAnimationDuration = 0;
     protected elements = { line: { tension: 0 } };
 
-    protected yAxes = (): Chart.ChartYAxe[] => [{ ticks: { beginAtZero: true, fontFamily: this.FONT_FAMILIY } }];
+    protected yAxes = (): Chart.ChartYAxe[] => [
+        { ticks: { beginAtZero: true, fontFamily: this.FONT_FAMILIY, callback: this.yAxesLabelCalback } },
+    ];
     protected xAxes = (): Chart.ChartXAxe[] => [{ ticks: { callback: (v: string | number) => v.toString().substring(0, 30) } }];
     protected legend = () => ({ labels: { fontFamily: this.FONT_FAMILIY } });
     protected chartTitle = () => ({ text: this.title, display: true, fontFamily: this.FONT_FAMILIY });
@@ -142,3 +145,6 @@ export const diffLabel = (formatter: (v: number) => string): TooltipLabelCallbac
         return label ?? '';
     };
 };
+
+export const msLabel = (value: string | number) => `${value} ms`;
+export const kbLabel = (value: string | number) => (typeof value === 'number' ? toBytes(value) : toBytes(parseFloat(value)));

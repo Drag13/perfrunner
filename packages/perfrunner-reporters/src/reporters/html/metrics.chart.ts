@@ -1,4 +1,4 @@
-import { AbstractChart, IViewData } from './abstract.chart';
+import { AbstractChart, IViewData, msLabel } from './abstract.chart';
 import { color, init0, initWithEmptyString } from '../../utils';
 import { IPerformanceResult } from './types';
 
@@ -13,6 +13,7 @@ export class MetricsChartReporter extends AbstractChart<ChartData> {
     readonly type: 'chart' = 'chart';
     readonly name: string = 'metrics';
     readonly title = 'Common performance metrics';
+    yAxesLabelCalback = msLabel;
 
     protected getViewData = (rawData: IPerformanceResult) => {
         if (!Array.isArray(rawData)) {

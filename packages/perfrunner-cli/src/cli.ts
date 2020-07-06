@@ -1,43 +1,29 @@
 #!/usr/bin/env node
 
-import cmd from 'command-line-args';
-import { resolve } from 'path';
-import { profile } from 'perfrunner-core';
-import { logger } from 'perfrunner-core';
+import { profile, logger } from 'perfrunner-core';
+import { parseConsole } from './arguments';
+import { mapArgs } from './mapper';
+import { setupLogLevel } from './logging';
+import { ensureFolderCreated } from './fs';
+import { loadReporter } from './reporter';
 
-import { params, CliParams } from './options/options';
-import { loader } from './utils/reporter-loader';
-import { generateFriendlyNameFromUrl, normalizeUrl, ensureFolderCreated } from './utils';
 (async function (): Promise<number> {
     try {
-        const inputParams = cmd(params, { camelCase: true }) as CliParams;
+        const args = parseConsole();
+        const { perfrunnerOptions, reporterOptions } = mapArgs(args);
 
-        inputParams.logLevel && (process.env.LOG_LEVEL = inputParams.logLevel);
+        setupLogLevel(args.logLevel);
+        ensureFolderCreated(perfrunnerOptions.output);
 
-        const urlString = normalizeUrl(inputParams.url);
-        const url = new URL(urlString);
-        const endFolderName = generateFriendlyNameFromUrl(url);
+        const performanceData = await profile(perfrunnerOptions);
 
-        const outputFolder = resolve(process.cwd(), inputParams.output, endFolderName);
+        logger.debug('loading reporter');
 
-        ensureFolderCreated(outputFolder);
-
-        const performanceResult = await profile({
-            ...inputParams,
-            url: url.href,
-            useCache: inputParams.cache,
-            throttlingRate: inputParams.throttling,
-            headless: !inputParams.noHeadless,
-            output: outputFolder,
-        });
-
-        const reporterName = inputParams.reporter[0];
-        const reporterArgs = inputParams.reporter.slice(1, inputParams.reporter.length);
-
-        const report = await loader(reporterName);
+        const reporter = await loadReporter(reporterOptions.name);
 
         logger.log('generating report');
-        await report(outputFolder, performanceResult, reporterArgs);
+
+        await reporter(perfrunnerOptions.output, performanceData, reporterOptions.params);
     } catch (error) {
         logger.error(error);
         return -1;
