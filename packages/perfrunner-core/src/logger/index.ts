@@ -12,6 +12,20 @@ const colors = {
 
 const isVerbose = (): boolean => process.env.LOG_LEVEL === LOG_LEVEL.VERBOSE;
 
+/**
+ * Logs message with default level
+ * @param message message to log
+ */
 export const log = (message: string) => console.log(colors.log, `prefrunner: ${message}`);
+
+/**
+  * Logs debug messages
+  * @param message message to log
+  */
 export const debug = (message: string) => isVerbose() && console.log(colors.debug, `prefrunner.debug: ${message}`);
+
+/**
+ * Logs error
+ * @param message error message to log
+ */
 export const error = (message: string) => console.log(colors.error, `perfrunner: ${message}`);

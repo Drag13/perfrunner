@@ -11,9 +11,12 @@ function getReporterOptions(args: string[]): ReporterOptions {
     };
 }
 
-export const mapArgs = (
-    consoleArguments: ConsoleArguments
-): { perfrunnerOptions: PerfRunnerOptions; reporterOptions: ReporterOptions } => {
+export type TestParams = {
+    perfrunnerOptions: PerfRunnerOptions;
+    reporterOptions: ReporterOptions;
+};
+
+export const mapArgs = (consoleArguments: ConsoleArguments): TestParams => {
     const { output, url, testName } = consoleArguments;
 
     const outputPath = getOutputPath(output, testName ?? url);
