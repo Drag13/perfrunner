@@ -6,6 +6,11 @@ import { log, error } from './logger';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
 import validator from './validation/validation';
 
+/**
+ * Profile given URL and returns performance data
+ * @param {PerfRunnerOptions} options Profiling parameters
+ * @returns {Promise<IPerformanceResult>} performance result
+ */
 export async function profile(options: PerfRunnerOptions): Promise<IPerformanceResult> {
     try {
         await validator.validate(options);

@@ -16,7 +16,7 @@
     "preversion": "npm run build && npm run test",
     "prepublish": "npm run build && npm run test"
   },
-  "keywords": [],
+  "keywords": ["perfrunner", "performance"],
   "author": "drag13",
   "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-reporters/readme.md",
   "homepage": "https://github.com/Drag13/perfrunner",
@@ -31,11 +31,11 @@
     "parcel-bundler": "1.12.4",
     "parcel-plugin-inline-source": "1.0.0",
     "prettier": "2.0.5",
-    "typescript": "3.9.5"
+    "typescript": "3.9.5",
+    "husky": "^4.2.5"
   },
   "dependencies": {
     "chart.js": "2.9.3",
-    "husky": "^4.2.5",
     "json2csv": "5.0.1",
     "mustache": "4.0.1",
     "perfrunner-core": "^0.4.0"
