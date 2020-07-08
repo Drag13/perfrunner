@@ -1,5 +1,8 @@
 import { Metrics } from 'puppeteer';
 
+/**
+ * Performance entry with additional fields
+ */
 export interface ExtendedPerformanceEntry extends PerformanceEntry {
     initiatorType?: string;
     nextHopProtocol?: string;

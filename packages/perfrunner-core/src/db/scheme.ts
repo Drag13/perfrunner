@@ -11,6 +11,9 @@ export interface PerfRunResult {
 import { PerfOptions } from '../profiler/perf-options';
 import { ExtendedPerformanceEntry } from '../profiler/types';
 
+/**
+ * List of the all perfromance runs for the given URL or testName
+ */
 export type IPerformanceResult = PerfRunResult[];
 
 export type DbSchema = {

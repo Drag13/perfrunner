@@ -1,6 +1,15 @@
-# Perfrunner-CLI [![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master)](https://travis-ci.org/Drag13/perfrunner)
+# Perfrunner [![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master)](https://travis-ci.org/Drag13/perfrunner)
 
-Command-line-interface for the [perfrunner](https://github.com/Drag13/perfrunner/tree/development/packages/perfrunner-core) - an automated tool for tracking performance for the web app and site.
+Perfrunner - automated tool that helps you to track the performance of your site or web application.
+
+Tracks:
+
+* First Contentful Paint
+* Largest Contentful Paint
+* Layout duration time
+* Script duration time
+* Resources size (js, css, img, fonts)
+* And much more!
 
 ## Example
 
