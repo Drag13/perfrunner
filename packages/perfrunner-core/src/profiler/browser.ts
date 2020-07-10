@@ -38,7 +38,7 @@ export async function setupPerformanceObservers(page: Page) {
 }
 
 export async function startApplication(page: Page, url: string, waitFor?: string | number) {
-    await page.goto(url, { waitUntil: 'networkidle2' });
+    await page.goto(url, { waitUntil: 'networkidle0' });
     if (typeof waitFor === 'number' && waitFor != 0 && !isNaN(waitFor)) {
         await page.waitFor(waitFor);
     }
@@ -80,9 +80,9 @@ async function getObservablePerformanceEntries(page: Page): Promise<PerformanceE
 }
 
 export async function dumpMetrics(page: Page) {
-    const performanceEntries: ExtendedPerformanceEntry[] = await getPerformanceEntries(page);
-    const obeservableEntries = await getObservablePerformanceEntries(page);
     const metrics = await getMetrics(page);
+    const obeservableEntries = await getObservablePerformanceEntries(page);
+    const performanceEntries: ExtendedPerformanceEntry[] = await getPerformanceEntries(page);
 
     const fcp = performanceEntries.find((x) => x.name === 'first-contentful-paint');
     debug(`fcp: ${fcp ? fcp.startTime : 'undefined'}`);
