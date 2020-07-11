@@ -1,7 +1,7 @@
-import { AbstractChart, IViewData, diffLabel, kbLabel } from './abstract.chart';
-import { ResourceType, isNullOrEmpty, color, toBytes, init0, initWithEmptyString, getResourceType } from '../../utils';
+import { AbstractChart, IViewData, diffLabel, kbLabel } from '../abstract.chart';
+import { ResourceType, isNullOrEmpty, color, toBytes, init0, initWithEmptyString, getResourceType } from '../../../utils';
 import { ExtendedPerformanceEntry } from 'perfrunner-core';
-import { IPerformanceResult } from './types';
+import { IPerformanceResult } from '../types';
 
 type ChartData = { [key in ResourceType]: number[] };
 

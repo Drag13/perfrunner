@@ -1,6 +1,6 @@
-import { AbstractChart, IViewData, msLabel } from './abstract.chart';
-import { color, init0, initWithEmptyString } from '../../utils';
-import { IPerformanceResult } from './types';
+import { AbstractChart, IViewData, msLabel } from '../abstract.chart';
+import { color, init0, initWithEmptyString } from '../../../utils';
+import { IPerformanceResult } from '../types';
 
 type ChartData = {
     layoutDuration: number[];

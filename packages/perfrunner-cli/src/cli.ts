@@ -12,8 +12,8 @@ async function* runProfileSession(pf: PerfRunnerOptions[]) {
         const params = pf[i];
         ensureFolderCreated(params.output);
         logger.debug(JSON.stringify(params.network));
-        const performanceData = await profile(params);
-        yield performanceData;
+
+        yield await profile({ ...params, purge: i === 0 ? params.purge : false });
     }
 }
 
@@ -25,8 +25,7 @@ async function* runProfileSession(pf: PerfRunnerOptions[]) {
         setupLogLevel(args.logLevel);
 
         let performanceData: IPerformanceResult | undefined = undefined;
-        for await (const data of runProfileSession(perfrunnerOptions)) {
-            performanceData = data;
+        for await (performanceData of runProfileSession(perfrunnerOptions)) {
         }
 
         logger.debug('loading reporter');

@@ -1,57 +1,46 @@
-import { EntriesChartReporter } from './entries.chart';
-import { MarksChartReporter } from './marks.chart';
-import { MetricsChartReporter } from './metrics.chart';
-import { ResourceSizeChart } from './size.chart';
-import { IReporter, IPerformanceResult } from './types';
-import { defined } from '../../utils';
-import { ResourceSizeBeforeFCPChart } from './size-fcp.chart';
+import { getReporterRegistry, defaultReporterNames } from './charts';
+import { defined, groupBy } from '../../utils';
+import { IPerformanceResult } from 'perfrunner-core';
+import { renderPages, renderPlacholdersForCharts } from './renders';
 
-const allReporters = [
-    new EntriesChartReporter(),
-    new MetricsChartReporter(),
-    new MarksChartReporter(),
-    new ResourceSizeChart(),
-    new ResourceSizeBeforeFCPChart(),
-];
+const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] => {
+    return groupBy(
+        performanceRuns,
+        ({ runParams: { useCache, network } }) =>
+            `${network.downloadThroughput}_${network.uploadThroughput}_${network.latency}_${useCache ? 1 : 0}`
+    );
+};
 
-function renderChartRow(parent: Node, charts: IReporter<HTMLElement>[]) {
-    const canvases: { canvas: HTMLCanvasElement; chart: IReporter<HTMLElement> }[] = [];
+(function render(navId: string, contentId: string, data: IPerformanceResult, reporters: string[] = []) {
 
-    const row = document.createElement(`div`);
-    row.className = 'charts';
 
-    charts.forEach((chart) => {
-        const container = document.createElement('div');
-        container.className = `chart-container`;
-        const canvas = document.createElement('canvas');
-        container.appendChild(canvas);
-        row.append(container);
-        canvases.push({ canvas, chart });
-    });
 
-    parent.appendChild(row);
+    const navNode = document.getElementById(navId);
+    const contentNode = document.getElementById(contentId);
 
-    return canvases;
-}
-
-function renderCharts(root: Node, charts: IReporter<HTMLElement>[], data: IPerformanceResult) {
-    renderChartRow(root, charts).forEach(({ canvas, chart }) => chart.render(canvas, data));
-}
-
-(function render(root: string, reporters: string[], data: IPerformanceResult) {
-    const rootNode = document.getElementById(root);
-
-    if (!rootNode) {
-        throw new Error(`Report rendering failed, root node: "${root}" not found`);
+    if (!navNode || !contentNode) {
+        throw new Error(`${navId == null}? 'navElement ${contentId == null} ? 'contentElement not found!`);
     }
 
-    const names = reporters && reporters.length ? reporters : ['entries', 'size-fcp', 'size', 'metrics', 'marks'];
+    const allReporters = getReporterRegistry();
 
-    const plugins = names.map((pluginName) => allReporters.find((pl) => pl.name === pluginName.toLowerCase())).filter(defined);
+    const reportersToRender = (reporters.length ? reporters : defaultReporterNames)
+        .map((reporterName) => allReporters[reporterName.toLowerCase()])
+        .filter(defined);
 
-    renderCharts(
-        rootNode,
-        plugins.filter((x) => x.type === 'chart'),
-        data
+    const groupedData = groupByPerfConditions(data);
+
+    renderPages(
+        navNode,
+        contentNode,
+        groupedData.map((_, i) => ({ tabName: `tab_${i}`, content: renderPlacholdersForCharts(reportersToRender.length) }))
     );
-})('root', (window as any).renderArgs, (window as any).data);
+
+
+    groupedData.forEach((performanceResult, groupId) => {
+        reportersToRender.forEach((reporter, i) => {
+            const canvasNumber = groupId * reportersToRender.length + i;
+            reporter.render(document.querySelectorAll('canvas')[canvasNumber], performanceResult);
+        });
+    });
+})('nav-tab', 'nav-tabContent', (window as any).data, (window as any).renderArgs);

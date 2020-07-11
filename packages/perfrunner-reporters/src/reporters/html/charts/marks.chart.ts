@@ -1,11 +1,11 @@
-import { AbstractChart, IViewData, msLabel } from './abstract.chart';
-import { initWithEmptyString, init0, color } from '../../utils';
-import { IPerformanceResult } from './types';
+import { AbstractChart, IViewData, msLabel } from '../abstract.chart';
+import { initWithEmptyString, init0, color } from '../../../utils';
+import { IPerformanceResult } from '../types';
 
 type ChartData = Record<string, any[]>;
 
 export class MarksChartReporter extends AbstractChart<ChartData> {
-    readonly name = 'marks';
+    readonly name: string = 'marks';
     readonly type: 'chart' = 'chart';
     readonly title = 'Performance Marks';
     protected yAxesLabelCalback = msLabel;

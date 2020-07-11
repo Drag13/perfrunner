@@ -106,7 +106,7 @@ export abstract class AbstractChart<TData> {
         const canvas = container as HTMLCanvasElement;
 
         if (canvas == null || typeof canvas.getContext !== 'function') {
-            throw new Error(`EntriesChartReporter failed, provided container is not canvs`);
+            throw new Error(`${this.name} failed, provided container is not canvas, ${canvas}`);
         }
 
         return canvas.getContext('2d')!;

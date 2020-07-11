@@ -1,6 +1,6 @@
-import { AbstractChart, IViewData, msLabel } from './abstract.chart';
-import { IPerformanceResult } from './types';
-import { init0, initWithEmptyString, color } from '../../utils';
+import { AbstractChart, IViewData, msLabel } from '../abstract.chart';
+import { IPerformanceResult } from '../types';
+import { init0, initWithEmptyString, color } from '../../../utils';
 
 type ChartData = { fp: number[]; fcp: number[]; DOMContentLoaded: number[]; DOMInteractive: number[]; load: number[]; lcp: number[] };
 
