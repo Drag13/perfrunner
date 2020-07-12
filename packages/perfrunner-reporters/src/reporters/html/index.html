@@ -22,15 +22,33 @@
         window.renderArgs = JSON.parse(normalizedString);
     </script>
 
-    <h1> {{data.0.runParams.url}} </h1>
     <div id="root">
 
         <nav>
-            <div class="navbar navbar-dark bg-dark "  role="tablist">
-                <ul id="nav-tab" class="nav nav-pills nav-fill"></ul>
+            <div class="navbar navbar-dark bg-dark " role="tablist">
+                <a rel="noopener" target="_blank" class="navbar-brand" href="{{href}}">{{href}}</a>
+                <ul id="nav-tab" class="nav nav-pills nav-fill">
+                    {{#pages}}
+                    <li class="nav-item">
+                        <a class="nav-link {{tabClass}}" data-toggle="tab" href="#{{contentId}}" role="tab"
+                            aria-controls="nav-home">{{pageName}}</a>
+                    </li>
+                    {{/pages}}
+                </ul>
             </div>
         </nav>
-        <div class="tab-content" id="nav-tabContent"> </div>
+        <div class="tab-content" id="nav-tabContent">
+
+            {{#pages}}
+            <div class="tab-pane {{pageClass}}" id="{{contentId}}" role="tabpanel">
+                <div class="charts">
+                    {{#reporters}}
+                    <div class="chart-container"><canvas></canvas> </div>
+                    {{/reporters}}
+                </div>
+            </div>
+            {{/pages}}
+        </div>
     </div>
 
     <script inline="inline" src="./render.ts"></script>
