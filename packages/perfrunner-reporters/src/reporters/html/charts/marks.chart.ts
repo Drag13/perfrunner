@@ -1,4 +1,4 @@
-import { AbstractChart, IViewData, msLabel } from '../abstract.chart';
+import { AbstractChart, IViewData, msLabel } from './abstract.chart';
 import { initWithEmptyString, init0, color } from '../../../utils';
 import { IPerformanceResult } from '../types';
 

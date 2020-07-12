@@ -1,6 +1,6 @@
-import { IPerformanceResult } from './types';
+import { IPerformanceResult } from '../types';
 import Chart, { ChartTooltipItem, ChartData } from 'chart.js';
-import { isNullOrEmpty, TRANSPARENT, toBytes, defined, toMs } from '../../utils';
+import { isNullOrEmpty, TRANSPARENT, toBytes, defined, toMs } from '../../../utils';
 
 type RunParams = {
     download: number;

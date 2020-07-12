@@ -1,4 +1,4 @@
-import { AbstractChart, IViewData, diffLabel, kbLabel } from '../abstract.chart';
+import { AbstractChart, IViewData, diffLabel, kbLabel } from './abstract.chart';
 import { ResourceType, isNullOrEmpty, color, toBytes, init0, initWithEmptyString, getResourceType } from '../../../utils';
 import { ExtendedPerformanceEntry } from 'perfrunner-core';
 import { IPerformanceResult } from '../types';
