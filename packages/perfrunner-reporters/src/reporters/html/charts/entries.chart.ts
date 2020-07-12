@@ -37,6 +37,7 @@ export class EntriesChartReporter extends AbstractChart<ChartData> {
             },
             labels: initWithEmptyString(length),
             runParams: this.runParams(rawData),
+            timeStamp: init0(length),
         };
 
         return rawData.reduce((acc, v, i) => {
@@ -57,6 +58,7 @@ export class EntriesChartReporter extends AbstractChart<ChartData> {
             const lcpEvent = v.performanceEntries.find((x) => x.entryType === 'largest-contentful-paint');
             acc.data.lcp[i] = lcpEvent?.renderTime ?? lcpEvent?.loadTime ?? 0;
             acc.labels[i] = this.getLabel(i, rawData[i].comment);
+            acc.timeStamp[i] = rawData[i].timeStamp;
 
             return acc;
         }, chartData);

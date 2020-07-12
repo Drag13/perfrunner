@@ -46,7 +46,7 @@ npx perfrunner https://drag13.io
 | --runs | -R | Number of runs you want to be performed| ```3``` | Optional |
 | --test-name | - | | ```undefined``` | Optional |
 | --throttling | -T | CPU slowdown multiplier | ```2``` | Optional |
-| --timeout |  - | Set timeout for the single test run in miliseconds | ```60_000``` | Optional
+| --timeout |  - | Set timeout for the single test run in miliseconds | ```90_000``` | Optional
 | --url | - | Url to profile | - | Required |
 | --wait-for | W | Specify selector or time in miliseconds to wait | ```undefined``` | Optional
 

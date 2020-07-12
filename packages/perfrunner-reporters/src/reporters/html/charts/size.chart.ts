@@ -30,6 +30,7 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
             },
             labels: initWithEmptyString(length),
             runParams: this.runParams(rawData),
+            timeStamp: init0(length),
         };
 
         const performanceEntries = rawData.map((x) => x.performanceEntries).filter(this.filter); // TODO: filter first
@@ -40,6 +41,7 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
                 acc.data[entryType][i] += pEntry.encodedBodySize ?? 0;
             });
             acc.labels[i] = this.getLabel(i, rawData[i].comment);
+            acc.timeStamp[i] = rawData[i].timeStamp;
             return acc;
         }, data);
     };

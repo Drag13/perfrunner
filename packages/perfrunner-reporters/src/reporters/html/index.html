@@ -6,44 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfrunner - {{data.0.runParams.url}}</title>
 
-    <style>
-        body {
-            margin: 0;
-            height: 100%;
-            width: 100%;
-        }
-
-        h1 {
-            text-align: center;
-            font-family: monospace, Verdana, sans-serif;
-            margin: 0;
-            font-size: 1.5em
-        }
-
-        .charts {
-            display: flex;
-            flex-wrap: wrap
-        }
-
-        .chart-container {
-            position: relative;
-            min-height: 300px;
-            width: 100%;
-            max-width: 100%
-        }
-
-        @media screen and (min-width:768px) {
-            .chart-container {
-                max-width: 50%;
-            }
-        }
-
-        @media screen and (min-width: 1200px) {
-            .chart-container {
-                max-width: 33%;
-            }
-        }
-    </style>
+    <link inline="inline" rel="stylesheet" href="./styles/bootstrap.css">
+    <link inline="inline" rel="stylesheet" href="./styles/styles.css">
 </head>
 
 <body>
@@ -59,9 +23,19 @@
     </script>
 
     <h1> {{data.0.runParams.url}} </h1>
-    <div id="root"></div>
+    <div id="root">
+
+        <nav>
+            <div class="navbar navbar-dark bg-dark "  role="tablist">
+                <ul id="nav-tab" class="nav nav-pills nav-fill"></ul>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent"> </div>
+    </div>
 
     <script inline="inline" src="./render.ts"></script>
+
+    <script inline="inline" src="./vendors.ts"></script>
 </body>
 
 </html>

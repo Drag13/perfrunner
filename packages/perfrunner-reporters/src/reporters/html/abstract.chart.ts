@@ -14,6 +14,7 @@ export interface IViewData<T> {
     data: T;
     labels: string[];
     runParams: RunParams[];
+    timeStamp: number[];
 }
 
 export abstract class AbstractChart<TData> {
@@ -90,13 +91,15 @@ export abstract class AbstractChart<TData> {
     });
 
     protected tooltipLabel = (_: IViewData<TData>) => diffLabel(toMs);
-    protected tooltipFooter = ({ runParams }: IViewData<TData>) => (t: ChartTooltipItem[]) => {
+    protected tooltipFooter = ({ runParams, timeStamp }: IViewData<TData>) => (t: ChartTooltipItem[]) => {
         const index = t[0].index;
         if (index == null || index >= runParams.length) {
             return '';
         }
         const param = runParams[index];
+        const time = new Date(timeStamp[index]);
         return [
+            `time: ${time.toLocaleString()}`,
             `download: ${toBytes(param.download)} upload ${toBytes(param.upload)} latency: ${param.latency}`,
             `throttling: ${param.throttling}x useCache: ${param.useCache}`,
         ];

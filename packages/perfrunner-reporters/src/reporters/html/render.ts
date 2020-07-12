@@ -6,15 +6,12 @@ import { renderPages, renderPlacholdersForCharts } from './renders';
 const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] => {
     return groupBy(
         performanceRuns,
-        ({ runParams: { useCache, network } }) =>
-            `${network.downloadThroughput}_${network.uploadThroughput}_${network.latency}_${useCache ? 1 : 0}`
+        ({ runParams: { useCache, network, throttlingRate } }) =>
+            `${network.downloadThroughput}_${network.uploadThroughput}_${network.latency}_${throttlingRate}_${useCache ? 1 : 0}`
     );
 };
 
 (function render(navId: string, contentId: string, data: IPerformanceResult, reporters: string[] = []) {
-
-
-
     const navNode = document.getElementById(navId);
     const contentNode = document.getElementById(contentId);
 
@@ -33,9 +30,11 @@ const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanc
     renderPages(
         navNode,
         contentNode,
-        groupedData.map((_, i) => ({ tabName: `tab_${i}`, content: renderPlacholdersForCharts(reportersToRender.length) }))
+        groupedData.map((_, i) => ({
+            tabName: `Perf conditions #${i}`,
+            content: renderPlacholdersForCharts(reportersToRender.length),
+        }))
     );
-
 
     groupedData.forEach((performanceResult, groupId) => {
         reportersToRender.forEach((reporter, i) => {

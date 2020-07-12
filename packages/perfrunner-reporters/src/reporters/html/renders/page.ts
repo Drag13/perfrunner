@@ -1,16 +1,19 @@
-const generateTab = (tabName: string, isSelected: boolean) =>
-    `<a class="nav-item nav-link ${
-        isSelected ? 'active' : ''
-    }" id="nav-${tabName}" data-toggle="tab" href="#${tabName}" role="tab" aria-controls="nav-home" aria-selected="${
-        isSelected ? true : false
-    }">${tabName}</a>`;
+import { hash } from '../../../utils';
 
-const generateContent = (tabName: string, isSelected: boolean, tabContent: string) =>
-    `<div class="tab-pane fade ${isSelected ? 'show active' : ''}" id="${tabName}" role="tabpanel"> ${tabContent} </div>`;
+const generateTab = (tabName: string, contentId: string, isSelected: boolean) =>
+    `<li class="nav-item">
+    <a class="nav-link ${
+        isSelected ? 'active' : ''
+    }" data-toggle="tab" href="#${contentId}" role="tab" aria-controls="nav-home" aria-selected="${
+        isSelected ? true : false
+    }">${tabName}</a></li>`;
+
+const generateContent = (contentId: string, isSelected: boolean, tabContent: string) =>
+    `<div class="tab-pane fade ${isSelected ? 'show active' : ''}" id="${contentId}" role="tabpanel"> ${tabContent} </div>`;
 
 const generatePage = (tabName: string, isSelected: boolean, tabContent: string) => ({
-    tab: generateTab(tabName, isSelected),
-    content: generateContent(tabName, isSelected, tabContent),
+    tab: generateTab(tabName, hash(tabName), isSelected),
+    content: generateContent(hash(tabName), isSelected, tabContent),
 });
 
 const append = (content: string, targetNode: HTMLElement) => {

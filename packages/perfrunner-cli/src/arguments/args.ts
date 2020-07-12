@@ -38,7 +38,7 @@ type ParamsMap = { [key in keyof ConsoleArguments]: Omit<ProfileOptionDefintion<
 
 const options: ParamsMap = {
     url: { type: Url, defaultOption: true },
-    timeout: { type: Number, defaultValue: 60_000 },
+    timeout: { type: Number, defaultValue: 90_000 },
     cache: { type: Boolean, defaultValue: false, alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
     network: { type: Network, defaultValue: [HSPA], multiple: true },
