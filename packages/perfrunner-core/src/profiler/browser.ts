@@ -23,12 +23,11 @@ export async function setupPerformanceConditions(page: Page, { network, throttli
         await page.setCacheEnabled(true);
     }
 
-    await session.send('Performance.enable');
-
     await session.send('Network.enable');
     await session.send('Emulation.setCPUThrottlingRate', { rate: throttlingRate });
     await session.send('Network.emulateNetworkConditions', { ...network, offline: false }); // https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-emulateNetworkConditions
 
+    await session.send('Performance.enable');
     return session;
 }
 

@@ -21,8 +21,10 @@ async function* profilePage(emptyPage: Page, url: string, runs: number, waitFor:
         t(`start tracing`);
         await tracer.start(emptyPage);
 
+        const started = Date.now();
         t(`start application`);
         await startApplication(emptyPage, url, waitFor);
+        t(`page loaded for ${new Date(started - Date.now()).getMilliseconds()}ms`);
 
         t(`getting trace data`);
         const trace = await tracer.stop();
@@ -97,10 +99,10 @@ export async function profile(url: URL, options: PerfRunnerOptions): Promise<Raw
         await setupPerformanceObservers(page);
         await setupPerformanceConditions(page, options);
 
+        const tracer = new Tracer(options.output);
+
         t('warming up the page');
         await startApplication(page, url.href, waitFor);
-
-        const tracer = new Tracer(options.output);
 
         for await (const dump of profilePage(page, url.href, runs, waitFor, tracer)) {
             const normalizedEntries = normalizedPerformanceEntries(dump.performanceEntries);
