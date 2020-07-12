@@ -16,7 +16,12 @@ export class MarksChartReporter extends AbstractChart<ChartData> {
         }
 
         const length = rawData.length;
-        const result: IViewData<ChartData> = { labels: initWithEmptyString(length), runParams: this.runParams(rawData), data: {}, timeStamp: init0(length), };
+        const result: IViewData<ChartData> = {
+            labels: initWithEmptyString(length),
+            runParams: this.runParams(rawData),
+            data: {},
+            timeStamp: init0(length),
+        };
 
         return rawData.reduce((acc, v, i) => {
             const marks = v.performanceEntries.filter((x) => x.entryType === 'mark');

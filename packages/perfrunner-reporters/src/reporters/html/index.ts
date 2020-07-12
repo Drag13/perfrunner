@@ -19,8 +19,8 @@ const pageViewData = (pageName: string, isActive: boolean) => {
     return {
         pageName,
         contentId: `x_${hash(pageName)}`,
-        pageClass: isActive ? 'active': '',
-        tabClass: isActive ? 'active show': '',
+        pageClass: isActive ? 'active' : '',
+        tabClass: isActive ? 'active show' : '',
     };
 };
 
