@@ -12,7 +12,7 @@ function getReporterOptions(args: string[]): ReporterOptions {
 }
 
 export type TestParams = {
-    perfrunnerOptions: PerfRunnerOptions;
+    perfrunnerOptions: PerfRunnerOptions[];
     reporterOptions: ReporterOptions;
 };
 
@@ -21,14 +21,15 @@ export const mapArgs = (consoleArguments: ConsoleArguments): TestParams => {
 
     const outputPath = getOutputPath(output, testName ?? url);
 
-    const perfrunnerOptions = {
+    const perfrunnerOptions = consoleArguments.network.map((networkSetup) => ({
         ...consoleArguments,
         url: consoleArguments.url.href,
         useCache: consoleArguments.cache,
         throttlingRate: consoleArguments.throttling,
         headless: !consoleArguments.noHeadless,
         output: outputPath,
-    };
+        network: networkSetup,
+    }));
 
     const reporterOptions = getReporterOptions(consoleArguments.reporter);
 

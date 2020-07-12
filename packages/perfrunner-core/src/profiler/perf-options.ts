@@ -16,7 +16,6 @@ export type NetworkSetup = {
 };
 
 export interface PerfOptions {
-
     /**
      * Sets url you want to profile. Should be valid URL with http scheme provided
      */
@@ -39,7 +38,6 @@ export interface PerfOptions {
 }
 
 export interface RunnerOptions {
-
     /**
      * Sets number of runs you want to execute
      */

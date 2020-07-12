@@ -28,7 +28,7 @@ import { profile } from 'perfrunner-core';
         output: './generated',
         runs: 5,
         throttlingRate: 4,
-        timeout: 60000,
+        timeout: 90000,
     });
 
     console.log(JSON.stringify(profilingResult));

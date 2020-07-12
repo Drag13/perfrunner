@@ -30,12 +30,7 @@ class Db {
         db.update('count', (n) => n + 1).write();
     }
 
-    read() {
-        const db = this._db;
-
-        db.defaults({ profile: [], count: 0 }).write();
-        return db.get('profile').value();
-    }
+    read = () => this._db.get('profile').value();
 
     purge() {
         debug(`clearing old data`);

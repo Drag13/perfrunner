@@ -4,46 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfrunner - {{data.0.runParams.url}}</title>
+    <title>Perfrunner - {{href}}</title>
 
-    <style>
-        body {
-            margin: 0;
-            height: 100%;
-            width: 100%;
-        }
-
-        h1 {
-            text-align: center;
-            font-family: monospace, Verdana, sans-serif;
-            margin: 0;
-            font-size: 1.5em
-        }
-
-        .charts {
-            display: flex;
-            flex-wrap: wrap
-        }
-
-        .chart-container {
-            position: relative;
-            min-height: 300px;
-            width: 100%;
-            max-width: 100%
-        }
-
-        @media screen and (min-width:768px) {
-            .chart-container {
-                max-width: 50%;
-            }
-        }
-
-        @media screen and (min-width: 1200px) {
-            .chart-container {
-                max-width: 33%;
-            }
-        }
-    </style>
+    <link inline="inline" rel="stylesheet" href="./styles/bootstrap.css">
+    <link inline="inline" rel="stylesheet" href="./styles/styles.css">
 </head>
 
 <body>
@@ -58,10 +22,38 @@
         window.renderArgs = JSON.parse(normalizedString);
     </script>
 
-    <h1> {{data.0.runParams.url}} </h1>
-    <div id="root"></div>
+    <div id="root">
+
+        <nav>
+            <div class="navbar navbar-dark bg-dark " role="tablist">
+                <a rel="noopener" target="_blank" class="navbar-brand" href="{{href}}">{{href}}</a>
+                <ul id="nav-tab" class="nav nav-pills nav-fill">
+                    {{#pages}}
+                    <li class="nav-item">
+                        <a class="nav-link {{tabClass}}" data-toggle="tab" href="#{{contentId}}" role="tab"
+                            aria-controls="nav-home">{{pageName}}</a>
+                    </li>
+                    {{/pages}}
+                </ul>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+
+            {{#pages}}
+            <div class="tab-pane {{pageClass}}" id="{{contentId}}" role="tabpanel">
+                <div class="charts">
+                    {{#reporters}}
+                    <div class="chart-container"><canvas></canvas> </div>
+                    {{/reporters}}
+                </div>
+            </div>
+            {{/pages}}
+        </div>
+    </div>
 
     <script inline="inline" src="./render.ts"></script>
+
+    <script inline="inline" src="./vendors.ts"></script>
 </body>
 
 </html>
