@@ -3,25 +3,30 @@ import { NetworkSetup } from 'perfrunner-core';
 import { Url, Network, ArgsLikeString, StringOrNumber, LogLevel, HSPA } from './typeFactories';
 import { argsLike } from '../utils';
 
-export type ConsoleArguments = {
+export type TestRunConditions = {
     url: URL;
     timeout: number;
-    throttling: number;
-    network: NetworkSetup;
-    output: string;
     runs: number;
-    cache: boolean;
     reporter: string[];
     purge: boolean;
     noHeadless: boolean;
-    comment: string;
     testName: string;
     reportOnly: boolean;
     chromeArgs: string[];
     ignoreDefaultArgs: boolean;
     waitFor: number | string;
     logLevel: string | undefined;
+    output: string;
+    comment: string;
 };
+
+export type PerformanceConditions = {
+    network: NetworkSetup[];
+    throttling: number;
+    cache: boolean;
+};
+
+export interface ConsoleArguments extends TestRunConditions, PerformanceConditions {}
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
     name: keyof ConsoleArguments;
@@ -33,10 +38,10 @@ type ParamsMap = { [key in keyof ConsoleArguments]: Omit<ProfileOptionDefintion<
 
 const options: ParamsMap = {
     url: { type: Url, defaultOption: true },
-    timeout: { type: Number, defaultValue: 60_000 },
+    timeout: { type: Number, defaultValue: 90_000 },
     cache: { type: Boolean, defaultValue: false, alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
-    network: { type: Network, defaultValue: HSPA },
+    network: { type: Network, defaultValue: [HSPA], multiple: true },
     output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
     reporter: { type: String as any, multiple: true, defaultValue: ['html'] },

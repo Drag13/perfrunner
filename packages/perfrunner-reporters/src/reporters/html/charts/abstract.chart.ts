@@ -1,6 +1,6 @@
-import { IPerformanceResult } from './types';
+import { IPerformanceResult } from '../types';
 import Chart, { ChartTooltipItem, ChartData } from 'chart.js';
-import { isNullOrEmpty, TRANSPARENT, toBytes, defined, toMs } from '../../utils';
+import { isNullOrEmpty, TRANSPARENT, toBytes, defined, toMs } from '../../../utils';
 
 type RunParams = {
     download: number;
@@ -14,6 +14,7 @@ export interface IViewData<T> {
     data: T;
     labels: string[];
     runParams: RunParams[];
+    timeStamp: number[];
 }
 
 export abstract class AbstractChart<TData> {
@@ -90,13 +91,15 @@ export abstract class AbstractChart<TData> {
     });
 
     protected tooltipLabel = (_: IViewData<TData>) => diffLabel(toMs);
-    protected tooltipFooter = ({ runParams }: IViewData<TData>) => (t: ChartTooltipItem[]) => {
+    protected tooltipFooter = ({ runParams, timeStamp }: IViewData<TData>) => (t: ChartTooltipItem[]) => {
         const index = t[0].index;
         if (index == null || index >= runParams.length) {
             return '';
         }
         const param = runParams[index];
+        const time = new Date(timeStamp[index]);
         return [
+            `time: ${time.toLocaleString()}`,
             `download: ${toBytes(param.download)} upload ${toBytes(param.upload)} latency: ${param.latency}`,
             `throttling: ${param.throttling}x useCache: ${param.useCache}`,
         ];
@@ -106,7 +109,7 @@ export abstract class AbstractChart<TData> {
         const canvas = container as HTMLCanvasElement;
 
         if (canvas == null || typeof canvas.getContext !== 'function') {
-            throw new Error(`EntriesChartReporter failed, provided container is not canvs`);
+            throw new Error(`${this.name} failed, provided container is not canvas, ${canvas}`);
         }
 
         return canvas.getContext('2d')!;

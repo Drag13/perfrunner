@@ -1,6 +1,6 @@
 # Perfrunner [![Build Status](https://travis-ci.org/Drag13/perfrunner.svg?branch=master)](https://travis-ci.org/Drag13/perfrunner)
 
-Perfrunner - automated tool that helps you to track the performance of your site or web application.
+Perfrunner - performance testing tool for websites and web applications. Tracks your application performance with Performance Events and visualize the progress. Supports various predefined network conditions, CPU throttling, cache. Supports different output - [HTML](#html), [CSV](#csv), [JSON](#json). Uses multiple reruns for better precision.
 
 Tracks:
 
@@ -13,7 +13,13 @@ Tracks:
 
 ## Example
 
+```cmd
+npx perfrunner drag13.io
+```
+
 ![default-html-reporter-example-angular-react-vue](https://raw.githubusercontent.com/Drag13/perfrunner/master/packages/perfrunner-cli/docs/default-html-reporter-example-angular-react-vue.PNG)
+
+It's just an example, please don't consider to take framework depending on this chart :)
 
 ## Installation
 
@@ -29,7 +35,15 @@ For one-time usage:
 npx perfrunner https://drag13.io
 ```
 
-## Options
+## Default options
+
+* Network: **fast-3g**
+* Cache: **false**
+* Runs: **3**
+* Reporter: **html**
+* Throttling: **2**
+
+## All options
 
 |Command | Alias | Description | Default value | IsRequired |
 | - | - | - | - | - |
@@ -38,7 +52,7 @@ npx perfrunner https://drag13.io
 | --comment | - | Provide additional information about test. May be used from reporter | ```undefined``` | Optional
 | --ignore-default-args | - | Ignore defaultArgs for launching Chromium | ```false``` | Optional |
 | --log-level| - | Setup log level: <```verbose```> | ```undefined``` | Optional |
-| --network | - | Network setup: <```online```/```regular-4g```/```fast-3g```/```hspa```/```slow-3g```> | ```fast-3g``` | Optional
+| --network | - | Setup network contions. Multiple values supported. <```online```/```regular-4g```/```fast-3g```/```hspa```/```slow-3g```> | ```fast-3g``` | Optional
 | --no-headless | - | Disables headless mode |  ```false``` | Optional |
 | --purge | - | Remove old data before the test run | ```false``` | Optional
 | --reporter | - | Specify reporter | ```html``` | Optional |
@@ -46,7 +60,7 @@ npx perfrunner https://drag13.io
 | --runs | -R | Number of runs you want to be performed| ```3``` | Optional |
 | --test-name | - | | ```undefined``` | Optional |
 | --throttling | -T | CPU slowdown multiplier | ```2``` | Optional |
-| --timeout |  - | Set timeout for the single test run in miliseconds | ```60_000``` | Optional
+| --timeout |  - | Set timeout for the single test run in miliseconds | ```90_000``` | Optional
 | --url | - | Url to profile | - | Required |
 | --wait-for | W | Specify selector or time in miliseconds to wait | ```undefined``` | Optional
 
@@ -54,9 +68,9 @@ npx perfrunner https://drag13.io
 
 Supported reporters:
 
-* [html](#html) - renders basic metrics into HTML (FCP, DCL, Size, etc)
-* [json](#json) - saves all data to json
-* [csv](#csv) - saves all data to csv
+* [HTML](#html) - renders basic metrics into HTML (FCP, DCL, Size, etc)
+* [JSON](#json) - saves all data to json
+* [CSV](#csv) - saves all data to csv
 * [custom](#custom) - you can specify your own custom reporter
 
 ## HTML

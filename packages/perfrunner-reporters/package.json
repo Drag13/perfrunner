@@ -38,9 +38,12 @@
     "typescript": "3.9.5"
   },
   "dependencies": {
+    "bootstrap": "4.5.0",
     "chart.js": "2.9.3",
+    "jquery": "3.5.1",
     "json2csv": "5.0.1",
     "mustache": "4.0.1",
+    "popper.js": "1.16.1",
     "perfrunner-core": "^0.4.2"
   },
   "files": [

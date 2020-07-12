@@ -1,9 +1,9 @@
 import { ResourceSizeChart } from './size.chart';
 import { ExtendedPerformanceEntry } from 'perfrunner-core';
-import { isNullOrNaN } from '../../utils';
+import { isNullOrNaN } from '../../../utils';
 
 export class ResourceSizeBeforeFCPChart extends ResourceSizeChart {
-    readonly name = 'size-fcp';
+    readonly name: string = 'size-fcp';
     readonly title = 'Resource Size Befor FCP';
 
     filter(rawData: ExtendedPerformanceEntry[]) {

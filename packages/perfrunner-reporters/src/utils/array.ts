@@ -11,3 +11,22 @@ export const splitBy = <T>(arr: T[], min: number): T[][] => {
 
     return res;
 };
+
+export const groupBy = <T>(array: T[], hashFunc: (el: T) => string): T[][] => {
+    const groupedData = array.reduce((acc, el) => {
+        const hash = hashFunc(el);
+
+        if (acc.has(hash)) {
+            acc.get(hash)!.push(el);
+        } else {
+            acc.set(hash, [el]);
+        }
+
+        return acc;
+    }, new Map<string, T[]>());
+
+    const result: T[][] = []; // for some reason [...groupedData] throws an error
+    groupedData.forEach((x) => result.push(x));
+
+    return result;
+};
