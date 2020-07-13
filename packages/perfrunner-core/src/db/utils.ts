@@ -1,6 +1,3 @@
-import { existsSync, mkdirSync } from 'fs';
-import { dirname, resolve } from 'path';
-
 const hex = (x: number) => x.toString(16);
 
 function hash(text: string) {
@@ -24,13 +21,4 @@ export function generateReportName(url: URL): string {
     return fileName;
 }
 
-const getRootPath = () => dirname(require.main?.filename || '');
 
-export const createFolderIfNotExists = (path: string): void => {
-    const root = getRootPath();
-    const pathToFolder = resolve(root, path);
-
-    if (!existsSync(pathToFolder)) {
-        mkdirSync(pathToFolder, { recursive: true });
-    }
-};
