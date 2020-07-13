@@ -26,6 +26,13 @@ export const debug = (message: string) => isVerbose() && console.log(colors.debu
 
 /**
  * Logs error
- * @param message error message to log
+ * @param error error message to log
  */
-export const error = (message: string) => console.log(colors.error, `perfrunner: ${message}`);
+export const error = (error: string | Error) => {
+    if (error instanceof Error) {
+        console.log(colors.error, `perfrunner: ${error.message}`);
+        error.stack && console.log(error.stack);
+    } else {
+        console.log(colors.error, `perfrunner: ${error}`);
+    }
+};
