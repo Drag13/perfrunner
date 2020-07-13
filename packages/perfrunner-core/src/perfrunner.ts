@@ -1,5 +1,5 @@
 import { profile as profilePage } from './profiler/profiler';
-import { Db } from './db';
+import { Db, getConnectionString } from './db';
 import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from './processor/processor';
 import { log, error } from './logger';
@@ -20,7 +20,8 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
     }
 
     const url = new URL(options.url);
-    const db = Db.connect(url, options.output, options.testName);
+    const connectionString = getConnectionString(options.output, url, options.testName);
+    const db = Db.connect(connectionString);
 
     const isProfilingOn = !options.reportOnly;
 
