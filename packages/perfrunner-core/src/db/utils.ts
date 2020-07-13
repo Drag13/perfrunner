@@ -20,5 +20,3 @@ export function generateReportName(url: URL): string {
 
     return fileName;
 }
-
-

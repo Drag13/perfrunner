@@ -41,7 +41,8 @@ class Db {
         this._db.update('count', (_) => 0).write();
     }
 
-    public static connect(url: URL, outputFolder: string, testName?: string) { //TODO: looks bad
+    public static connect(url: URL, outputFolder: string, testName?: string) {
+        //TODO: looks bad
         return this._instance == null ? (this._instance = new Db(url, outputFolder, testName)) : this._instance;
     }
 }
