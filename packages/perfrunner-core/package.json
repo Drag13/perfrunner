@@ -1,6 +1,6 @@
 {
   "name": "perfrunner-core",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Automated UI performance test tool to measure performance changes for the web apps and sites",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
