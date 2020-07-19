@@ -35,8 +35,9 @@ export interface ExtendedPerformanceEntry extends PerformanceEntry {
     redirectCount?: number;
     renderTime?: number;
     loadTime?: number;
+    element?: string;
     extension?: {
-        mimeType: string; // TODO: not all will have mime type, should be optional
+        mimeType?: string;
     };
 }
 

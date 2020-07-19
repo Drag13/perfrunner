@@ -5,7 +5,7 @@ node_js:
 
 install:
   - npm ci
-  - npm run lerna bootstrap
+  - npm run lerna bootstrap --ci
 
 script:
   - npm run build

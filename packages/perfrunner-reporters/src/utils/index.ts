@@ -5,6 +5,7 @@ import { writeFile } from './fs';
 import { defined, isNullOrEmpty, isNullOrNaN } from './misc';
 import { ResourceType, getResourceType } from './res';
 import { hash } from './hash';
+import { exclude } from './object';
 
 export { TRANSPARENT, color };
 export { toMs, toBytes };
@@ -13,3 +14,4 @@ export { writeFile };
 export { defined, isNullOrEmpty, isNullOrNaN };
 export { ResourceType, getResourceType };
 export { hash };
+export { exclude };
