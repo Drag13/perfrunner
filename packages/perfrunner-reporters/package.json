@@ -1,6 +1,6 @@
 {
   "name": "perfrunner-reporters",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Home of the perfrunner reporters",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -43,7 +43,7 @@
     "jquery": "~3.5.1",
     "json2csv": "~5.0.1",
     "mustache": "~4.0.1",
-    "perfrunner-core": "^0.5.1",
+    "perfrunner-core": "^0.6.0",
     "popper.js": "~1.16.1"
   },
   "files": [
