@@ -1,7 +1,7 @@
 import { Page } from 'puppeteer';
 import { RawPerfData, ExtendedPerformanceEntry } from './types';
 import { PerfRunnerOptions } from './perf-options';
-import { log, debug as t } from '../logger';
+import { log, debug as t, error } from '../logger';
 import { orderByAscending } from '../utils';
 import { subsetTrace, extractResourceData, TraceEvent, Tracer } from './trace';
 import {
@@ -90,7 +90,17 @@ function updateMissingData(entries: ExtendedPerformanceEntry[], { traceEvents }:
 
 export async function profile(url: URL, options: PerfRunnerOptions): Promise<RawPerfData[]> {
     const { waitFor, runs } = options;
-    const browser = await startBrowser(options.timeout, options.headless, options.ignoreDefaultArgs, options.chromeArgs);
+    const { timeout, headless, ignoreDefaultArgs, chromeArgs, executablePath } = options;
+
+    const browser = await startBrowser({
+        args: chromeArgs,
+        timeout,
+        headless,
+        ignoreDefaultArgs,
+        product: 'chrome',
+        executablePath,
+    });
+
     const result = [];
 
     try {
@@ -114,7 +124,7 @@ export async function profile(url: URL, options: PerfRunnerOptions): Promise<Raw
 
         return result;
     } catch (e) {
-        console.log(e);
+        error(e);
         throw e;
     } finally {
         browser.close();

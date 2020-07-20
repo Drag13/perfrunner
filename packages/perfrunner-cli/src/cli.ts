@@ -20,9 +20,10 @@ async function* runProfileSession(pf: PerfRunnerOptions[]) {
 (async function (): Promise<number> {
     try {
         const args = parseConsole();
-        const { perfrunnerOptions, reporterOptions } = mapArgs(args);
 
         setupLogLevel(args.logLevel);
+
+        const { perfrunnerOptions, reporterOptions } = mapArgs(args);
 
         let performanceData: IPerformanceResult | undefined = undefined;
         for await (performanceData of runProfileSession(perfrunnerOptions)) {
