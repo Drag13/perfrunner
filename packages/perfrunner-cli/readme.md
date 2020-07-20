@@ -139,6 +139,12 @@ You also can use Perfrunner without headless mode
 npx perfrunner https://drag13.io --no-headless
 ```
 
+If nothing helps, try to use `executablePath` option
+
+```cmd
+npx perfrunner https://drag13.io -E "Path\To\chrome.exe"
+```
+
 ## What next
 
 For the next updates, please check the [project](https://github.com/Drag13/perfrunner/projects/1). It's not very well described but might give you an idea of what is planned.

@@ -13,6 +13,11 @@ export type NetworkSetup = {
      * Sets upload throughput for the test run
      */
     uploadThroughput: number;
+
+    /**
+     * Sets optional name for the network conditions
+     */
+    name?: string;
 };
 
 export interface PerfOptions {

@@ -15,7 +15,7 @@ const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanc
     );
 };
 
-const pageViewData = (pageName: string, isActive: boolean) => {
+const getPageMetadata = (pageName: string, isActive: boolean) => {
     return {
         pageName,
         contentId: `x_${hash(pageName)}`,
@@ -23,6 +23,15 @@ const pageViewData = (pageName: string, isActive: boolean) => {
         tabClass: isActive ? 'active show' : '',
     };
 };
+
+function getTabName(perfResult: IPerformanceResult, i: number) {
+    const options = perfResult[0].runParams;
+    const networkName = options.network.name ?? `#${i}`;
+    const throttling = options.throttlingRate === 0 ? `no throttling` : `throttling: ${options.throttlingRate}`;
+    const cache = !!options.useCache ? `with cache` : `no cache`;
+
+    return `${networkName}, ${throttling}, ${cache}`;
+}
 
 const defaultReporter: IReporter = async (outputFolder, data, args) => {
     const templatePath = join(__dirname, 'index.html');
@@ -39,7 +48,7 @@ const defaultReporter: IReporter = async (outputFolder, data, args) => {
     const template = readFileSync(templatePath, { encoding: 'utf-8' });
     const result = render(template, {
         href: href.length < 42 ? href : href.substr(0, 41),
-        pages: groupedData.map((_, i) => pageViewData(`Perf conditions #${i}`, i === 0)),
+        pages: groupedData.map((d, i) => getPageMetadata(getTabName(d, i), i === 0)),
         reporters: reporters,
         payload: JSON.stringify(groupedData),
         arguments: JSON.stringify(reporters),
