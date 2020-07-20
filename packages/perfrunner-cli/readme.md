@@ -6,11 +6,10 @@ Tracks:
 
 -   First Contentful Paint
 -   Largest Contentful Paint
-
-*   Layout duration time
-*   Script duration time
-*   Resources size (js, css, img, fonts)
-*   And much more!
+-   Layout duration time
+-   Script duration time
+-   Resources size (js, css, img, fonts)
+-   And much more!
 
 ## Example
 

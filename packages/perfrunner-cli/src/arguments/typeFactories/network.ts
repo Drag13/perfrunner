@@ -7,7 +7,7 @@ export const NoThrottlingConditions: NetworkSetup = {
     downloadThroughput: -1,
     uploadThroughput: -1,
     latency: 0,
-    name: 'no-throttling',
+    name: 'original',
 };
 
 export const Slow3g: NetworkSetup = {
