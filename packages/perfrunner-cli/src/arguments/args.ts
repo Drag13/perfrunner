@@ -18,6 +18,7 @@ export type TestRunConditions = {
     logLevel: string | undefined;
     output: string;
     comment: string;
+    executablePath: string | undefined;
 };
 
 export type PerformanceConditions = {
@@ -54,6 +55,7 @@ const options: ParamsMap = {
     ignoreDefaultArgs: { type: Boolean },
     waitFor: { type: StringOrNumber, alias: 'W' },
     logLevel: { type: LogLevel, defaultValue: undefined },
+    executablePath: { type: String, alias: 'E' },
 };
 
 export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));

@@ -7,30 +7,35 @@ export const NoThrottlingConditions: NetworkSetup = {
     downloadThroughput: -1,
     uploadThroughput: -1,
     latency: 0,
+    name: 'original',
 };
 
 export const Slow3g: NetworkSetup = {
     downloadThroughput: (0.4 * 1024 * 1024) / 8,
     uploadThroughput: (0.4 * 1024 * 1024) / 8,
     latency: 2000,
+    name: 'slow3g',
 };
 
 export const HSPA: NetworkSetup = {
     downloadThroughput: (1.44 * 1024 * 1024) / 8,
     uploadThroughput: (0.675 * 1024 * 1024) / 8,
     latency: 562.5,
+    name: 'hspa',
 };
 
 export const HSPA_Plus: NetworkSetup = {
     downloadThroughput: (4 * 1024 * 1024) / 8,
     uploadThroughput: (1 * 1024 * 1024) / 8,
     latency: 100,
+    name: 'fast3g',
 };
 
 export const FourG: NetworkSetup = {
     downloadThroughput: (12 * 1024 * 1024) / 8,
     uploadThroughput: (6 * 1024 * 1024) / 8,
     latency: 50,
+    name: 'regular4g',
 };
 
 export const Network = (networkType: string | undefined) => {

@@ -13,6 +13,11 @@ export type NetworkSetup = {
      * Sets upload throughput for the test run
      */
     uploadThroughput: number;
+
+    /**
+     * Sets optional name for the network conditions
+     */
+    name?: string;
 };
 
 export interface PerfOptions {
@@ -37,12 +42,7 @@ export interface PerfOptions {
     useCache?: boolean;
 }
 
-export interface RunnerOptions {
-    /**
-     * Sets number of runs you want to execute
-     */
-    runs: number;
-
+export interface ILunchOptions {
     /**
      * Sets timeout for the test
      */
@@ -54,11 +54,6 @@ export interface RunnerOptions {
     headless?: boolean;
 
     /**
-     * Sets time (in miliseconds) or selector you want to wait for
-     */
-    waitFor?: number | string;
-
-    /**
      * Sets list of chrome arguments
      */
     chromeArgs?: string[];
@@ -67,9 +62,24 @@ export interface RunnerOptions {
      * Sets flag to ignore default arguments
      */
     ignoreDefaultArgs?: boolean;
+
+    /**
+     * Sets path to the Chrome instance
+     */
+    executablePath?: string;
 }
 
-export interface PerfRunnerOptions extends PerfOptions, RunnerOptions {
+export interface RunnerOptions {
+    /**
+     * Sets number of runs you want to execute
+     */
+    runs: number;
+
+    /**
+     * Sets time (in miliseconds) or selector you want to wait for
+     */
+    waitFor?: number | string;
+
     /**
      * Sets folder to store data
      */
@@ -95,3 +105,5 @@ export interface PerfRunnerOptions extends PerfOptions, RunnerOptions {
      */
     reportOnly?: boolean;
 }
+
+export interface PerfRunnerOptions extends PerfOptions, RunnerOptions, ILunchOptions {}

@@ -1,12 +1,20 @@
-import puppeteer, { Page, Browser } from 'puppeteer';
+import puppeteer, { Page, Browser, LaunchOptions } from 'puppeteer';
 import { PerfOptions } from './perf-options';
 import { measureLCP, setupObserversStorage, IWithObserver } from './performance-observers';
 import { debug } from '../logger';
 import { ExtendedPerformanceEntry } from './types';
 
-export async function startBrowser(timeout: number, headless?: boolean, ignoreDefaultArgs?: boolean, args?: string[]) {
+export async function startBrowser({ headless, timeout, ignoreDefaultArgs, args, product, executablePath }: LaunchOptions) {
     debug(`running chrome with args: ${args && args.length ? args : `no args provided`}`);
-    return await puppeteer.launch({ headless, timeout, ignoreHTTPSErrors: true, ignoreDefaultArgs, args });
+    return await puppeteer.launch({
+        headless,
+        timeout,
+        ignoreHTTPSErrors: true,
+        ignoreDefaultArgs,
+        args,
+        product,
+        executablePath,
+    });
 }
 
 export async function startEmptyPage(browser: Browser) {
