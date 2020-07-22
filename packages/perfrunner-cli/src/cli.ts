@@ -5,7 +5,8 @@ import { parseConsole } from './arguments';
 import { mapArgs } from './mapper';
 import { setupLogLevel } from './logging';
 import { loadReporter } from './reporter';
-import { iterateAsync, ensureFolderCreated } from './utils';
+import { ensureFolderCreated } from './utils';
+import { iterateAsync } from 'perfrunner-core/dist/utils/async';
 
 (async function (): Promise<number> {
     try {
