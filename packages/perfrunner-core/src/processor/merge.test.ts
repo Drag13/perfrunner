@@ -1,9 +1,9 @@
 import 'mocha';
 import { expect } from 'chai';
-import { average, mergeWithRules } from './merge';
+import { average, mergeWithRules, MergeMap, exclude, Nullish } from './merge';
 
 class AverageTestCase {
-    constructor(readonly input: number[], readonly expected: number) {}
+    constructor(readonly input: Nullish<number>[], readonly expected: number) {}
 }
 
 const averageTestSuite = [
@@ -14,7 +14,7 @@ const averageTestSuite = [
 ];
 
 class MergeTestCase<T extends {}> {
-    constructor(readonly input: T[], readonly expected: T) {}
+    constructor(readonly input: T[], readonly expected: T, readonly rules?: MergeMap<T>) {}
 }
 
 const mergeTestSuite = [
@@ -22,6 +22,7 @@ const mergeTestSuite = [
     new MergeTestCase([{ name: 'test', value: 1 }, { value: 3 }], { name: 'test', value: 2 }),
     new MergeTestCase([{ value: 1 }, { value: 3, name: 'test', unexpected: 5 }], { name: 'test', value: 2, unexpected: 5 }),
     new MergeTestCase([{ name: 'test', value: 1, inner: { value: 5 } }], { name: 'test', value: 1, inner: { value: 5 } }),
+    new MergeTestCase([{ name: 'test', value: 1, element: { data: [] } }], { name: 'test', value: 1 }, { element: exclude }),
 ];
 
 describe('Merge module', () => {
@@ -34,7 +35,7 @@ describe('Merge module', () => {
 
     mergeTestSuite.forEach((tc) => {
         it(`for: ${JSON.stringify(tc.input)} merge func should return: ${JSON.stringify(tc.expected)} result`, () => {
-            const mergeResult = mergeWithRules(tc.input);
+            const mergeResult = mergeWithRules(tc.input, tc.rules);
             expect(mergeResult).eqls(tc.expected);
         });
     });

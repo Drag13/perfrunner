@@ -1,3 +1,5 @@
+export type Nullish<T> = T | null | undefined;
+
 type MergeFunc<T> = (values: T[]) => T | null;
 export type MergeMap<T> = { [key in keyof T]?: MergeFunc<T[key]> };
 
@@ -5,8 +7,8 @@ export const exclude = () => null;
 
 export const first = <T>(values: T[]) => values[0];
 
-export const average = (values: number[]) => {
-    const withoutNulls = values.filter((v) => v != null && !isNaN(v));
+export const average = (values: Nullish<number>[]) => {
+    const withoutNulls = values.filter((v) => v != null && !isNaN(v)) as number[];
     return withoutNulls.length ? withoutNulls.reduce((sum, v) => sum + v, 0) / withoutNulls.length : 0;
 };
 
@@ -46,9 +48,9 @@ export function mergeWithRules<T>(data: T[], rules?: MergeMap<T>) {
     // apply merge rule to the array of values
     return (Object.entries(accumulator).reduce((acc, [key, values]) => {
         const definedValue = values.find((x) => x != undefined);
-        const customRule = rules ? (rules as any).key : undefined;
+        const customRule = rules ? rules[key as keyof T] : undefined;
         const rule = typeof customRule === 'function' ? customRule : getDefaultMergeFunc(definedValue);
-        const mergeResult = rule(values);
+        const mergeResult = rule!(values);
 
         if (mergeResult != null) {
             acc[key] = mergeResult;

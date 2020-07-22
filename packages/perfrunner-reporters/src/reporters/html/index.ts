@@ -24,6 +24,8 @@ const getPageMetadata = (pageName: string, isActive: boolean) => {
     };
 };
 
+const sanitizeJson = (json: string) => json.replace(/'/g, "'");
+
 function getTabName(perfResult: IPerformanceResult, i: number) {
     const options = perfResult[0].runParams;
     const networkName = options.network.name ?? `#${i}`;
@@ -50,8 +52,8 @@ const defaultReporter: IReporter = async (outputFolder, data, args) => {
         href: href.length < 42 ? href : href.substr(0, 41),
         pages: groupedData.map((d, i) => getPageMetadata(getTabName(d, i), i === 0)),
         reporters: reporters,
-        payload: JSON.stringify(groupedData),
-        arguments: JSON.stringify(reporters),
+        payload: sanitizeJson(JSON.stringify(groupedData)),
+        arguments: sanitizeJson(JSON.stringify(reporters)),
     });
 
     writeFileSync(join(outputFolder, 'default-report.html'), result, { encoding: 'utf-8' });
