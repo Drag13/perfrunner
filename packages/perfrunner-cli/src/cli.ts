@@ -1,21 +1,11 @@
 #!/usr/bin/env node
 
-import { profile, logger, PerfRunnerOptions, IPerformanceResult } from 'perfrunner-core';
+import { profile, logger, IPerformanceResult } from 'perfrunner-core';
 import { parseConsole } from './arguments';
 import { mapArgs } from './mapper';
 import { setupLogLevel } from './logging';
-import { ensureFolderCreated } from './fs';
 import { loadReporter } from './reporter';
-
-async function* runProfileSession(pf: PerfRunnerOptions[]) {
-    for (let i = 0; i < pf.length; i++) {
-        const params = pf[i];
-        ensureFolderCreated(params.output);
-        logger.debug(JSON.stringify(params.network));
-
-        yield await profile({ ...params, purge: i === 0 ? params.purge : false });
-    }
-}
+import { iterateAsync, ensureFolderCreated } from './utils';
 
 (async function (): Promise<number> {
     try {
@@ -26,7 +16,15 @@ async function* runProfileSession(pf: PerfRunnerOptions[]) {
         const { perfrunnerOptions, reporterOptions } = mapArgs(args);
 
         let performanceData: IPerformanceResult | undefined = undefined;
-        for await (performanceData of runProfileSession(perfrunnerOptions)) {
+
+        const asyncSequence = iterateAsync(perfrunnerOptions, (params, i) => {
+            ensureFolderCreated(params.output);
+            logger.debug(JSON.stringify(params.network));
+            return profile({ ...params, purge: i === 0 ? params.purge : false });
+        });
+
+        for await (const perfResult of asyncSequence) {
+            performanceData = perfResult;
         }
 
         logger.debug('loading reporter');
