@@ -50,4 +50,13 @@ const optionsValidationScheme: ValidationScheme = {
     }),
 };
 
-export default object().shape(optionsValidationScheme);
+export const validator = object().shape(optionsValidationScheme);
+
+export function validateArguments(params: PerfRunnerOptions) {
+    try {
+        validator.validateSync(params);
+    } catch (error) {
+        error(error);
+        throw error;
+    }
+}

@@ -8,7 +8,7 @@ const toCsv: IReporter = (outputFolder, data) =>
         try {
             const csv = parse(flatten(data));
             writeFile(outputFolder, 'default-report.csv', csv);
-            resolve();
+            resolve(0);
         } catch (e) {
             reject(e);
         }

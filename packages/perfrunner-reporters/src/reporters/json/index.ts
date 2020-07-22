@@ -5,7 +5,7 @@ const toJson: IReporter = (outputFolder, result) => {
     return new Promise((resolve, reject) => {
         try {
             writeFile(outputFolder, 'default-reporter.json', result);
-            resolve();
+            resolve(0);
         } catch (error) {
             reject(error);
         }

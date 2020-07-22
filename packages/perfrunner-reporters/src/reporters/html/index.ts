@@ -57,6 +57,7 @@ const defaultReporter: IReporter = async (outputFolder, data, args) => {
     });
 
     writeFileSync(join(outputFolder, 'default-report.html'), result, { encoding: 'utf-8' });
+    return 0;
 };
 
 export { defaultReporter };

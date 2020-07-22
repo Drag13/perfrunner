@@ -12,5 +12,5 @@ export const LogLevel = (maybeLogLevel: string | undefined) => {
         return logLevel;
     }
 
-    throw new Error('Unknown log level');
+    throw new Error(`Unknown log level, known values are: ${Object.keys(logger.LOG_LEVEL).join(', ').toLowerCase()} `);
 };

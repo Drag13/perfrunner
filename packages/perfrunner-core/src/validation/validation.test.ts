@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { ValidationError } from 'yup';
 
 import { PerfRunnerOptions } from '../../dist';
-import validator from './validation';
+import { validator } from './validation';
 
 const validModel = {
     url: 'https://drag13.github.io',

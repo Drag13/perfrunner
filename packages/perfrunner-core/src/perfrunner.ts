@@ -1,10 +1,10 @@
-import { profile as profilePage } from './profiler/profiler';
+import { validateArguments } from './validation/validation';
+import { runProfilingSession } from './profiler/profiler';
 import { Db, getConnectionString } from './db';
 import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from './processor/processor';
-import { log, error } from './logger';
+import { log } from './logger';
 import { IPerformanceResult, PerfRunResult } from './db/scheme';
-import validator from './validation/validation';
 
 /**
  * Profile given URL and returns performance data
@@ -12,28 +12,38 @@ import validator from './validation/validation';
  * @returns {Promise<IPerformanceResult>} performance result
  */
 export async function profile(options: PerfRunnerOptions): Promise<IPerformanceResult> {
-    try {
-        await validator.validate(options);
-    } catch (e) {
-        error(e);
-        throw e;
-    }
+    validateArguments(options);
 
     const url = new URL(options.url);
     const connectionString = getConnectionString(options.output, url, options.testName);
     const db = Db.connect(connectionString);
 
-    const isProfilingOn = !options.reportOnly;
-
-    if (isProfilingOn) {
+    if (!options.reportOnly) {
         log(`starting profile session for ${url.href}`);
+        const rawPerformanceResult = await runProfilingSession(
+            {
+                args: options.chromeArgs,
+                executablePath: options.executablePath,
+                headless: !!options.headless,
+                ignoreDefaultArgs: !!options.ignoreDefaultArgs,
+                product: 'chrome',
+                timeout: options.timeout,
+            },
+            {
+                network: options.network,
+                throttlingRate: options.throttlingRate,
+                url: url,
+                useCache: !!options.useCache,
+                waitFor: options.waitFor,
+            },
+            options.runs,
+            options.output
+        );
 
-        const rawMetrics = await profilePage(url, options);
+        log('processing data...');
+        const { pageMetrics, performanceEntries } = processPerfData(rawPerformanceResult);
 
-        log('processing new data');
-        const { pageMetrics, performanceEntries } = processPerfData(rawMetrics);
-
-        const result: PerfRunResult = {
+        const performanceResult: PerfRunResult = {
             timeStamp: Date.now(),
             pageMetrics,
             performanceEntries,
@@ -46,11 +56,10 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
             comment: options.comment,
         };
 
-        log('saving data');
-        db.write(result, options.purge);
-    } else {
-        log('profling is tunred off, reading existing data');
+        log('saving data...');
+        db.write(performanceResult, options.purge);
     }
 
+    log('returning performance results');
     return db.read();
 }
