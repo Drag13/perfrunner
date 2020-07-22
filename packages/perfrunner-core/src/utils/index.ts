@@ -1,5 +1,5 @@
 import { orderByAscending } from './array';
-import { iterateAsync } from './async';
+import { iterateAsync, asyncToArray } from './async';
 
 export { orderByAscending };
-export { iterateAsync };
+export { iterateAsync, asyncToArray };

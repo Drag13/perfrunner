@@ -4,7 +4,7 @@ import { NetworkSetup } from './perf-options';
 import { Tracer } from './trace';
 import { setpPerformanceConditions } from './setup';
 import { extractPerformanceMetrics } from './extractor';
-import { iterateAsync } from '../utils';
+import { iterateAsync, asyncToArray } from '../utils';
 
 type ProfileParams = {
     useCache: boolean;
@@ -23,7 +23,7 @@ type BrowserLaunchOptions = {
     executablePath: string | undefined;
 };
 
-async function prepareBrowser(url: URL, pageInstance: Page) {
+async function warmingBrowser(url: URL, pageInstance: Page) {
     debug('warming up page');
     await pageInstance.goto(url.href, { waitUntil: 'networkidle0' });
     debug('warming finished, closing page');
@@ -34,9 +34,11 @@ async function runApplication(url: URL, page: Page, waitFor?: string | number) {
     debug('launching the app');
     await page.goto(url.href, { waitUntil: 'networkidle0' });
     if (typeof waitFor === 'number' && waitFor != 0 && !isNaN(waitFor)) {
+        debug(`waiting for timer: ${waitFor} the app`);
         await page.waitFor(waitFor);
     }
     if (typeof waitFor === 'string' && waitFor.trim() !== '') {
+        debug(`waiting for selector: ${waitFor} the app`);
         await page.waitForSelector(waitFor);
     }
 }
@@ -44,7 +46,7 @@ async function runApplication(url: URL, page: Page, waitFor?: string | number) {
 async function profilePage(browser: Browser, profileParams: ProfileParams, outputTracesTo: string) {
     const { useCache, url, throttlingRate, network, waitFor } = profileParams;
 
-    await prepareBrowser(url, await browser.newPage());
+    await warmingBrowser(url, await browser.newPage());
 
     const tracer = new Tracer(outputTracesTo);
     const newPage = await browser.newPage();
@@ -68,7 +70,7 @@ export async function runProfilingSession(
 ) {
     const { args, headless, timeout, ignoreDefaultArgs, product, executablePath } = browserLaunchOptions;
 
-    debug(`running chrome with args: ${args && args.length ? args : `no args provided`}`);
+    debug(`starting browser with args: ${args && args.length ? args : `no args provided`}`);
 
     let browser: Browser | null = null;
 
@@ -90,13 +92,8 @@ export async function runProfilingSession(
             return profilePage(browser!, options, outputTracesTo);
         });
 
-        const perfromanceData = [];
+        return await asyncToArray(resultSequence);
 
-        for await (const result of resultSequence) {
-            perfromanceData.push(result);
-        }
-
-        return perfromanceData;
     } finally {
         if (browser) {
             browser.close();

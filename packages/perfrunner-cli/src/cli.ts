@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { profile, logger, IPerformanceResult } from 'perfrunner-core';
+import { profile, logger } from 'perfrunner-core';
 import { parseConsole } from './arguments';
 import { mapArgs } from './mapper';
 import { setupLogLevel } from './logging';
 import { loadReporter } from './reporter';
 import { ensureFolderCreated } from './utils';
-import { iterateAsync } from 'perfrunner-core/dist/utils/async';
+import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
 
 (async function (): Promise<number> {
     try {
@@ -16,17 +16,13 @@ import { iterateAsync } from 'perfrunner-core/dist/utils/async';
 
         const { perfrunnerOptions, reporterOptions } = mapArgs(args);
 
-        let performanceData: IPerformanceResult | undefined = undefined;
-
         const asyncSequence = iterateAsync(perfrunnerOptions, (params, i) => {
             ensureFolderCreated(params.output);
             logger.debug(JSON.stringify(params.network));
             return profile({ ...params, purge: i === 0 ? params.purge : false });
         });
 
-        for await (const perfResult of asyncSequence) {
-            performanceData = perfResult;
-        }
+        const allResults = await asyncToArray(asyncSequence);
 
         logger.debug('loading reporter');
 
@@ -34,7 +30,7 @@ import { iterateAsync } from 'perfrunner-core/dist/utils/async';
 
         logger.log('generating report');
 
-        const exitCode = await reporter(perfrunnerOptions[0].output, performanceData!, reporterOptions.params);
+        const exitCode = await reporter(perfrunnerOptions[0].output, allResults[allResults.length - 1], reporterOptions.params);
         logger.log(exitCode === 0 ? `done` : `reporter exited with ${exitCode}`);
 
         return exitCode;
