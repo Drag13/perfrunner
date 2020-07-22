@@ -23,7 +23,7 @@ export const processPerfData = (rawPerformanceData: RawPerfData[]): PerformanceD
     const grouped = groupEntries(perfEntries);
 
     const mergedPerfEntries = grouped.map((group) =>
-        merge<ExtendedPerformanceEntry>(group, { nextHopProtocol: exclude, toJSON: exclude })
+        merge<ExtendedPerformanceEntry>(group, { nextHopProtocol: exclude, toJSON: exclude, element: exclude })
     );
 
     return { pageMetrics: normalizedMetrics, performanceEntries: mergedPerfEntries };
