@@ -1,21 +1,12 @@
 #!/usr/bin/env node
 
-import { profile, logger, PerfRunnerOptions, IPerformanceResult } from 'perfrunner-core';
+import { profile, logger } from 'perfrunner-core';
 import { parseConsole } from './arguments';
 import { mapArgs } from './mapper';
 import { setupLogLevel } from './logging';
-import { ensureFolderCreated } from './fs';
 import { loadReporter } from './reporter';
-
-async function* runProfileSession(pf: PerfRunnerOptions[]) {
-    for (let i = 0; i < pf.length; i++) {
-        const params = pf[i];
-        ensureFolderCreated(params.output);
-        logger.debug(JSON.stringify(params.network));
-
-        yield await profile({ ...params, purge: i === 0 ? params.purge : false });
-    }
-}
+import { ensureFolderCreated } from './utils';
+import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
 
 (async function (): Promise<number> {
     try {
@@ -25,9 +16,13 @@ async function* runProfileSession(pf: PerfRunnerOptions[]) {
 
         const { perfrunnerOptions, reporterOptions } = mapArgs(args);
 
-        let performanceData: IPerformanceResult | undefined = undefined;
-        for await (performanceData of runProfileSession(perfrunnerOptions)) {
-        }
+        const asyncSequence = iterateAsync(perfrunnerOptions, (params, i) => {
+            ensureFolderCreated(params.output);
+            logger.debug(JSON.stringify(params.network));
+            return profile({ ...params, purge: i === 0 ? params.purge : false });
+        });
+
+        const allResults = await asyncToArray(asyncSequence);
 
         logger.debug('loading reporter');
 
@@ -35,11 +30,12 @@ async function* runProfileSession(pf: PerfRunnerOptions[]) {
 
         logger.log('generating report');
 
-        await reporter(perfrunnerOptions[0].output, performanceData!, reporterOptions.params);
+        const exitCode = await reporter(perfrunnerOptions[0].output, allResults[allResults.length - 1], reporterOptions.params);
+        logger.log(exitCode === 0 ? `done` : `reporter exited with ${exitCode}`);
+
+        return exitCode;
     } catch (error) {
         logger.error(error);
         return -1;
     }
-
-    return 0;
 })();
