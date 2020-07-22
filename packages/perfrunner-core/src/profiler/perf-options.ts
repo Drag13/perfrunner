@@ -42,7 +42,7 @@ export interface PerfOptions {
     useCache?: boolean;
 }
 
-export interface ILunchOptions {
+export interface ILaunchOptions {
     /**
      * Sets timeout for the test
      */
@@ -106,4 +106,4 @@ export interface RunnerOptions {
     reportOnly?: boolean;
 }
 
-export interface PerfRunnerOptions extends PerfOptions, RunnerOptions, ILunchOptions {}
+export interface PerfRunnerOptions extends PerfOptions, RunnerOptions, ILaunchOptions {}

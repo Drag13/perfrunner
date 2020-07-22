@@ -4,7 +4,7 @@ import { Page } from 'puppeteer';
 
 type TraceEvents = TraceEvent[];
 
-type Trace = {
+export type Trace = {
     traceEvents: TraceEvents;
 };
 

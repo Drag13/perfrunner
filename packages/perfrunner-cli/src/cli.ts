@@ -33,11 +33,12 @@ import { iterateAsync, ensureFolderCreated } from './utils';
 
         logger.log('generating report');
 
-        await reporter(perfrunnerOptions[0].output, performanceData!, reporterOptions.params);
+        const exitCode = await reporter(perfrunnerOptions[0].output, performanceData!, reporterOptions.params);
+        logger.log(exitCode === 0 ? `done` : `reporter exited with ${exitCode}`);
+
+        return exitCode;
     } catch (error) {
         logger.error(error);
         return -1;
     }
-
-    return 0;
 })();
