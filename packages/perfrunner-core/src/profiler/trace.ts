@@ -21,7 +21,7 @@ export interface TraceEvent {
     };
 }
 
-export interface ResourceFinishTraceEvent extends TraceEvent {
+interface ResourceFinishTraceEvent extends TraceEvent {
     args: {
         data: {
             requestId: string;
@@ -32,7 +32,7 @@ export interface ResourceFinishTraceEvent extends TraceEvent {
     };
 }
 
-export interface ResourceSendRequestTraceEvent extends TraceEvent {
+interface ResourceSendRequestTraceEvent extends TraceEvent {
     args: {
         data: {
             requestId: string;
@@ -43,7 +43,7 @@ export interface ResourceSendRequestTraceEvent extends TraceEvent {
     };
 }
 
-export interface ResourceReceiveResponseTraceEven extends TraceEvent {
+interface ResourceReceiveResponseTraceEven extends TraceEvent {
     args: {
         data: {
             requestId: string;

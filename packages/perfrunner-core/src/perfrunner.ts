@@ -1,5 +1,5 @@
 import { validateArguments } from './validation/validation';
-import { runProfilingSession } from './profiler';
+import { runProfilingSession } from './profiler/profiler';
 import { Db, getConnectionString } from './db';
 import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from './processor/processor';
