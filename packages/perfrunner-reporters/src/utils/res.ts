@@ -1,7 +1,7 @@
 import { ExtendedPerformanceEntry } from 'perfrunner-core';
 
 type PathName = string;
-type ResourceType = 'js' | 'img' | 'css' | 'xhr' | 'font' | 'document' | 'unknown';
+type ResourceType = 'js' | 'img' | 'css' | 'xhr' | 'font' | 'document' | 'unknown' | 'html';
 
 interface IIsResource {
     (pathName: PathName, mimeType?: string): boolean;
@@ -29,6 +29,10 @@ const isXhr = isType(xhrFormats, xhrMimeType);
 const fontFormats = ['.woff', '.woff2', '.ttf', '.otf'];
 const fontMimeTypes: string[] = []; // should be extended
 const isFont = isType(fontFormats, fontMimeTypes);
+
+const htmlFormats = ['.html'];
+const htmlMimeTypes = ['text/html'];
+const isHtml = isType(htmlFormats, htmlMimeTypes);
 
 const getPathName = (url: string): PathName => {
     try {
@@ -69,8 +73,13 @@ const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
         if (isFont(pathName, mimeType)) {
             return 'font';
         }
+
+        if (isHtml(pathName, mimeType)) {
+            return 'html';
+        }
     }
 
+    console.log(`${pEntry.name} ${pEntry.entryType}, ${pEntry.extension}`);
     return 'unknown';
 };
 

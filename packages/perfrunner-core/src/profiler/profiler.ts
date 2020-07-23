@@ -43,22 +43,26 @@ async function runApplication(url: URL, page: Page, waitFor?: string | number) {
     }
 }
 
-async function profilePage(browser: Browser, profileParams: ProfileParams, outputTracesTo: string) {
+async function newPage(browser: Browser, timeout: number) {
+    const newPage = await browser.newPage();
+    newPage.setDefaultTimeout(timeout);
+    return newPage;
+}
+
+async function profilePage(browser: Browser, profileParams: ProfileParams, outputTracesTo: string, timeout: number) {
     const { useCache, url, throttlingRate, network, waitFor } = profileParams;
 
-    await warmingBrowser(url, await browser.newPage());
-
     const tracer = new Tracer(outputTracesTo);
-    const newPage = await browser.newPage();
+    const page = await newPage(browser, timeout);
 
-    await setpPerformanceConditions(newPage, { useCache, throttlingRate, network });
+    await setpPerformanceConditions(page, { useCache, throttlingRate, network });
 
-    await tracer.start(newPage);
-    await runApplication(url, newPage, waitFor);
+    await tracer.start(page);
+    await runApplication(url, page, waitFor);
     const trace = await tracer.stop();
 
-    const result = await extractPerformanceMetrics(newPage, trace);
-    await newPage.close();
+    const result = await extractPerformanceMetrics(page, trace);
+    await page.close();
 
     return result;
 }
@@ -85,15 +89,17 @@ export async function runProfilingSession(
             executablePath,
         });
 
+        // We need only one warmup for the browser
+        await warmingBrowser(profileOptions.url, await newPage(browser, timeout));
+
         const params = new Array(numberOfRuns).fill(profileOptions);
 
         const resultSequence = iterateAsync(params, (options, i) => {
             log(`running test #${i + 1}`);
-            return profilePage(browser!, options, outputTracesTo);
+            return profilePage(browser!, options, outputTracesTo, timeout);
         });
 
         return await asyncToArray(resultSequence);
-
     } finally {
         if (browser) {
             browser.close();

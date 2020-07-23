@@ -3,7 +3,7 @@ import { Page } from 'puppeteer';
 import { ExtendedPerformanceEntry } from './types';
 import { LARGEST_CONTENTFUL_PAINT, IWithObserver } from './performance-observers';
 import { debug } from '../logger';
-import { orderByAscending } from "../utils";
+import { orderByAscending } from '../utils';
 
 async function extractPageMetrics(page: Page) {
     debug('extracting page metrics');
