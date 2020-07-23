@@ -33,6 +33,11 @@ export abstract class AbstractChart<TData> {
         const ctx = this.getCanvasContext(container);
         const viewData = this.getViewData(rawData);
 
+        if (this.skipRender(viewData)) {
+            console.log(`Skipping rendering ${this.name} chart because of no data provided`);
+            return;
+        }
+
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -114,6 +119,9 @@ export abstract class AbstractChart<TData> {
 
         return canvas.getContext('2d')!;
     };
+
+    // protected skipRender = (viewData: IViewData<TData>) => Object.keys(viewData.data).length === 0;
+    protected skipRender = (_: IViewData<TData>) => false;
 }
 
 type TooltipLabelCallback = (t: ChartTooltipItem, d: ChartData) => string;

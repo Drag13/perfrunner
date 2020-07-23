@@ -27,13 +27,14 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
                 document: newArray(),
                 font: newArray(),
                 xhr: newArray(),
+                html: newArray(),
             },
             labels: initWithEmptyString(length),
             runParams: this.runParams(rawData),
             timeStamp: init0(length),
         };
 
-        const performanceEntries = rawData.map((x) => x.performanceEntries).filter(this.filter); // TODO: filter first
+        const performanceEntries = rawData.map((x) => this.filter(x.performanceEntries));
 
         return performanceEntries.reduce((acc, entrySet, i) => {
             entrySet.forEach((pEntry) => {
@@ -47,13 +48,15 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
     };
 
     protected getDatasetEntries = (viewData: ChartData) => {
+        const isEmpty = (arr: number[]) => arr.reduce((sum, val) => sum + val, 0) === 0;
         const datasets = [
-            this.withDefaults('Total JS Size', viewData.js, color(0)),
-            this.withDefaults('Total IMG Size', viewData.img, color(1)),
-            this.withDefaults('Total CSS Size', viewData.css, color(2)),
-            this.withDefaults('Total Fonts Size', viewData.font, color(3)),
-            this.withDefaults('Index.html Size', viewData.document, color(4)),
-        ];
+            !isEmpty(viewData.js) ? this.withDefaults('JS Size', viewData.js, color(0)) : null,
+            !isEmpty(viewData.img) ? this.withDefaults('IMG Size', viewData.img, color(1)) : null,
+            !isEmpty(viewData.css) ? this.withDefaults('CSS Size', viewData.css, color(2)) : null,
+            !isEmpty(viewData.font) ? this.withDefaults('Fonts Size', viewData.font, color(3)) : null,
+            !isEmpty(viewData.document) ? this.withDefaults('Index Size', viewData.document, color(4)) : null,
+            !isEmpty(viewData.html) ? this.withDefaults('HTML Size', viewData.html, color(5)) : null,
+        ].filter((x) => !!x);
 
         const isOtherResourcesFound = viewData.unknown.some((x) => x > 0);
 
@@ -69,7 +72,7 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
             throw new Error('data is not in array format');
         }
 
-        return rawData.filter((x) => isNullOrEmpty(x.name));
+        return rawData.filter((x) => !isNullOrEmpty(x.name));
     }
 
     yAxesLabelCalback = kbLabel;
