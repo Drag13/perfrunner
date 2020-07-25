@@ -5,6 +5,7 @@ import { Tracer } from './trace';
 import { setpPerformanceConditions } from './setup';
 import { extractPerformanceMetrics } from './extractor';
 import { iterateAsync, asyncToArray } from '../utils';
+import { LARGEST_CONTENTFUL_PAINT } from './performance-observers';
 
 type ProfileParams = {
     useCache: boolean;
@@ -63,6 +64,12 @@ async function profilePage(browser: Browser, profileParams: ProfileParams, outpu
 
     const result = await extractPerformanceMetrics(page, trace);
     await page.close();
+
+    const fcp = result.performanceEntries.find((x) => x.name === 'first-contentful-paint');
+    debug(`fcp: ${fcp ? fcp.startTime : 'not recorded'}`);
+
+    const lcp = result.performanceEntries.find((x) => x.entryType === LARGEST_CONTENTFUL_PAINT);
+    log(`lcp: ${lcp ? lcp.startTime : 'not recorded'}`);
 
     return result;
 }
