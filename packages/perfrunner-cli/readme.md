@@ -47,7 +47,7 @@ npx perfrunner https://drag13.io
 
 | Command               | Alias | Description                                                                                                      | Default value          | IsRequired |
 | --------------------- | ----- | ---------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------- |
-| --cache               | -C    | Using browser cahce                                                                                              | `false`                | Optional   |
+| --cache               | -C    | Using browser cahce. Mutliple values supported. <`true`/`false`>                                                 | `false`                | Optional   |
 | --chrome-args         | -     | Additional arguments to pass to the browser instance. Should be passed using camelCase style like: `"noSandbox"` | `undefined`            | Optional   |
 | --comment             | -     | Provide additional information about test. May be used from reporter                                             | `undefined`            | Optional   |
 | --executablePath      | -E    | Sets path to the Chrome instance                                                                                 | `undefined`            | Optional   |
