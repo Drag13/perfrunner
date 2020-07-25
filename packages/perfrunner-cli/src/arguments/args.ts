@@ -1,7 +1,8 @@
 import { OptionDefinition } from 'command-line-args';
 import { NetworkSetup } from 'perfrunner-core';
-import { Url, Network, ArgsLikeString, StringOrNumber, LogLevel, HSPA } from './typeFactories';
+import { Url, Network, ArgsLikeString, StringOrNumber, LogLevel } from './typeFactories';
 import { argsLike } from '../utils';
+import { HSPA_Plus } from './typeFactories/network';
 
 export type TestRunConditions = {
     url: URL;
@@ -42,7 +43,7 @@ const options: ParamsMap = {
     timeout: { type: Number, defaultValue: 90_000 },
     cache: { type: Boolean, defaultValue: false, alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
-    network: { type: Network, defaultValue: [HSPA], multiple: true },
+    network: { type: Network, defaultValue: [HSPA_Plus], multiple: true },
     output: { type: String, defaultValue: 'generated' },
     purge: { type: Boolean, defaultValue: false },
     reporter: { type: String as any, multiple: true, defaultValue: ['html'] },

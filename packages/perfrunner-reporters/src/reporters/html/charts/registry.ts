@@ -20,4 +20,4 @@ export const getReporterRegistry = () => {
     };
 };
 
-export const defaultReporterNames = [entries.name, marks.name, resources.name, metrics.name, resourcesBeforeFcp.name];
+export const defaultReporterNames = [marks.name, entries.name, metrics.name, resourcesBeforeFcp.name, resources.name];

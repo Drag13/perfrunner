@@ -53,6 +53,6 @@ export const Network = (networkType: string | undefined) => {
         case 'regular-4g':
             return FourG;
         default:
-            return HSPA;
+            throw new Error(`Unknow network setup: ${networkType}`);
     }
 };
