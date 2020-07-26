@@ -53,7 +53,7 @@ npx perfrunner https://drag13.io
 | --executablePath      | -E    | Sets path to the Chrome instance                                                                                 | `undefined`            | Optional   |
 | --ignore-default-args | -     | Ignore defaultArgs for launching Chromium                                                                        | `false`                | Optional   |
 | --log-level           | -     | Setup log level: <`verbose`>                                                                                     | `undefined`            | Optional   |
-| --network             | -     | Setup network contions. Multiple values supported. <`online`/`regular-4g`/`fast-3g`/`hspa`/`slow-3g`>            | `fast-3g`              | Optional   |
+| --network             | -     | Setup network contions. Multiple values supported. <`online`/`regular-4g`/`fast-3g`/`hspa`/`slow-3g`>            | `online`,`fast-3g`     | Optional   |
 | --no-headless         | -     | Disables headless mode                                                                                           | `false`                | Optional   |
 | --purge               | -     | Remove old data before the test run                                                                              | `false`                | Optional   |
 | --reporter            | -     | Specify reporter                                                                                                 | `html`                 | Optional   |

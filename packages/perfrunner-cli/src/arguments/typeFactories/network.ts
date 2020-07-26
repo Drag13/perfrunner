@@ -3,7 +3,7 @@
 
 import { NetworkSetup } from 'perfrunner-core';
 
-export const NoThrottlingConditions: NetworkSetup = {
+export const Original: NetworkSetup = {
     downloadThroughput: -1,
     uploadThroughput: -1,
     latency: 0,
@@ -42,7 +42,7 @@ export const Network = (networkType: string | undefined) => {
     switch (networkType) {
         case 'no-throttling':
         case 'online':
-            return NoThrottlingConditions;
+            return Original;
         case 'slow-3g':
             return Slow3g;
         case 'hspa':
