@@ -17,9 +17,8 @@ import { IPerformanceResult } from 'perfrunner-core';
         .filter(defined);
 
     data.forEach((performanceResult, groupId) => {
-        reportersToRender.forEach((reporter, i) => {
-            const canvasNumber = groupId * reportersToRender.length + i;
-            reporter.render(document.querySelectorAll('canvas')[canvasNumber], performanceResult);
+        reportersToRender.forEach((reporter) => {
+            reporter.render(document.querySelectorAll('.charts')[groupId]!, performanceResult);
         });
     });
 })('nav-tab', 'nav-tabContent', (window as any).data, (window as any).renderArgs);

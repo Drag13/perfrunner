@@ -1,4 +1,4 @@
-import { PerfRunnerOptions } from 'perfrunner-core';
+import { PerfRunnerOptions, NetworkSetup } from 'perfrunner-core';
 import { ConsoleArguments } from '../arguments/args';
 import { getOutputPath } from './output';
 
@@ -16,21 +16,32 @@ export type TestParams = {
     reporterOptions: ReporterOptions;
 };
 
-export const mapArgs = (consoleArguments: ConsoleArguments): TestParams => {
-    const { output, url, testName } = consoleArguments;
-
-    const outputPath = getOutputPath(output, testName ?? url);
-
-    const perfrunnerOptions = consoleArguments.network.map((networkSetup) => ({
+const map = (consoleArguments: ConsoleArguments, useCache: boolean, networkSetup: NetworkSetup) => {
+    return {
         ...consoleArguments,
         url: consoleArguments.url.href,
-        useCache: consoleArguments.cache,
+        useCache,
         throttlingRate: consoleArguments.throttling,
         headless: !consoleArguments.noHeadless,
-        output: outputPath,
+        output: getOutputPath(consoleArguments.output, consoleArguments.testName ?? consoleArguments.url),
         network: networkSetup,
-    }));
+    };
+};
 
+const flattenArguments = (consoleArguments: ConsoleArguments) => {
+    const perfrunnerOptions = [];
+
+    for (const network of consoleArguments.network) {
+        for (const useCache of consoleArguments.cache) {
+            perfrunnerOptions.push(map(consoleArguments, useCache, network));
+        }
+    }
+
+    return perfrunnerOptions;
+};
+
+export const mapArgs = (consoleArguments: ConsoleArguments): TestParams => {
+    const perfrunnerOptions = flattenArguments(consoleArguments);
     const reporterOptions = getReporterOptions(consoleArguments.reporter);
 
     return {

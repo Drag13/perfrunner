@@ -49,7 +49,7 @@ const defaultReporter: IReporter = async (outputFolder, data, args) => {
 
     const template = readFileSync(templatePath, { encoding: 'utf-8' });
     const result = render(template, {
-        href: href.length < 42 ? href : href.substr(0, 41),
+        href: href.length < 43 ? href : href.substr(0, 42),
         pages: groupedData.map((d, i) => getPageMetadata(getTabName(d, i), i === 0)),
         reporters: reporters,
         payload: sanitizeJson(JSON.stringify(groupedData)),

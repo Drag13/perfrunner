@@ -1,6 +1,6 @@
 import { IPerformanceResult } from '../types';
 import Chart, { ChartTooltipItem, ChartData } from 'chart.js';
-import { isNullOrEmpty, TRANSPARENT, toBytes, defined, toMs } from '../../../utils';
+import { isNullOrEmpty, TRANSPARENT, toBytes, defined, toMs, createElement } from '../../../utils';
 
 type RunParams = {
     download: number;
@@ -29,14 +29,25 @@ export abstract class AbstractChart<TData> {
     protected abstract getDatasetEntries: (viewData: TData) => Array<any>;
     protected abstract yAxesLabelCalback(value: string | number): string;
 
-    public render(container: HTMLCanvasElement, rawData: IPerformanceResult) {
-        const ctx = this.getCanvasContext(container);
-        const viewData = this.getViewData(rawData);
+    public render(container: Element, rawData: IPerformanceResult) {
+        if (container == null) {
+            throw new Error('Chart container is not defined');
+        }
 
-        if (this.skipRender(viewData)) {
+        const viewData = this.getViewData(rawData);
+        const isVisible = this.isVisible(viewData);
+
+        if (!isVisible) {
             console.log(`Skipping rendering ${this.name} chart because of no data provided`);
             return;
         }
+
+        const canvas = createElement('canvas');
+        const wrapper = createElement('div', { className: 'chart-container', child: canvas });
+
+        container.appendChild(wrapper);
+
+        const ctx = this.getCanvasContext(canvas);
 
         new Chart(ctx, {
             type: 'line',
@@ -61,7 +72,7 @@ export abstract class AbstractChart<TData> {
                         footer: this.tooltipFooter(viewData),
                     },
                 },
-                maintainAspectRatio: false,
+                maintainAspectRatio: true,
             },
         });
     }
@@ -120,8 +131,7 @@ export abstract class AbstractChart<TData> {
         return canvas.getContext('2d')!;
     };
 
-    // protected skipRender = (viewData: IViewData<TData>) => Object.keys(viewData.data).length === 0;
-    protected skipRender = (_: IViewData<TData>) => false;
+    protected isVisible = (viewData: IViewData<TData>) => Object.keys(viewData.data).length !== 0;
 }
 
 type TooltipLabelCallback = (t: ChartTooltipItem, d: ChartData) => string;

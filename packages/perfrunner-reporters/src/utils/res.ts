@@ -79,7 +79,6 @@ const getResourceType = (pEntry: ExtendedPerformanceEntry): ResourceType => {
         }
     }
 
-    console.log(`${pEntry.name} ${pEntry.entryType}, ${pEntry.extension}`);
     return 'unknown';
 };
 

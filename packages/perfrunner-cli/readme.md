@@ -47,13 +47,13 @@ npx perfrunner https://drag13.io
 
 | Command               | Alias | Description                                                                                                      | Default value          | IsRequired |
 | --------------------- | ----- | ---------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------- |
-| --cache               | -C    | Using browser cahce                                                                                              | `false`                | Optional   |
+| --cache               | -C    | Using browser cahce. Mutliple values supported. <`true`/`false`>                                                 | `false`                | Optional   |
 | --chrome-args         | -     | Additional arguments to pass to the browser instance. Should be passed using camelCase style like: `"noSandbox"` | `undefined`            | Optional   |
 | --comment             | -     | Provide additional information about test. May be used from reporter                                             | `undefined`            | Optional   |
 | --executablePath      | -E    | Sets path to the Chrome instance                                                                                 | `undefined`            | Optional   |
 | --ignore-default-args | -     | Ignore defaultArgs for launching Chromium                                                                        | `false`                | Optional   |
 | --log-level           | -     | Setup log level: <`verbose`>                                                                                     | `undefined`            | Optional   |
-| --network             | -     | Setup network contions. Multiple values supported. <`online`/`regular-4g`/`fast-3g`/`hspa`/`slow-3g`>            | `fast-3g`              | Optional   |
+| --network             | -     | Setup network contions. Multiple values supported. <`online`/`regular-4g`/`fast-3g`/`hspa`/`slow-3g`>            | `online`,`fast-3g`     | Optional   |
 | --no-headless         | -     | Disables headless mode                                                                                           | `false`                | Optional   |
 | --purge               | -     | Remove old data before the test run                                                                              | `false`                | Optional   |
 | --reporter            | -     | Specify reporter                                                                                                 | `html`                 | Optional   |
@@ -88,7 +88,7 @@ Example:
 This is default reporter so you don't need to name it
 
 ```cmd
-npx perfrunner drag13@github.io
+npx perfrunner drag13.io
 ```
 
 ### JSON
@@ -98,7 +98,7 @@ Generates output as JSON file
 Example:
 
 ```cmd
-npx perfrunner drag13@github.io --reporter json
+npx perfrunner drag13.io --reporter json
 ```
 
 ## CSV
@@ -106,7 +106,7 @@ npx perfrunner drag13@github.io --reporter json
 Generates output as CSV file
 
 ```cmd
-npx perfrunner drag13@github.io --reporter csv
+npx perfrunner drag13.io --reporter csv
 ```
 
 ## Custom

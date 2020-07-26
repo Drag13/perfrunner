@@ -6,6 +6,7 @@ import { defined, isNullOrEmpty, isNullOrNaN } from './misc';
 import { ResourceType, getResourceType } from './res';
 import { hash } from './hash';
 import { exclude } from './object';
+import { createElement } from './dom';
 
 export { TRANSPARENT, color };
 export { toMs, toBytes };
@@ -15,3 +16,4 @@ export { defined, isNullOrEmpty, isNullOrNaN };
 export { ResourceType, getResourceType };
 export { hash };
 export { exclude };
+export { createElement };

@@ -48,6 +48,7 @@ const optionsValidationScheme: ValidationScheme = {
                 return optionalString();
         }
     }),
+    executablePath: optionalString(),
 };
 
 export const validator = object().shape(optionsValidationScheme);
