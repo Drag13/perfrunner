@@ -6,7 +6,7 @@ import { ConsoleArguments } from '../arguments';
 
 describe('test', () => {
     const input: ConsoleArguments = {
-        cache: true,
+        cache: [true],
         chromeArgs: [],
         comment: '',
         ignoreDefaultArgs: false,
@@ -23,6 +23,7 @@ describe('test', () => {
         timeout: 500,
         url: new URL('http://drag13.io'),
         waitFor: 500,
+        executablePath: 'test'
     };
 
     const result = mapArgs(input);
