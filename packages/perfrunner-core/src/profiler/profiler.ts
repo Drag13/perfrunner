@@ -5,6 +5,9 @@ import { Tracer } from './trace';
 import { setpPerformanceConditions } from './setup';
 import { extractPerformanceMetrics } from './extractor';
 import { iterateAsync, asyncToArray } from '../utils';
+import { LARGEST_CONTENTFUL_PAINT } from './performance-observers';
+
+const MAX_RETRIES = 1;
 
 type ProfileParams = {
     useCache: boolean;
@@ -49,22 +52,47 @@ async function newPage(browser: Browser, timeout: number) {
     return newPage;
 }
 
-async function profilePage(browser: Browser, profileParams: ProfileParams, outputTracesTo: string, timeout: number) {
-    const { useCache, url, throttlingRate, network, waitFor } = profileParams;
+type ProfileResult = Promise<{
+    metrics: puppeteer.Metrics;
+    performanceEntries: PerformanceEntry[];
+}>;
 
-    const tracer = new Tracer(outputTracesTo);
-    const page = await newPage(browser, timeout);
+async function profilePage(browser: Browser, params: ProfileParams, traceTo: string, timeout: number, retries = 0): ProfileResult {
+    const { useCache, url, throttlingRate, network, waitFor } = params;
+    const tracer = new Tracer(traceTo);
+    let page: Page | null = null;
+    try {
+        page = await newPage(browser, timeout);
 
-    await setpPerformanceConditions(page, { useCache, throttlingRate, network });
+        await setpPerformanceConditions(page, { useCache, throttlingRate, network });
 
-    await tracer.start(page);
-    await runApplication(url, page, waitFor);
-    const trace = await tracer.stop();
+        await tracer.start(page);
+        await runApplication(url, page, waitFor);
+        const trace = await tracer.stop();
 
-    const result = await extractPerformanceMetrics(page, trace);
-    await page.close();
+        const result = await extractPerformanceMetrics(page, trace);
+        await page.close();
 
-    return result;
+        const fcp = result.performanceEntries.find((x) => x.name === 'first-contentful-paint');
+        debug(`fcp: ${fcp ? fcp.startTime : 'not recorded'}`);
+
+        const lcp = result.performanceEntries.find((x) => x.entryType === LARGEST_CONTENTFUL_PAINT);
+        log(`lcp: ${lcp ? lcp.startTime : 'not recorded'}`);
+
+        return result;
+    } catch (error) {
+        if (page) {
+            await page.close();
+        }
+
+        if (retries < MAX_RETRIES) {
+            log(`Spotted an error, doing retry #${retries + 1}`);
+            return await profilePage(browser, params, traceTo, timeout, retries + 1);
+        }
+
+        log(`Retrying limit exceeded, aborting profiling`);
+        throw error;
+    }
 }
 export async function runProfilingSession(
     browserLaunchOptions: BrowserLaunchOptions,
