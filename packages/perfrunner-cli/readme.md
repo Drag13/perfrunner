@@ -37,7 +37,7 @@ npx perfrunner https://drag13.io
 
 ## Default options
 
--   Network: **fast-3g**
+-   Network:**original**/ **fast-3g**
 -   Cache: **false**
 -   Runs: **3**
 -   Reporter: **html**
@@ -73,6 +73,12 @@ Supported reporters:
 -   [JSON](#json) - saves all data to json
 -   [CSV](#csv) - saves all data to csv
 -   [custom](#custom) - you can specify your own custom reporter
+
+To switch between reporters, use `--reporter` flag:
+
+```cmd
+npx drag13.io --reporter json
+```
 
 ## HTML
 
