@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { orderByAscending } from './array';
+import { orderByDescending } from './array';
 
 type Obj = {
     age: number;
@@ -16,10 +16,10 @@ const testSuite = [
     new TestCase([], undefined),
 ];
 
-describe('orderByAscending', () => {
+describe('orderByDescending', () => {
     testSuite.forEach(({ expected, input }) => {
         it(`for ${JSON.stringify(input)} should return ${JSON.stringify(expected)}`, () => {
-            const [latest] = orderByAscending(input, (x) => x.age);
+            const [latest] = orderByDescending(input, (x) => x.age);
 
             expect(latest).eqls(expected);
         });

@@ -39,7 +39,7 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
         return performanceEntries.reduce((acc, entrySet, i) => {
             entrySet.forEach((pEntry) => {
                 const entryType = getResourceType(pEntry);
-                acc.data[entryType][i] += pEntry.encodedBodySize ?? 0;
+                acc.data[entryType][i] += pEntry.encodedBodySize || 0;
             });
             acc.labels[i] = this.getLabel(i, rawData[i].comment);
             acc.timeStamp[i] = rawData[i].timeStamp;

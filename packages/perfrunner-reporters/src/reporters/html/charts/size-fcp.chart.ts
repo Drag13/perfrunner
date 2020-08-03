@@ -11,7 +11,7 @@ export class ResourceSizeBeforeFCPChart extends ResourceSizeChart {
 
         const firstPaintEvent =
             rawData.find((x) => x.name === 'first-contentful-paint') ?? rawData.find((x) => x.name === 'first-paint');
-        const fpeTime = firstPaintEvent?.startTime ?? Number.POSITIVE_INFINITY;
+        const fpeTime = firstPaintEvent?.startTime || Number.POSITIVE_INFINITY;
 
         return entries.filter((x) => !isNullOrNaN(x.responseEnd) && x.responseEnd < fpeTime);
     }

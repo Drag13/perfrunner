@@ -3,7 +3,7 @@ import { Page } from 'puppeteer';
 import { ExtendedPerformanceEntry } from './types';
 import { LARGEST_CONTENTFUL_PAINT, IWithObserver } from './performance-observers';
 import { debug } from '../logger';
-import { orderByAscending } from '../utils';
+import { orderByDescending } from '../utils';
 
 async function extractPageMetrics(page: Page) {
     debug('extracting page metrics');
@@ -52,7 +52,7 @@ function normalizedPerformanceEntries(performanceEntries: ExtendedPerformanceEnt
         defaultEntries.push(p);
     });
 
-    const lastLcpEvent = orderByAscending(lcpEntries, (x) => x.renderTime ?? x.loadTime ?? 0)[0];
+    const [lastLcpEvent] = orderByDescending(lcpEntries, (x) => x.renderTime || x.loadTime || 0);
 
     const result = [...defaultEntries];
 
@@ -76,7 +76,7 @@ function updateMissingData(entries: ExtendedPerformanceEntry[], { traceEvents }:
         const mimeType = receiveResponse?.args.data.mimeType ?? 'unknown';
 
         if (!entry.encodedBodySize) {
-            entry.encodedBodySize = finish?.args.data.encodedDataLength ?? 0;
+            entry.encodedBodySize = finish?.args.data.encodedDataLength || 0;
         }
 
         if (!entry.extension?.mimeType) {
