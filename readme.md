@@ -44,19 +44,19 @@ Change something and run it again to check the difference
 ### With the network setup
 
 ```cmd
-npx perfrunner https://drag13.io/ --network slow-3g
+npx perfrunner https://drag13.io/ --network slow3g
 ```
 
 ### With network and throttling
 
 ```cmd
-npx perfrunner https://drag13.io/ --network slow-3g -T 4
+npx perfrunner https://drag13.io/ --network slow3g -T 4
 ```
 
 ### With network, throttling, and cache
 
 ```cmd
-npx perfrunner https://drag13.io/ --network slow-3g -T 4 --cache
+npx perfrunner https://drag13.io/ --network slow3g -T 4 --cache
 ```
 
 ### Generate json instead of HTML

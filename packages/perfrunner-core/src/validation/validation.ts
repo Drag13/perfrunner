@@ -1,5 +1,6 @@
 import { object, boolean, Schema, string, number, lazy, array } from 'yup';
 import { PerfRunnerOptions } from '../index';
+import { error } from '../logger';
 
 type ValidationScheme = {
     [key in keyof PerfRunnerOptions]: Schema<PerfRunnerOptions[key]>;
@@ -56,8 +57,8 @@ export const validator = object().shape(optionsValidationScheme);
 export function validateArguments(params: PerfRunnerOptions) {
     try {
         validator.validateSync(params);
-    } catch (error) {
-        error(error);
-        throw error;
+    } catch (e) {
+        error(e);
+        throw e;
     }
 }

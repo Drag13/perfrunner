@@ -47,8 +47,6 @@ export const Network = (networkType: string | undefined) => {
         case 'slow3g':
             return Slow3g;
         case 'hspa':
-        case 'regular3g':
-        case 'regular-3g':
             return HSPA;
         case 'fast3g':
         case 'fast-3g':
