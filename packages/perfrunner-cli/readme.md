@@ -37,7 +37,7 @@ npx perfrunner https://drag13.io
 
 ## Default options
 
--   Network:**original**/ **fast-3g**
+-   Network:**original**/ **fast3g**
 -   Cache: **false**
 -   Runs: **3**
 -   Reporter: **html**
@@ -50,10 +50,10 @@ npx perfrunner https://drag13.io
 | --cache               | -C    | Using browser cahce. Mutliple values supported. <`true`/`false`>                                                 | `false`                | Optional   |
 | --chrome-args         | -     | Additional arguments to pass to the browser instance. Should be passed using camelCase style like: `"noSandbox"` | `undefined`            | Optional   |
 | --comment             | -     | Provide additional information about test. May be used from reporter                                             | `undefined`            | Optional   |
-| --executablePath      | -E    | Sets path to the Chrome instance                                                                                 | `undefined`            | Optional   |
+| --executable-path     | -E    | Sets path to the Chrome instance                                                                                 | `undefined`            | Optional   |
 | --ignore-default-args | -     | Ignore defaultArgs for launching Chromium                                                                        | `false`                | Optional   |
 | --log-level           | -     | Setup log level: <`verbose`>                                                                                     | `undefined`            | Optional   |
-| --network             | -     | Setup network contions. Multiple values supported. <`online`/`regular-4g`/`fast-3g`/`hspa`/`slow-3g`>            | `online`,`fast-3g`     | Optional   |
+| --network             | -     | Setup network contions. Multiple values supported. <`online`/`regular4g`/`fast3g`/`hspa`/`slow3g`>               | `online`,`fast3g`      | Optional   |
 | --no-headless         | -     | Disables headless mode                                                                                           | `false`                | Optional   |
 | --purge               | -     | Remove old data before the test run                                                                              | `false`                | Optional   |
 | --reporter            | -     | Specify reporter                                                                                                 | `html`                 | Optional   |
@@ -144,7 +144,7 @@ You also can use Perfrunner without headless mode
 npx perfrunner https://drag13.io --no-headless
 ```
 
-If nothing helps, try to use `executablePath` option
+If nothing helps, try to use `--executable-path` option
 
 ```cmd
 npx perfrunner https://drag13.io -E "Path\To\chrome.exe"
