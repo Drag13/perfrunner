@@ -24,4 +24,4 @@ export type PerformanceConditions = {
     cache: boolean[];
 };
 
-export interface TestParams extends TestRunConditions, PerformanceConditions {}
+export interface PerfrunnerParams extends TestRunConditions, PerformanceConditions {}

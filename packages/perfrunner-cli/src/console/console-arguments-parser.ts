@@ -1,19 +1,19 @@
 import cmd, { OptionDefinition } from 'command-line-args';
-import { TestParams } from '../commands/test-params';
 import { argsLike } from '../utils';
-import { Url, Bool, Network, ArgsLikeString, StringOrNumber, LogLevel } from './custom-types';
+import { Bool, Network, ArgsLikeString, StringOrNumber, LogLevel } from './custom-types';
 import { Original, HSPA_Plus } from './custom-types/network';
+import { PerfrunnerParams } from '../perfrunner-params';
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
-    name: keyof TestParams;
+    name: keyof PerfrunnerParams;
     type: (args?: string) => T extends Array<infer V> ? V : T;
     defaultValue?: T;
 }
 
-type ParamsMap = { [key in keyof TestParams]: Omit<ProfileOptionDefintion<TestParams[key]>, 'name'> };
+type ParamsMap = { [key in keyof PerfrunnerParams]: Omit<ProfileOptionDefintion<PerfrunnerParams[key]>, 'name'> };
 
 const options: ParamsMap = {
-    url: { type: Url, defaultOption: true },
+    url: { type: String, defaultOption: true },
     timeout: { type: Number, defaultValue: 90_000 },
     cache: { type: Bool, multiple: true, defaultValue: [false], alias: 'C' },
     throttling: { type: Number, defaultValue: 2, alias: 'T' },
@@ -35,4 +35,6 @@ const options: ParamsMap = {
 
 export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));
 
-export const parseConsole = () => <TestParams & { _unknown: string[] }>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });
+type PerfrunnerCliParams = PerfrunnerParams & { _unknown: string[] };
+
+export const parseConsole = () => <PerfrunnerCliParams>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });

@@ -8,4 +8,7 @@ export class RunTestsFromConfigCommand implements ICommand<ReadConfigParams> {
     constructor(args: ReadConfigParams) {
         this.args = args;
     }
+    async execute() {
+        return await Promise.resolve(-1);
+    }
 }

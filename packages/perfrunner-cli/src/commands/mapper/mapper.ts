@@ -1,6 +1,7 @@
 import { PerfRunnerOptions, NetworkSetup } from 'perfrunner-core';
-import { TestParams as InputParams } from "../commands/test-params";
+import { TestParams as InputParams } from '../test-params';
 import { getOutputPath } from './output';
+import { Url } from './url';
 
 type ReporterOptions = { name: string; params: string[] };
 function getReporterOptions(args: string[]): ReporterOptions {
@@ -19,7 +20,7 @@ export type TestParams = {
 const map = (consoleArguments: InputParams, useCache: boolean, networkSetup: NetworkSetup) => {
     return {
         ...consoleArguments,
-        url: consoleArguments.url.href,
+        url: Url(consoleArguments.url).href,
         useCache,
         throttlingRate: consoleArguments.throttling,
         headless: !consoleArguments.noHeadless,
