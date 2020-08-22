@@ -2,7 +2,7 @@ import 'mocha';
 import { expect } from 'chai';
 
 import { mapArgs } from './mapper';
-import { PerfrunnerParams } from "../../perfrunner-params";
+import { PerfrunnerParams } from '../../perfrunner-params';
 
 describe('test', () => {
     const input: PerfrunnerParams = {
@@ -23,7 +23,7 @@ describe('test', () => {
         timeout: 500,
         url: 'http://drag13.io',
         waitFor: 500,
-        executablePath: 'test'
+        executablePath: 'test',
     };
 
     const result = mapArgs(input);
