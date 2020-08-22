@@ -1,22 +1,23 @@
 #!/usr/bin/env node
 
 import { profile, logger } from 'perfrunner-core';
-import { ConsoleArguments } from './arguments';
 import { mapArgs } from './mapper';
 import { setupLogLevel } from './logging';
 import { loadReporter } from './reporter';
 import { ensureFolderCreated } from './utils';
 import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
 
-import { getCommandFromArguments, GenerateConfigCommand, RunTestsCommand, ReadConfigCommand } from './commands/parser';
+import { InitConfigCommand, createCommand, RunTestsFromConsoleCommand, RunTestsFromConfigCommand } from './commands';
 import { writeFileSync, readFileSync } from 'fs';
+import { TestParams } from './commands/test-params';
+import { parseConsole } from './console/console-arguments-parser';
 
-function generateConfigCommandHandler(_: GenerateConfigCommand) {
-    writeFileSync('./perfrunner.json', JSON.stringify([]), { encoding: 'utf-8' });
+function generateConfigCommandHandler({ args: { pathToConfig } }: InitConfigCommand) {
+    writeFileSync(pathToConfig, JSON.stringify([]), { encoding: 'utf-8' });
     return 1;
 }
 
-async function runTests(args: ConsoleArguments) {
+async function runTests(args: TestParams) {
     setupLogLevel(args.logLevel);
     const { perfrunnerOptions, reporterOptions } = mapArgs(args);
     const asyncSequence = iterateAsync(perfrunnerOptions, (params, i) => {
@@ -38,30 +39,33 @@ async function runTests(args: ConsoleArguments) {
     return exitCode;
 }
 
-async function readConfigCommandHandler(cmd: ReadConfigCommand) {
+async function readConfigCommandHandler(cmd: RunTestsFromConfigCommand) {
     const { pathToConfig } = cmd.args;
     const rawArgs = readFileSync(pathToConfig, { encoding: 'utf-8' });
-    const args = <ConsoleArguments>JSON.parse(rawArgs);
+    const args = <TestParams>JSON.parse(rawArgs);
     return await runTests(args);
 }
 
-async function runTestsCommandHandler(cmd: RunTestsCommand) {
+async function runTestsCommandHandler(cmd: RunTestsFromConsoleCommand) {
     const { args } = cmd;
     return await runTests(args);
 }
 
 (async function (): Promise<number> {
     try {
-        const cmd = getCommandFromArguments();
+        const userInput = parseConsole();
+        const commandName = userInput._unknown == null ? '--from-console' : userInput._unknown[0];
+        const cmd = createCommand(commandName, userInput);
+
         let exitCode = 0;
 
-        if (cmd instanceof RunTestsCommand) {
+        if (cmd instanceof RunTestsFromConsoleCommand) {
             exitCode = await runTestsCommandHandler(cmd);
         }
-        if (cmd instanceof ReadConfigCommand) {
+        if (cmd instanceof RunTestsFromConfigCommand) {
             exitCode = await readConfigCommandHandler(cmd);
         }
-        if (cmd instanceof GenerateConfigCommand) {
+        if (cmd instanceof InitConfigCommand) {
             exitCode = generateConfigCommandHandler(cmd);
         }
 

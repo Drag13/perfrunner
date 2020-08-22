@@ -1,5 +1,5 @@
 import { PerfRunnerOptions, NetworkSetup } from 'perfrunner-core';
-import { ConsoleArguments } from '../arguments/args';
+import { TestParams as InputParams } from "../commands/test-params";
 import { getOutputPath } from './output';
 
 type ReporterOptions = { name: string; params: string[] };
@@ -16,7 +16,7 @@ export type TestParams = {
     reporterOptions: ReporterOptions;
 };
 
-const map = (consoleArguments: ConsoleArguments, useCache: boolean, networkSetup: NetworkSetup) => {
+const map = (consoleArguments: InputParams, useCache: boolean, networkSetup: NetworkSetup) => {
     return {
         ...consoleArguments,
         url: consoleArguments.url.href,
@@ -28,7 +28,7 @@ const map = (consoleArguments: ConsoleArguments, useCache: boolean, networkSetup
     };
 };
 
-const flattenArguments = (consoleArguments: ConsoleArguments) => {
+const flattenArguments = (consoleArguments: InputParams) => {
     const perfrunnerOptions = [];
 
     for (const network of consoleArguments.network) {
@@ -40,7 +40,7 @@ const flattenArguments = (consoleArguments: ConsoleArguments) => {
     return perfrunnerOptions;
 };
 
-export const mapArgs = (consoleArguments: ConsoleArguments): TestParams => {
+export const mapArgs = (consoleArguments: InputParams): TestParams => {
     const perfrunnerOptions = flattenArguments(consoleArguments);
     const reporterOptions = getReporterOptions(consoleArguments.reporter);
 

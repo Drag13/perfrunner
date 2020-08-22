@@ -1,42 +1,16 @@
-import { OptionDefinition } from 'command-line-args';
-import { NetworkSetup } from 'perfrunner-core';
-import { Url, Network, ArgsLikeString, StringOrNumber, LogLevel, Bool } from './typeFactories';
+import cmd, { OptionDefinition } from 'command-line-args';
+import { TestParams } from '../commands/test-params';
 import { argsLike } from '../utils';
-import { HSPA_Plus, Original } from './typeFactories/network';
-
-export type TestRunConditions = {
-    url: URL;
-    timeout: number;
-    runs: number;
-    reporter: string[];
-    purge: boolean;
-    noHeadless: boolean;
-    testName: string;
-    reportOnly: boolean;
-    chromeArgs: string[];
-    ignoreDefaultArgs: boolean;
-    waitFor: number | string;
-    logLevel: string | undefined;
-    output: string;
-    comment: string;
-    executablePath: string | undefined;
-};
-
-export type PerformanceConditions = {
-    network: NetworkSetup[];
-    throttling: number;
-    cache: boolean[];
-};
-
-export interface ConsoleArguments extends TestRunConditions, PerformanceConditions {}
+import { Url, Bool, Network, ArgsLikeString, StringOrNumber, LogLevel } from './custom-types';
+import { Original, HSPA_Plus } from './custom-types/network';
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
-    name: keyof ConsoleArguments;
+    name: keyof TestParams;
     type: (args?: string) => T extends Array<infer V> ? V : T;
     defaultValue?: T;
 }
 
-type ParamsMap = { [key in keyof ConsoleArguments]: Omit<ProfileOptionDefintion<ConsoleArguments[key]>, 'name'> };
+type ParamsMap = { [key in keyof TestParams]: Omit<ProfileOptionDefintion<TestParams[key]>, 'name'> };
 
 const options: ParamsMap = {
     url: { type: Url, defaultOption: true },
@@ -60,3 +34,5 @@ const options: ParamsMap = {
 };
 
 export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));
+
+export const parseConsole = () => <TestParams & { _unknown: string[] }>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });
