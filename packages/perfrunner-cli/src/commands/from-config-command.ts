@@ -22,13 +22,7 @@ export class RunTestsFromConfigCommand implements ICommand {
 
         const config = this.readConfigFile(pathToConfig);
 
-        const testSuite = config.url.map(
-            (url) =>
-                new RunTestsFromConsoleCommand({
-                    ...config,
-                    url,
-                })
-        );
+        const testSuite = config.url.map((url) => new RunTestsFromConsoleCommand({ ...config, url }));
 
         const asyncSequence = iterateAsync(testSuite, async (testCase) => await testCase.execute());
         await asyncToArray(asyncSequence);

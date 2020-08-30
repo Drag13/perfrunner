@@ -1,3 +1,5 @@
-import { getCommandFromUserInput } from './command-factory';
+import { RunTestsFromConfigCommand } from './from-config-command';
+import { RunTestsFromConsoleCommand } from './from-console-command';
+import { InitConfigCommand } from './init-command';
 
-export { getCommandFromUserInput };
+export { RunTestsFromConfigCommand, RunTestsFromConsoleCommand, InitConfigCommand };

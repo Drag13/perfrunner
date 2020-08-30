@@ -72,7 +72,7 @@ For other commands check [perfrunner-cli](./packages/perfrunner-cli)
 Perfrunner supports config file. To use config file, run `--init` command first:
 
 ```cmd
-npx perfrunner --init
+npx perfrunner --init drag13.io
 ```
 
 And run Perfrunner once more time without arguments

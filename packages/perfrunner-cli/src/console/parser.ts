@@ -3,6 +3,8 @@ import { TestParams } from '../params/params';
 import { ArgsLikeString, Bool, LogLevel, Network, StringOrNumber } from './custom-types';
 import { Original, HSPA_Plus } from '../params/network';
 import { argsLike, isNullOrEmpty } from '../utils/string';
+import { RunTestsFromConsoleCommand, RunTestsFromConfigCommand, InitConfigCommand } from '../commands';
+import { ICommand } from '../commands/icommand';
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
     name: keyof TestParams;
@@ -38,14 +40,27 @@ export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name
 type PerfrunnerCliParams = TestParams & { _unknown: string[] };
 
 export const parseUserInput = () => <PerfrunnerCliParams>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });
-export const getCommandName = (userInput: PerfrunnerCliParams) => {
-    if (isNullOrEmpty(userInput.url)) {
-        return '--from-config';
+
+export function commandFactory(initialInput: PerfrunnerCliParams): ICommand {
+    const [commandName] = initialInput._unknown || [];
+
+    if (isNullOrEmpty(commandName)) {
+        const isUrlPassed = !isNullOrEmpty(initialInput.url);
+        return isUrlPassed
+            ? new RunTestsFromConsoleCommand(initialInput)
+            : new RunTestsFromConfigCommand({ configName: './perfrunner.json', pathToFolder: '.' });
     }
 
-    if (userInput._unknown == null) {
-        return '--from-console';
+    if (commandName.toLowerCase() === '--from-config') {
+        return new RunTestsFromConfigCommand({ configName: './perfrunner.json', pathToFolder: '.' });
     }
 
-    return userInput._unknown[0];
-};
+    const initCommandArgsDefinition = [
+        { name: 'url', defaultOption: true, type: String },
+        { name: 'init', type: Boolean, defaultValue: true },
+    ];
+    const initCommandArgs = <{ url: string }>cmd(initCommandArgsDefinition, { camelCase: true, argv: initialInput._unknown || [] });
+    console.log(initCommandArgs);
+
+    return new InitConfigCommand({ configName: './perfrunner.json', pathToFolder: '.', url: [initCommandArgs.url] });
+}
