@@ -8,12 +8,12 @@ Perfrunner is the performance testing tool for websites and web applications. Pe
 
 Tracks:
 
-* First Contentful Paint
-* Largest Contentful Paint
-* Layout duration time
-* Script duration time
-* Resources size (js, css, img, fonts)
-* And much more!
+-   First Contentful Paint
+-   Largest Contentful Paint
+-   Layout duration time
+-   Script duration time
+-   Resources size (js, css, img, fonts)
+-   And much more!
 
 ## Perfrunner example: Angular vs React vs Vue
 
@@ -23,13 +23,13 @@ This is a simple comparison of the three default builds for the Angular/React/Vu
 
 ## Features
 
-* Simple UI to track performance changes
-* Various metrics (FCP, LCP, resources size, etc.)
-* Various output - HTML, JSON, CSV
-* Good precision with automated multiple reruns
-* Traces for further investigation
-* Supports multiple network conditions - slow3g, fast3g, 4g
-* Test your app with or without cache
+-   Simple UI to track performance changes
+-   Various metrics (FCP, LCP, resources size, etc.)
+-   Various output - HTML, JSON, CSV
+-   Good precision with automated multiple reruns
+-   Traces for further investigation
+-   Supports multiple network conditions - slow3g, fast3g, 4g
+-   Test your app with or without cache
 
 ## How to start
 
@@ -67,21 +67,35 @@ npx perfrunner https://drag13.io/ --reporter json
 
 For other commands check [perfrunner-cli](./packages/perfrunner-cli)
 
+## Config file
+
+Perfrunner supports config file. To use config file, run `--init` command first:
+
+```cmd
+npx perfrunner --init
+```
+
+And run Perfrunner once more time without arguments
+
+```cmd
+npx perfrunner
+```
+
+Perfrunner will use `perfrunner.json` configuration file instead of input from the console. With a config file, you can use multiple URL and adjust network setup.
+
 ## What next
 
-* [Support test suite](https://github.com/Drag13/perfrunner/issues/37)
-* [Support CI](https://github.com/Drag13/perfrunner/issues/38)
-
+* Add simple simple markdown reporter
 
 ## Related packages
 
-* [perfrunner-cli](./packages/perfrunner-cli) - command line interface for the perfrunner
-* [perfrunner-core](./packages/perfrunner-core) - runs tests and aggregate result
-* [perfrunner-reporters](./packages/perfrunner-reporters) - process result
+-   [perfrunner-cli](./packages/perfrunner-cli) - command line interface for the perfrunner
+-   [perfrunner-core](./packages/perfrunner-core) - runs tests and aggregate result
+-   [perfrunner-reporters](./packages/perfrunner-reporters) - process result
 
 ## Credits
 
-* [raharrison](https://github.com/raharrison) for inspiration and examples
+-   [raharrison](https://github.com/raharrison) for inspiration and examples
 
 ## License
 

@@ -47,11 +47,13 @@ npx perfrunner https://drag13.io
 
 | Command               | Alias | Description                                                                                                      | Default value          | IsRequired |
 | --------------------- | ----- | ---------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------- |
+|                       |       | Run tests using perfrunner.json config file                                                                      |                        | Optional   |
 | --cache               | -C    | Using browser cahce. Mutliple values supported. <`true`/`false`>                                                 | `false`                | Optional   |
 | --chrome-args         | -     | Additional arguments to pass to the browser instance. Should be passed using camelCase style like: `"noSandbox"` | `undefined`            | Optional   |
 | --comment             | -     | Provide additional information about test. May be used from reporter                                             | `undefined`            | Optional   |
 | --executable-path     | -E    | Sets path to the Chrome instance                                                                                 | `undefined`            | Optional   |
 | --ignore-default-args | -     | Ignore defaultArgs for launching Chromium                                                                        | `false`                | Optional   |
+| --init                | -     | Creates perfrunner.json config file                                                                              | `undefined`            | Optional   |
 | --log-level           | -     | Setup log level: <`verbose`>                                                                                     | `undefined`            | Optional   |
 | --network             | -     | Setup network contions. Multiple values supported. <`online`/`regular4g`/`fast3g`/`hspa`/`slow3g`>               | `online`,`fast3g`      | Optional   |
 | --no-headless         | -     | Disables headless mode                                                                                           | `false`                | Optional   |
