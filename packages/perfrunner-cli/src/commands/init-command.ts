@@ -1,11 +1,11 @@
 import { writeFileSync } from 'fs';
 
 import { ICommand } from './icommand';
-import { TestParams } from '../params';
+import { TestParams } from '../params/params';
 import { withRootPath, ensureFolderCreated } from '../utils';
 import { join } from 'path';
 import { logger } from 'perfrunner-core';
-import { HSPA_Plus } from '../console/custom-types/network';
+import { HSPA_Plus } from '../params/network';
 
 type InitConfigParams = { pathToFolder: string; configName: string };
 

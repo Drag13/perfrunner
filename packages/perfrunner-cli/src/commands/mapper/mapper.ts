@@ -1,5 +1,5 @@
 import { PerfRunnerOptions, NetworkSetup } from 'perfrunner-core';
-import { TestParams as InputParams } from '../../params';
+import { TestParams as InputParams } from '../../params/params';
 import { Url } from './url';
 import { getOutputPathFromUrl, getOutputPathFromtestName } from './output';
 

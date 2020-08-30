@@ -2,9 +2,9 @@ import { ICommand } from './icommand';
 import { existsSync, readFileSync } from 'fs';
 import { withRootPath } from '../utils';
 import { join } from 'path';
-import { TestParams } from '../params';
+import { TestParams } from '../params/params';
 import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
-import { RunTestsFromConsoleCommand } from '.';
+import { RunTestsFromConsoleCommand } from './from-console-command';
 
 type ReadConfigParams = { pathToFolder: string; configName: string };
 

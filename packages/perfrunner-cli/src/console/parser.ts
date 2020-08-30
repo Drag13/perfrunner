@@ -1,8 +1,8 @@
 import cmd, { OptionDefinition } from 'command-line-args';
-import { argsLike } from '../utils';
-import { Bool, Network, ArgsLikeString, StringOrNumber, LogLevel } from './custom-types';
-import { Original, HSPA_Plus } from './custom-types/network';
-import { TestParams } from '../params';
+import { TestParams } from '../params/params';
+import { ArgsLikeString, Bool, LogLevel, Network, StringOrNumber } from './custom-types';
+import { Original, HSPA_Plus } from '../params/network';
+import { argsLike } from '../utils/string';
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
     name: keyof TestParams;
@@ -37,4 +37,6 @@ export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name
 
 type PerfrunnerCliParams = TestParams & { _unknown: string[] };
 
-export const parseConsole = () => <PerfrunnerCliParams>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });
+export const parseUserInput = () => <PerfrunnerCliParams>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });
+export const getCommandName = (userInput: PerfrunnerCliParams) =>
+    userInput._unknown == null ? '--from-console' : userInput._unknown[0];

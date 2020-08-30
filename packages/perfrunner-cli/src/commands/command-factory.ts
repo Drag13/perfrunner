@@ -2,12 +2,12 @@ import { ICommand, CommandName } from './icommand';
 import { RunTestsFromConfigCommand } from './from-config-command';
 import { RunTestsFromConsoleCommand } from './from-console-command';
 import { InitConfigCommand } from './init-command';
-import { TestParams } from '../params';
+import { TestParams } from '../params/params';
 
 const consoleArgumentsGuard = (v: any): v is TestParams => v && v.url;
 
-export function createCommand(cmd: string, args: unknown): ICommand {
-    switch (cmd as CommandName) {
+export function getCommandFromUserInput(commandName: string, args: TestParams): ICommand {
+    switch (commandName as CommandName) {
         case '--init':
             return new InitConfigCommand({ configName: './perfrunner.json', pathToFolder: '.' });
         case '--from-config':
@@ -21,5 +21,5 @@ export function createCommand(cmd: string, args: unknown): ICommand {
         }
     }
 
-    throw new Error(`CommandName: "${cmd}" is unknown`);
+    throw new Error(`CommandName: "${commandName}" is unknown`);
 }
