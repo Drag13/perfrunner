@@ -6,13 +6,10 @@ import { runTest } from '../runner/run-test';
 import { generateReport } from '../runner/generate-report';
 import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
 
-export class RunTestsFromConsoleCommand implements ICommand<TestParams> {
+export class RunTestsFromConsoleCommand implements ICommand {
     readonly name = '--from-console';
-    readonly args: TestParams;
 
-    constructor(args: TestParams) {
-        this.args = args;
-    }
+    constructor(private readonly args: TestParams) {}
 
     async execute() {
         const { perfrunnerOptions, reporterOptions } = mapArgs(this.args);

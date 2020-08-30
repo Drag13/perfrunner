@@ -6,12 +6,12 @@ import { TestParams } from '../params';
 
 const consoleArgumentsGuard = (v: any): v is TestParams => v && v.url;
 
-export function createCommand(cmd: string, args: unknown): ICommand<unknown> {
+export function createCommand(cmd: string, args: unknown): ICommand {
     switch (cmd as CommandName) {
         case '--init':
-            return new InitConfigCommand({ pathToConfig: './perfrunner.json' });
+            return new InitConfigCommand({ configName: './perfrunner.json', pathToFolder: '.' });
         case '--from-config':
-            return new RunTestsFromConfigCommand({ pathToConfig: './perfrunner.json' });
+            return new RunTestsFromConfigCommand({ configName: './perfrunner.json', pathToFolder: '.' });
         case '--from-console': {
             if (consoleArgumentsGuard(args)) {
                 return new RunTestsFromConsoleCommand(args);

@@ -1,7 +1,7 @@
 import { PerfRunnerOptions, NetworkSetup } from 'perfrunner-core';
 import { TestParams as InputParams } from '../../params';
-import { getOutputPath } from './output';
 import { Url } from './url';
+import { getOutputPathFromUrl, getOutputPathFromtestName } from './output';
 
 type ReporterOptions = { name: string; params: string[] };
 function getReporterOptions(args: string[]): ReporterOptions {
@@ -24,7 +24,9 @@ const map = (consoleArguments: InputParams, useCache: boolean, networkSetup: Net
         useCache,
         throttlingRate: consoleArguments.throttling,
         headless: !consoleArguments.noHeadless,
-        output: getOutputPath(consoleArguments.output, consoleArguments.testName ?? consoleArguments.url),
+        output: consoleArguments.testName
+            ? getOutputPathFromtestName(consoleArguments.output, consoleArguments.testName)
+            : getOutputPathFromUrl(consoleArguments.output, consoleArguments.url),
         network: networkSetup,
     };
 };
