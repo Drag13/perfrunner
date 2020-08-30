@@ -52,7 +52,8 @@
   },
   "files": [
     "dist",
-    "!dist/generated"
+    "!dist/generated",
+    "!dist/perfrunner.json"
   ],
   "bin": "dist/cli.js",
   "husky": {

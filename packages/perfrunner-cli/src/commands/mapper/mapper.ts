@@ -18,15 +18,16 @@ export type TestParams = {
 };
 
 const map = (consoleArguments: InputParams, useCache: boolean, networkSetup: NetworkSetup) => {
+    const { href } = Url(consoleArguments.url);
     return {
         ...consoleArguments,
-        url: Url(consoleArguments.url).href,
+        url: href,
         useCache,
         throttlingRate: consoleArguments.throttling,
         headless: !consoleArguments.noHeadless,
         output: consoleArguments.testName
             ? getOutputPathFromtestName(consoleArguments.output, consoleArguments.testName)
-            : getOutputPathFromUrl(consoleArguments.output, consoleArguments.url),
+            : getOutputPathFromUrl(consoleArguments.output, href),
         network: networkSetup,
     };
 };
