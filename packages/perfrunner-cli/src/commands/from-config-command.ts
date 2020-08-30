@@ -2,9 +2,9 @@ import { ICommand } from './icommand';
 import { existsSync, readFileSync } from 'fs';
 import { withRootPath } from '../utils';
 import { join } from 'path';
-import { TestParams } from '../params/params';
 import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
 import { RunTestsFromConsoleCommand } from './from-console-command';
+import { Config } from './init-command';
 
 type ReadConfigParams = { pathToFolder: string; configName: string };
 
@@ -22,15 +22,13 @@ export class RunTestsFromConfigCommand implements ICommand {
 
         const config = this.readConfigFile(pathToConfig);
 
-        if (!Array.isArray(config)) {
-            throw new Error('Config is not an array, aborting...');
-        }
-
-        if (config.length === 0) {
-            throw new Error('Config is empty, aborting...');
-        }
-
-        const testSuite = config.map((p) => new RunTestsFromConsoleCommand(p));
+        const testSuite = config.url.map(
+            (url) =>
+                new RunTestsFromConsoleCommand({
+                    ...config,
+                    url,
+                })
+        );
 
         const asyncSequence = iterateAsync(testSuite, async (testCase) => await testCase.execute());
         await asyncToArray(asyncSequence);
@@ -40,5 +38,5 @@ export class RunTestsFromConfigCommand implements ICommand {
 
     getFullPathToConfig = (pathToFolder: string, configName: string) => join(withRootPath(pathToFolder), configName);
 
-    readConfigFile = (fullPathToConfig: string): TestParams[] => JSON.parse(readFileSync(fullPathToConfig, { encoding: 'utf-8' }));
+    readConfigFile = (fullPathToConfig: string): Config => JSON.parse(readFileSync(fullPathToConfig, { encoding: 'utf-8' }));
 }
