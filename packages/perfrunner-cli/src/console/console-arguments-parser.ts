@@ -2,15 +2,15 @@ import cmd, { OptionDefinition } from 'command-line-args';
 import { argsLike } from '../utils';
 import { Bool, Network, ArgsLikeString, StringOrNumber, LogLevel } from './custom-types';
 import { Original, HSPA_Plus } from './custom-types/network';
-import { PerfrunnerParams } from '../perfrunner-params';
+import { TestParams } from '../params';
 
 interface ProfileOptionDefintion<T> extends OptionDefinition {
-    name: keyof PerfrunnerParams;
+    name: keyof TestParams;
     type: (args?: string) => T extends Array<infer V> ? V : T;
     defaultValue?: T;
 }
 
-type ParamsMap = { [key in keyof PerfrunnerParams]: Omit<ProfileOptionDefintion<PerfrunnerParams[key]>, 'name'> };
+type ParamsMap = { [key in keyof TestParams]: Omit<ProfileOptionDefintion<TestParams[key]>, 'name'> };
 
 const options: ParamsMap = {
     url: { type: String, defaultOption: true },
@@ -35,6 +35,6 @@ const options: ParamsMap = {
 
 export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));
 
-type PerfrunnerCliParams = PerfrunnerParams & { _unknown: string[] };
+type PerfrunnerCliParams = TestParams & { _unknown: string[] };
 
 export const parseConsole = () => <PerfrunnerCliParams>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });

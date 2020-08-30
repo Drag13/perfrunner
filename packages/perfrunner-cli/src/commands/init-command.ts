@@ -5,6 +5,7 @@ import { TestParams } from '../params';
 import { withRootPath, ensureFolderCreated } from '../utils';
 import { join } from 'path';
 import { logger } from 'perfrunner-core';
+import { HSPA_Plus } from '../console/custom-types/network';
 
 type InitConfigParams = { pathToFolder: string; configName: string };
 
@@ -16,7 +17,7 @@ const defaultConfig: TestParams[] = [
         executablePath: undefined,
         ignoreDefaultArgs: false,
         logLevel: undefined,
-        network: [{ downloadThroughput: (4 * 1024 * 1024) / 8, uploadThroughput: (1 * 1024 * 1024) / 8, latency: 100 }],
+        network: [HSPA_Plus],
         noHeadless: false,
         output: './generated',
         purge: false,
