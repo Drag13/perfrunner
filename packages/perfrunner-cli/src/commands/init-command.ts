@@ -3,7 +3,7 @@ import { cwd } from 'process';
 import { writeFileSync } from 'fs';
 
 import { ICommand } from './icommand';
-import { TestParams } from './test-params';
+import { TestParams } from '../params';
 
 type InitConfigParams = { pathToConfig: string };
 

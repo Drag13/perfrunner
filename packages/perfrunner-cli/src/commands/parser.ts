@@ -2,7 +2,7 @@ import { ICommand, CommandName } from './icommand';
 import { RunTestsFromConfigCommand } from './from-config-command';
 import { RunTestsFromConsoleCommand } from './from-console-command';
 import { InitConfigCommand } from './init-command';
-import { TestParams } from './test-params';
+import { TestParams } from '../params';
 
 const consoleArgumentsGuard = (v: any): v is TestParams => v && v.url;
 

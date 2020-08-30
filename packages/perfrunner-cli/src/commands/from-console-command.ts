@@ -1,4 +1,4 @@
-import { TestParams } from './test-params';
+import { TestParams } from '../params';
 import { ICommand } from './icommand';
 import { mapArgs } from './mapper';
 
