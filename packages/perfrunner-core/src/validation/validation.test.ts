@@ -37,21 +37,15 @@ const testSuite = [
     new TestCase(deepClone(validModel), true, 'Valid model should be valid'),
     new TestCase({ ...deepClone(validModel), url: 'http://localhost:1234/' }, true, 'localhost should be valid url'),
     new TestCase({ ...deepClone(validModel), url: 'testURl' }, false, 'When URL is not correct, error should be fired'),
+    new TestCase({ ...deepClone(validModel), url: null }, false, 'When URL is null error should be fired'),
+    new TestCase({ ...deepClone(validModel), url: undefined }, false, 'When URL is undefined error should be fired'),
     new TestCase({ ...deepClone(validModel), testName: 5 }, false, 'When testName is not string, error should be fired'),
 ];
 
 describe(`PerfRunnerOptions validation`, () => {
     testSuite.forEach((tc) => {
-        it(tc.testName, async () => {
-            try {
-                await validator.validate(tc.input);
-            } catch (error) {
-                if (tc.expected) {
-                    console.log((error as ValidationError).errors);
-                }
-            }
-
-            const isValid = await validator.isValid(tc.input);
+        it(tc.testName, () => {
+            const isValid = validator.isValidSync(tc.input);
             expect(isValid).equal(tc.expected);
         });
     });
