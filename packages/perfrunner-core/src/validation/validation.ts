@@ -17,9 +17,7 @@ const optionalPositiveInteger = () => number().optional().strict(true).positive(
 const requiredPositiveInteger = () => number().required().strict(true).positive().integer();
 
 const optionsValidationScheme: ValidationScheme = {
-    url: requiredString().test('url', 'URL isn\t valid', (v: string) => {
-        return urlRegex.test(v);
-    }),
+    url: requiredString().test('url', 'URL isn\t valid', (v): boolean => v == null || urlRegex.test(v)),
     runs: requiredPositiveInteger(),
     network: object()
         .required()

@@ -1,6 +1,6 @@
 {
   "name": "perfrunner-core",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Automated UI performance test tool to measure performance changes for the web apps and sites",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -30,24 +30,24 @@
   "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-core/readme.md",
   "homepage": "https://github.com/Drag13/perfrunner",
   "devDependencies": {
-    "@types/chai": "~4.2.11",
+    "@types/chai": "^4.2.12",
     "@types/lowdb": "~1.0.9",
     "@types/mocha": "~7.0.2",
-    "@types/node": "~14.0.1",
+    "@types/node": "^14.0.27",
     "@types/puppeteer": "~3.0.1",
-    "@types/yup": "~0.29.2",
+    "@types/yup": "^0.29.6",
     "chai": "~4.2.0",
     "husky": "~4.2.5",
     "mocha": "~7.2.0",
     "prettier": "~2.0.5",
     "ts-mocha": "~7.0.0",
     "ts-node": "~8.10.2",
-    "typescript": "~3.9.5"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "lowdb": "~1.0.0",
-    "puppeteer": "~5.2.0",
-    "yup": "~0.29.1"
+    "puppeteer": "^5.2.1",
+    "yup": "^0.29.3"
   },
   "files": [
     "dist"
