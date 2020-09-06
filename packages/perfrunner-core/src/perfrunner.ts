@@ -16,7 +16,7 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
 
     const url = new URL(options.url);
     const connectionString = getConnectionString(options.output, url, options.testName);
-    const db = Db.connect(connectionString);
+    const db = new Db(connectionString);
 
     if (!options.reportOnly) {
         log(`starting profile session for ${url.href}`);

@@ -1,6 +1,5 @@
-const HTTP_SCHEME = 'http://';
-const HTTPS_SCHEME = 'https://';
-const DEFAULT_HTTP_SCHEME = HTTP_SCHEME;
+import { URL_IS_EMPTY } from '../../errors';
+import { HTTP_SCHEME, HTTPS_SCHEME, DEFAULT_HTTP_SCHEME } from '../../config';
 
 const normalizeUrl = (url: string): string => {
     const loweredUrl = url.toLowerCase();
@@ -11,7 +10,7 @@ const normalizeUrl = (url: string): string => {
 
 export const Url = (v: string | undefined): URL => {
     if (v == null || v.trim() === '') {
-        throw new Error(`Not empty URL should be provided`);
+        throw URL_IS_EMPTY;
     }
 
     const urlString = normalizeUrl(v);

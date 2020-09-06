@@ -2,10 +2,10 @@ import 'mocha';
 import { expect } from 'chai';
 
 import { mapArgs } from './mapper';
-import { ConsoleArguments } from '../arguments';
+import { PerfrunnerParams } from '../../perfrunner-params';
 
 describe('test', () => {
-    const input: ConsoleArguments = {
+    const input: PerfrunnerParams = {
         cache: [true],
         chromeArgs: [],
         comment: '',
@@ -21,9 +21,9 @@ describe('test', () => {
         testName: 'testName',
         throttling: 2,
         timeout: 500,
-        url: new URL('http://drag13.io'),
+        url: 'http://drag13.io',
         waitFor: 500,
-        executablePath: 'test'
+        executablePath: 'test',
     };
 
     const result = mapArgs(input);

@@ -5,11 +5,9 @@ import { debug } from '../logger';
 import { ConnectionString } from './connection-string';
 
 class Db {
-    private static _instance: Db | undefined;
-
     private _db: LowdbSync<DbSchema>;
 
-    private constructor(connectpionString: ConnectionString) {
+    public constructor(connectpionString: ConnectionString) {
         const adapter = new FileSync<DbSchema>(connectpionString);
         debug(`connecting to: ${connectpionString}`);
         this._db = lowdb(adapter);
@@ -39,10 +37,6 @@ class Db {
         this._db.update('count', (_) => 0).write();
     }
 
-    public static connect(connectpionString: ConnectionString) {
-        //TODO: looks bad
-        return this._instance == null ? (this._instance = new Db(connectpionString)) : this._instance;
-    }
 }
 
 export { Db };
