@@ -5,6 +5,8 @@ import { join } from 'path';
 import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
 import { RunTestsFromConsoleCommand } from './from-console-command';
 import { Config } from './init-command';
+import { logger } from 'perfrunner-core';
+import { CONFIG_NOT_EXISTS } from '../errors';
 
 type ReadConfigParams = { pathToFolder: string; configName: string };
 
@@ -14,15 +16,18 @@ export class RunTestsFromConfigCommand implements ICommand {
 
     async execute() {
         const { pathToFolder, configName } = this.args;
+        logger.log(`Loading ${configName}`);
         const pathToConfig = this.getFullPathToConfig(pathToFolder, configName);
 
         if (!existsSync(pathToConfig)) {
-            throw new Error('Config not exists');
+            throw CONFIG_NOT_EXISTS;
         }
 
         const config = this.readConfigFile(pathToConfig);
 
-        const testSuite = config.url.map((url) => new RunTestsFromConsoleCommand({ ...config, url, purge: false }));
+        const testSuite = config.url.map(
+            (url) => new RunTestsFromConsoleCommand({ ...config, url, purge: false, comment: undefined })
+        );
 
         const asyncSequence = iterateAsync(testSuite, async (testCase) => await testCase.execute());
         await asyncToArray(asyncSequence);

@@ -2,8 +2,8 @@ import { Original, Slow3g, HSPA, HSPA_Plus, FourG } from '../../params/network';
 
 export const Network = (networkType: string | undefined) => {
     switch (networkType) {
-        case 'no-throttling':
         case 'online':
+        case 'original':
             return Original;
         case 'slow-3g':
         case 'slow3g':
