@@ -5,6 +5,7 @@ import { mapArgs } from './mapper';
 import { runTest } from '../runner/run-test';
 import { generateReport } from '../runner/generate-report';
 import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
+import { logger } from 'perfrunner-core';
 
 export class RunTestsFromConsoleCommand implements ICommand {
     readonly name = '--from-console';
@@ -17,6 +18,12 @@ export class RunTestsFromConsoleCommand implements ICommand {
         const asyncSequence = iterateAsync(perfrunnerOptions, (arg, i) => runTest(arg, i));
         const result = (await asyncToArray(asyncSequence)).pop();
 
-        return await generateReport(reporterOptions.name, perfrunnerOptions[0].output, result, reporterOptions.params);
+        const outputTo = perfrunnerOptions[0].output;
+
+        const exitCode = await generateReport(reporterOptions.name, perfrunnerOptions[0].output, result, reporterOptions.params);
+
+        logger.log(`To view results, please check: ${outputTo}`);
+
+        return exitCode;
     }
 }

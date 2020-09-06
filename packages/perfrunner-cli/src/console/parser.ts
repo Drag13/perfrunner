@@ -5,7 +5,15 @@ import { Original, HSPA_Plus } from '../params/network';
 import { argsLike, isNullOrEmpty } from '../utils/string';
 import { RunTestsFromConsoleCommand, RunTestsFromConfigCommand, InitConfigCommand } from '../commands';
 import { ICommand } from '../commands/icommand';
-import { DEFAULT_CONFIG_NAME, DEFAULT_FOLRDER_CONFIG, DEFAULT_OUTPUT_FOLDER, DEFAULT_REPORTER, DEFAULT_THROTTLING_RATE, DEFAULT_TIMEOUT, DEFAULT_NUMBER_RUNS } from '../config';
+import {
+    DEFAULT_CONFIG_NAME,
+    DEFAULT_FOLRDER_CONFIG,
+    DEFAULT_OUTPUT_FOLDER,
+    DEFAULT_REPORTER,
+    DEFAULT_THROTTLING_RATE,
+    DEFAULT_TIMEOUT,
+    DEFAULT_NUMBER_RUNS,
+} from '../config';
 
 interface CliOptionDefinition<T> extends OptionDefinition {
     name: keyof TestParams;
@@ -36,14 +44,14 @@ const options: ParamsMap = {
     executablePath: { type: String, alias: 'E' },
 };
 
-export const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));
+const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));
 
 type PerfrunnerCliParams = TestParams & { _unknown: string[] };
 
 export const parseUserInput = () => <PerfrunnerCliParams>cmd(definitions, { camelCase: true, stopAtFirstUnknown: true });
 
 export function commandFactory(initialInput: PerfrunnerCliParams): ICommand {
-    const [commandName] = initialInput._unknown || [];
+    const [commandName] = initialInput._unknown || (initialInput.url || '').toLowerCase() === 'init' ? ['init'] : [];
 
     if (isNullOrEmpty(commandName)) {
         const isUrlPassed = !isNullOrEmpty(initialInput.url);
