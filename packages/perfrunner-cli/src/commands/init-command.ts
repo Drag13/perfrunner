@@ -7,14 +7,17 @@ import { join } from 'path';
 import { logger } from 'perfrunner-core';
 import { HSPA_Plus, Original } from '../params/network';
 import { Url } from './mapper/url';
+import { DEFAULT_OUTPUT_FOLDER, DEFAULT_REPORTER, DEFAULT_NUMBER_RUNS, DEFAULT_THROTTLING_RATE, DEFAULT_TIMEOUT } from '../config';
 
 type InitConfigParams = { pathToFolder: string; configName: string; url: string[] };
 
-export interface Config extends Omit<TestParams, 'url'> {
+type NonConfigurableOptions = 'purge';
+
+export interface Config extends Omit<TestParams, 'url' | NonConfigurableOptions> {
     url: string[];
 }
 
-const defaultConfig: Config = {
+const defaultConfig: Omit<Config, NonConfigurableOptions> = {
     cache: [false],
     chromeArgs: undefined,
     comment: undefined,
@@ -23,13 +26,12 @@ const defaultConfig: Config = {
     logLevel: undefined,
     network: [Original, HSPA_Plus],
     noHeadless: false,
-    output: './generated',
-    purge: false,
+    output: DEFAULT_OUTPUT_FOLDER,
     reportOnly: false,
-    reporter: ['html'],
-    runs: 3,
-    throttling: 2,
-    timeout: 90_000,
+    reporter: [DEFAULT_REPORTER],
+    runs: DEFAULT_NUMBER_RUNS,
+    throttling: DEFAULT_THROTTLING_RATE,
+    timeout: DEFAULT_TIMEOUT,
     testName: undefined,
     waitFor: undefined,
     url: [],
