@@ -1,7 +1,6 @@
 import { existsSync } from 'fs';
-import { join } from 'path';
 import { IReporter } from 'perfrunner-reporters';
-import { cwd } from 'process';
+import { withRootPath } from '../utils';
 
 async function loadExternalReporter(path: string): Promise<IReporter> {
     const isFileExists = existsSync(path);
@@ -9,7 +8,7 @@ async function loadExternalReporter(path: string): Promise<IReporter> {
         throw new Error(`'External reporter not found in: ${path}`);
     }
 
-    const module = await import(join(cwd(), path));
+    const module = await import(withRootPath(path));
     const reporter = module.default;
     const isFunction = typeof reporter === 'function';
 

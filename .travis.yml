@@ -1,12 +1,12 @@
 language: node_js
 
 node_js:
-  - stable
+    - stable
 
 install:
-  - npm ci
-  - npm run lerna bootstrap --ci
+    - npm ci
+    - npm run lerna bootstrap --ci
 
 script:
-  - npm run build
-  - npm test
+    - npm run build
+    - npm test

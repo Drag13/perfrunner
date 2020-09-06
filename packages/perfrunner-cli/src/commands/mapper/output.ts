@@ -11,11 +11,13 @@ const generateFriendlyNameFromUrl = (url: URL): string => {
 
 const santizePath = (path: string) => path; // TODO: implement sanitaze
 
-export function getOutputPath(rootOutputFolder: string, testName: string): string;
-export function getOutputPath(rootOutputFolder: string, url: URL): string;
-export function getOutputPath(rootOutputFolder: string, target: URL | string): string {
-    const subfolder = typeof target === 'string' ? target : generateFriendlyNameFromUrl(target);
+export function getOutputPathFromtestName(outputFolder: string, testName: string) {
+    const safePathToSubfolder = santizePath(testName);
+    return resolve(process.cwd(), outputFolder, safePathToSubfolder);
+}
+export function getOutputPathFromUrl(outputFolder: string, url: string) {
+    const subfolder = generateFriendlyNameFromUrl(new URL(url));
     const safePathToSubfolder = santizePath(subfolder);
 
-    return resolve(process.cwd(), rootOutputFolder, safePathToSubfolder);
+    return resolve(process.cwd(), outputFolder, safePathToSubfolder);
 }
