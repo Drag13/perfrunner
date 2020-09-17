@@ -1,28 +1,25 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { render } from 'mustache';
 
 import { IReporter } from '../iReporter';
 import { IPerformanceResult } from 'perfrunner-core';
-import { groupBy, hash } from '../../utils';
+import { groupBy, hash, writeFile } from '../../utils';
 import { getReporterRegistry, defaultReporterNames } from './charts';
 
-const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] => {
-    return groupBy(
+const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] =>
+    groupBy(
         performanceRuns,
         ({ runParams: { useCache, network, throttlingRate } }) =>
             `${network.downloadThroughput}_${network.uploadThroughput}_${network.latency}_${throttlingRate}_${useCache ? 1 : 0}`
     );
-};
 
-const getPageMetadata = (pageName: string, isActive: boolean) => {
-    return {
-        pageName,
-        contentId: `x_${hash(pageName)}`,
-        pageClass: isActive ? 'active' : '',
-        tabClass: isActive ? 'active show' : '',
-    };
-};
+const getPageMetadata = (pageName: string, isActive: boolean) => ({
+    pageName,
+    contentId: `x_${hash(pageName)}`,
+    pageClass: isActive ? 'active' : '',
+    tabClass: isActive ? 'active show' : '',
+});
 
 const sanitizeJson = (json: string) => json.replace(/'/g, "'");
 
@@ -56,7 +53,7 @@ const defaultReporter: IReporter = async (outputFolder, data, args) => {
         arguments: sanitizeJson(JSON.stringify(reporters)),
     });
 
-    writeFileSync(join(outputFolder, 'default-report.html'), result, { encoding: 'utf-8' });
+    writeFile(outputFolder, 'default-report.html', result);
     return 0;
 };
 
