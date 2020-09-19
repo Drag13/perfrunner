@@ -21,3 +21,6 @@ export const getScriptDuration = (metric: Metrics) => Math.round(metric.ScriptDu
 export const getLayoutDuration = (metric: Metrics) => Math.round(metric.LayoutDuration);
 
 export const getRecalculateStyleDuration = (metric: Metrics) => Math.round(metric.RecalcStyleDuration);
+
+export const getNavigationEvent = (performanceEntries: ExtendedPerformanceEntry[]) =>
+    performanceEntries.find((x) => x.entryType === 'navigation');

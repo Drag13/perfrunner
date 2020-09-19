@@ -15,6 +15,7 @@ import {
     getScriptDuration,
     getLayoutDuration,
     getRecalculateStyleDuration,
+    getNavigationEvent,
 } from './eventExtractor';
 
 export { TRANSPARENT, color };
@@ -26,4 +27,13 @@ export { ResourceType, getResourceType };
 export { hash };
 export { exclude };
 export { createElement };
-export { getFCP, getFP, getLCP, getDomInteractive, getScriptDuration, getLayoutDuration, getRecalculateStyleDuration };
+export {
+    getFCP,
+    getFP,
+    getLCP,
+    getDomInteractive,
+    getScriptDuration,
+    getLayoutDuration,
+    getRecalculateStyleDuration,
+    getNavigationEvent,
+};

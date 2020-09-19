@@ -3,7 +3,17 @@ import { render } from 'mustache';
 import { join } from 'path';
 import { IPerformanceResult } from 'perfrunner-core';
 import { IReporter } from '../..';
-import { getDomInteractive, getFCP, getLayoutDuration, getLCP, getRecalculateStyleDuration, getScriptDuration, groupBy, writeFile } from '../../utils';
+import {
+    getDomInteractive,
+    getFCP,
+    getLayoutDuration,
+    getLCP,
+    getRecalculateStyleDuration,
+    getScriptDuration,
+    groupBy,
+    writeFile,
+} from '../../utils';
+import { withDiff } from './format';
 
 const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] =>
     groupBy(
@@ -23,15 +33,17 @@ function getTabName(perfResult: IPerformanceResult, i: number) {
 
 const getPageMetadata = (data: IPerformanceResult, i: number) => ({
     pageName: getTabName(data, i),
-    stats: data.map((x) => ({
-        lcp: getLCP(x.performanceEntries),
-        fcp: getFCP(x.performanceEntries),
-        domInteractive: getDomInteractive(x.performanceEntries),
+    stats: withDiff(
+        data.map((x) => ({
+            lcp: getLCP(x.performanceEntries),
+            fcp: getFCP(x.performanceEntries),
+            domInteractive: getDomInteractive(x.performanceEntries),
 
-        scriptDuration: getScriptDuration(x.pageMetrics),
-        layoutDuration: getLayoutDuration(x.pageMetrics),
-        recalculateStyleDuration: getRecalculateStyleDuration(x.pageMetrics),
-    })),
+            scriptDuration: getScriptDuration(x.pageMetrics),
+            layoutDuration: getLayoutDuration(x.pageMetrics),
+            recalculateStyleDuration: getRecalculateStyleDuration(x.pageMetrics),
+        }))
+    ),
 });
 
 export const toSimpleMd: IReporter = (outputFolder, data) => {
