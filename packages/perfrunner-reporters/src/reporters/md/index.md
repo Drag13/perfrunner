@@ -1,13 +1,13 @@
-{{& href}}
+# Performance report for {{& href}}
 
 {{#pages}}
 
-## {{pageName}}
+## Network {{pageName}}
 
-| FCP (ms) | LCP (ms) | DOM Interactive (ms) | Script Duration (ms) | Layout Duration (ms) | Recalculate Style (ms) |
-| -------- | -------- | -------------------- | -------------------- | -------------------- | ----------------- |
+| Time | FCP (ms) | LCP (ms) | DOM Interactive (ms) | Script Duration (ms) | Layout Duration (ms) | Recalculate Style (ms) |
+| ---- | -------- | -------- | -------------------- | -------------------- | -------------------- | ---------------------- |
 {{#stats}}
-| {{fcp}} | {{lcp}} | {{domInteractive}} | {{scriptDuration}} | {{layoutDuration}} | {{recalculateStyleDuration}} |
+|{{& ts}}| {{fcp}} | {{lcp}} | {{domInteractive}} | {{scriptDuration}} | {{layoutDuration}} | {{recalculateStyleDuration}} |
 {{/stats}}
 
 {{/pages}}
