@@ -35,7 +35,7 @@ export class RunTestsFromConfigCommand implements ICommand {
         return 0;
     }
 
-    getFullPathToConfig = (pathToFolder: string, configName: string) => join(withRootPath(pathToFolder), configName);
+    private getFullPathToConfig = (pathToFolder: string, configName: string) => join(withRootPath(pathToFolder), configName);
 
-    readConfigFile = (fullPathToConfig: string): Config => JSON.parse(readFileSync(fullPathToConfig, { encoding: 'utf-8' }));
+    private readConfigFile = (fullPathToConfig: string): Config => JSON.parse(readFileSync(fullPathToConfig, { encoding: 'utf-8' }));
 }
