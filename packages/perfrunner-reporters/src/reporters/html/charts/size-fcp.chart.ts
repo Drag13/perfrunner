@@ -7,7 +7,7 @@ export class ResourceSizeBeforeFCPChart extends ResourceSizeChart {
     readonly title = 'Resource Size Befor FCP';
 
     filter(rawData: ExtendedPerformanceEntry[]) {
-        const fpeTime = (getFCP(rawData) || getFP(rawData)) ?? Number.POSITIVE_INFINITY;
+        const fpeTime = (getFCP(rawData) || getFP(rawData)) || Number.POSITIVE_INFINITY;
         const entries = super.filter(rawData);
 
         return entries.filter((x) => !isNullOrNaN(x.responseEnd) && x.responseEnd < fpeTime);
