@@ -8,7 +8,7 @@ import { logger } from 'perfrunner-core';
 import { HSPA_Plus, Original } from '../params/network';
 import { Url } from './mapper/url';
 import { DEFAULT_OUTPUT_FOLDER, DEFAULT_REPORTER, DEFAULT_NUMBER_RUNS, DEFAULT_THROTTLING_RATE, DEFAULT_TIMEOUT } from '../config';
-import { CONFIG_SHOULD_NOT_OVERRIDEN } from "../errors";
+import { CONFIG_SHOULD_NOT_OVERRIDEN } from '../errors';
 
 type InitConfigParams = { pathToFolder: string; configName: string; url: string[] };
 

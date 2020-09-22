@@ -36,7 +36,6 @@ class Db {
             .write();
         this._db.update('count', (_) => 0).write();
     }
-
 }
 
 export { Db };

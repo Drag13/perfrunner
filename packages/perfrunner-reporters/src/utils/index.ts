@@ -7,6 +7,16 @@ import { ResourceType, getResourceType } from './res';
 import { hash } from './hash';
 import { exclude } from './object';
 import { createElement } from './dom';
+import {
+    getFCP,
+    getFP,
+    getLCP,
+    getDomInteractive,
+    getScriptDuration,
+    getLayoutDuration,
+    getRecalculateStyleDuration,
+    getNavigationEvent,
+} from './eventExtractor';
 
 export { TRANSPARENT, color };
 export { toMs, toBytes };
@@ -17,3 +27,13 @@ export { ResourceType, getResourceType };
 export { hash };
 export { exclude };
 export { createElement };
+export {
+    getFCP,
+    getFP,
+    getLCP,
+    getDomInteractive,
+    getScriptDuration,
+    getLayoutDuration,
+    getRecalculateStyleDuration,
+    getNavigationEvent,
+};

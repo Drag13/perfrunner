@@ -71,7 +71,8 @@ npx perfrunner https://drag13.io
 
 Supported reporters:
 
--   [HTML](#html) - renders basic metrics into HTML (FCP, DCL, Size, etc)
+-   [HTML](#html) - renders basic metrics into HTML (FCP, LCP, DCL, Size, etc)
+-   [MD](#md) - generates simple markdown report with First Contentful Paint and Largest Contentful Paint, DOM Interactive and some other metrics
 -   [JSON](#json) - saves all data to json
 -   [CSV](#csv) - saves all data to csv
 -   [custom](#custom) - you can specify your own custom reporter
@@ -86,7 +87,7 @@ npx drag13.io --reporter json
 
 Generates output as an HTML file. Includes:
 
--   Performance Entries Chart (DOM Content Loaded, First Paint, First Contentful Paint, DOM Interactive)
+-   Performance events Chart (DOM Content Loaded, First Paint, First Contentful Paint, Largest Contentful Paint, DOM Interactive)
 -   Default Performance Metrics Chart - Layout Duration, Recalculation Style Duration, Script Duration, Task duration
 -   Resource Size Chart (JS, CSS ,IMG, Fonts, XHR)
 -   Performance Marks Chart - shows performance marks from application
@@ -99,11 +100,24 @@ This is default reporter so you don't need to name it
 npx perfrunner drag13.io
 ```
 
-### JSON
+## MD
+
+Generate simple markdown report, that includes:
+
+-   Performance events - First Contentful Paint and Largest Contentful Paint
+-   Performance metrics DOM Interactive, Script Duration, Layout Duration, Recalculate Style metrics.
+
+**Example:**
+
+```cmd
+npx perfrunner drag13.io --reporter md
+```
+
+## JSON
 
 Generates output as JSON file
 
-Example:
+**Example:**
 
 ```cmd
 npx perfrunner drag13.io --reporter json
@@ -112,6 +126,8 @@ npx perfrunner drag13.io --reporter json
 ## CSV
 
 Generates output as CSV file
+
+**Example:**
 
 ```cmd
 npx perfrunner drag13.io --reporter csv
