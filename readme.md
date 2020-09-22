@@ -4,7 +4,7 @@
 
 When we do performance testing or trying to improve application performance, we need reliable, repeatable data. We also need to track progress to understand how changes affect the performance application. And this task is not that easy especially when we are talking about testing against different conditions - bad network, poor CPU, etc. This package was called to remove this complexity and allow you to work on things that maters - your application.
 
-Perfrunner is the performance testing tool for websites and web applications. Perfrunner gives you the possibility to test the site against different network conditions. It tracks the progress and visualizes it with charts to make things clearer. And if you want to go deeper, it already saves the traces of each run to get you the whole information you need. It's fully customizable and supports reporting into HTML, JSON, CSV, or even your own reporter.
+Perfrunner is the performance testing tool for websites and web applications. It gives you the possibility to test the site against different network conditions. It tracks the progress and visualizes it with charts to make things clearer. And if you want to go deeper, it already saves the traces of each run to get you the whole information you need. It's fully customizable and supports reporting into HTML, JSON, CSV, or even your own reporter.
 
 Tracks:
 
@@ -14,6 +14,12 @@ Tracks:
 -   Script duration time
 -   Resources size (js, css, img, fonts)
 -   And much more!
+
+## Why not just taking LightHouse
+
+**Lighthouse** is an awesome tool when you want to see the **current performance state**.
+
+**Perfrunner** should be used when you want to see the **progress** or **difference** between performance changes. It also exposes some technical metrics like time spent in layout rendering, style recalculations, and some more.
 
 ## Perfrunner example: Angular vs React vs Vue
 

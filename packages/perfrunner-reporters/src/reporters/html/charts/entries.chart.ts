@@ -1,6 +1,6 @@
 import { AbstractChart, IViewData, msLabel } from './abstract.chart';
 import { IPerformanceResult } from '../types';
-import { init0, initWithEmptyString, color } from '../../../utils';
+import { init0, initWithEmptyString, color, getFCP, getFP, getLCP, getNavigationEvent } from '../../../utils';
 
 type ChartData = { fp: number[]; fcp: number[]; DOMContentLoaded: number[]; DOMInteractive: number[]; load: number[]; lcp: number[] };
 
@@ -40,26 +40,21 @@ export class EntriesChartReporter extends AbstractChart<ChartData> {
             timeStamp: init0(length),
         };
 
-        return rawData.reduce((acc, v, i) => {
-            const fcpEvent = v.performanceEntries.find((x) => x.name === 'first-contentful-paint');
-            acc.data.fcp[i] = fcpEvent && fcpEvent.startTime ? fcpEvent.startTime : 0;
+        return rawData.reduce((acc, { performanceEntries }, i) => {
+            acc.labels[i] = this.getLabel(i, rawData[i].comment);
+            acc.timeStamp[i] = rawData[i].timeStamp;
 
-            const fpEvent = v.performanceEntries.find((x) => x.name === 'first-paint');
-            acc.data.fp[i] = fpEvent && fpEvent.startTime ? fpEvent.startTime : 0;
+            acc.data.fcp[i] = getFCP(performanceEntries);
+            acc.data.fp[i] = getFP(performanceEntries);
+            acc.data.lcp[i] = getLCP(performanceEntries);
 
-            const navigationEvent = v.performanceEntries.find((x) => x.entryType === 'navigation');
+            const navigationEvent = getNavigationEvent(performanceEntries);
 
             if (navigationEvent != null) {
                 acc.data.load[i] = navigationEvent.loadEventEnd || 0;
                 acc.data.DOMContentLoaded[i] = navigationEvent.domContentLoadedEventEnd || 0;
                 acc.data.DOMInteractive[i] = navigationEvent.domInteractive || 0;
             }
-
-            const lcpEvent = v.performanceEntries.find((x) => x.entryType === 'largest-contentful-paint');
-
-            acc.data.lcp[i] = lcpEvent?.renderTime || lcpEvent?.loadTime || 0;
-            acc.labels[i] = this.getLabel(i, rawData[i].comment);
-            acc.timeStamp[i] = rawData[i].timeStamp;
 
             return acc;
         }, chartData);

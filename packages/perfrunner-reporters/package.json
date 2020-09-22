@@ -10,8 +10,10 @@
     "tsc": "tsc",
     "copyfiles": "copyfiles",
     "parcel": "parcel",
-    "build:reporter": "parcel build src/reporters/html/index.html --no-source-maps --out-dir dist/reporters/html",
-    "build": "tsc -p . && npm run build:reporter",
+    "build:html": "parcel build src/reporters/html/index.html --no-source-maps --out-dir dist/reporters/html",
+    "build:md": "copyfiles -f src/reporters/md/index.md ./dist/reporters/md",
+    "build:reporters": "npm run build:html && npm run build:md",
+    "build": "tsc -p . && npm run build:reporters",
     "pack": "npm pack",
     "preversion": "npm run build && npm run test",
     "prepublish": "npm run build && npm run test"
