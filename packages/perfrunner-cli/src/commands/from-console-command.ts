@@ -15,7 +15,7 @@ export class RunTestsFromConsoleCommand implements ICommand {
     async execute() {
         const { perfrunnerOptions, reporterOptions } = mapArgs(this.args);
 
-        let options = this.args.reportOnly ? perfrunnerOptions.slice(0, 1) : perfrunnerOptions;
+        const options = this.args.reportOnly ? perfrunnerOptions.slice(0, 1) : perfrunnerOptions;
 
         const asyncSequence = iterateAsync(options, (arg, i) => runTest(arg, i));
         const result = (await asyncToArray(asyncSequence)).pop();

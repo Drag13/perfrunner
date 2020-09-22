@@ -107,11 +107,17 @@ Generate simple markdown report, that includes:
 -   Performance events - First Contentful Paint and Largest Contentful Paint
 -   Performance metrics DOM Interactive, Script Duration, Layout Duration, Recalculate Style metrics.
 
+**Example:**
+
+```cmd
+npx perfrunner drag13.io --reporter md
+```
+
 ## JSON
 
 Generates output as JSON file
 
-Example:
+**Example:**
 
 ```cmd
 npx perfrunner drag13.io --reporter json
@@ -120,6 +126,8 @@ npx perfrunner drag13.io --reporter json
 ## CSV
 
 Generates output as CSV file
+
+**Example:**
 
 ```cmd
 npx perfrunner drag13.io --reporter csv
