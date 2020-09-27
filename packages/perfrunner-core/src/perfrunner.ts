@@ -19,7 +19,12 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
     const db = new Db(connectionString);
 
     if (!options.reportOnly) {
+        const conditions = `Conditions: Network: ${
+            options.network.name != undefined ? options.network.name : 'custom'
+        }; ThrottlingRate: ${options.throttlingRate}x; ${options.useCache ? `With cache` : `No cache;`}`;
+
         log(`starting profile session for ${url.href}`);
+        log(conditions);
         const rawPerformanceResult = await runProfilingSession(
             {
                 args: options.chromeArgs,
