@@ -4,8 +4,8 @@ import { ICommand } from './icommand';
 import { TestParams } from '../params/params';
 import { withRootPath, ensureFolderCreated } from '../utils';
 import { join } from 'path';
-import { logger } from 'perfrunner-core';
-import { HSPA_Plus, Original } from '../params/network';
+import { logger, NetworkSetup } from 'perfrunner-core';
+import { FourG, HSPA, HSPA_Plus, Original, Slow3g } from '../params/network';
 import { Url } from './mapper/url';
 import { DEFAULT_OUTPUT_FOLDER, DEFAULT_REPORTER, DEFAULT_NUMBER_RUNS, DEFAULT_THROTTLING_RATE, DEFAULT_TIMEOUT } from '../config';
 import { CONFIG_SHOULD_NOT_OVERRIDEN } from '../errors';
@@ -14,17 +14,26 @@ type InitConfigParams = { pathToFolder: string; configName: string; url: string[
 
 type NonConfigurableOptions = 'purge' | 'comment';
 
-export interface Config extends Omit<TestParams, 'url' | NonConfigurableOptions> {
+type Network = NetworkSetup & { disabled: boolean };
+
+export interface Config extends Omit<TestParams, 'url' | NonConfigurableOptions | 'network'> {
     url: string[];
+    network: Network[];
 }
 
-const defaultConfig: Omit<Config, NonConfigurableOptions> = {
+const defaultConfig: Config = {
     cache: [false],
     chromeArgs: undefined,
     executablePath: undefined,
     ignoreDefaultArgs: false,
     logLevel: undefined,
-    network: [Original, HSPA_Plus],
+    network: [
+        { ...Original, disabled: false },
+        { ...HSPA_Plus, disabled: false },
+        { ...Slow3g, disabled: true },
+        { ...HSPA, disabled: true },
+        { ...FourG, disabled: true },
+    ],
     noHeadless: false,
     output: DEFAULT_OUTPUT_FOLDER,
     reportOnly: false,
@@ -55,7 +64,7 @@ export class InitConfigCommand implements ICommand {
             throw CONFIG_SHOULD_NOT_OVERRIDEN;
         }
 
-        const config = { ...defaultConfig, url: url.map((x) => Url(x).href) };
+        const config: Config = { ...defaultConfig, url: url.map((x) => Url(x).href) };
 
         logger.log(`Creating ${configName}...`);
 

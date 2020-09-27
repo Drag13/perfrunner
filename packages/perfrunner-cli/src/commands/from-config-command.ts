@@ -26,7 +26,14 @@ export class RunTestsFromConfigCommand implements ICommand {
         const config = this.readConfigFile(pathToConfig);
 
         const testSuite = config.url.map(
-            (url) => new RunTestsFromConsoleCommand({ ...config, url, purge: false, comment: undefined })
+            (url) =>
+                new RunTestsFromConsoleCommand({
+                    ...config,
+                    url,
+                    purge: false,
+                    comment: undefined,
+                    network: config.network.filter((x) => !x.disabled),
+                })
         );
 
         const asyncSequence = iterateAsync(testSuite, async (testCase) => await testCase.execute());
