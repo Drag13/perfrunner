@@ -1,6 +1,6 @@
 import { ICommand } from './icommand';
 import { existsSync, readFileSync } from 'fs';
-import { withRootPath } from '../utils';
+import { loadExternalModule, withRootPath } from '../utils';
 import { join } from 'path';
 import { iterateAsync, asyncToArray } from 'perfrunner-core/dist/utils/async';
 import { RunTestsFromConsoleCommand } from './from-console-command';
@@ -25,15 +25,21 @@ export class RunTestsFromConfigCommand implements ICommand {
 
         const config = this.readConfigFile(pathToConfig);
 
-        const testSuite = config.url.map(
-            (url) =>
-                new RunTestsFromConsoleCommand({
-                    ...config,
-                    url,
-                    purge: false,
-                    comment: undefined,
-                    network: config.network.filter((x) => !x.disabled),
-                })
+        const testSuite = await Promise.all(
+            config.url.map(
+                async (url) =>
+                    new RunTestsFromConsoleCommand({
+                        ...config,
+                        url: typeof url === 'string' ? url : url.url,
+                        purge: false,
+                        comment: undefined,
+                        network: config.network.filter((x) => !x.disabled),
+                        onAfterPageLoaded:
+                            typeof url === 'object' && !!url.onAfterPageLoadedScript
+                                ? await loadExternalModule(url.onAfterPageLoadedScript)
+                                : undefined,
+                    })
+            )
         );
 
         const asyncSequence = iterateAsync(testSuite, async (testCase) => await testCase.execute());

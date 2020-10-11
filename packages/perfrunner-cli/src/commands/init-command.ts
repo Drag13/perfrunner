@@ -16,8 +16,13 @@ type NonConfigurableOptions = 'purge' | 'comment';
 
 type Network = NetworkSetup & { disabled: boolean };
 
-export interface Config extends Omit<TestParams, 'url' | NonConfigurableOptions | 'network'> {
-    url: string[];
+type PageOptions = {
+    url: string;
+    onAfterPageLoadedScript?: string;
+};
+
+export interface Config extends Omit<TestParams, 'url' | 'network' | 'onAfterPageLoaded' | NonConfigurableOptions> {
+    url: (string | PageOptions)[];
     network: Network[];
 }
 
@@ -64,7 +69,7 @@ export class InitConfigCommand implements ICommand {
             throw CONFIG_SHOULD_NOT_OVERRIDEN;
         }
 
-        const config: Config = { ...defaultConfig, url: url.map((x) => Url(x).href) };
+        const config: Config = { ...defaultConfig, url: url.map((x) => ({ url: Url(x).href, onAfterPageLoadedScript: '' })) };
 
         logger.log(`Creating ${configName}...`);
 

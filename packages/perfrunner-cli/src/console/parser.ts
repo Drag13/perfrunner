@@ -21,7 +21,7 @@ interface CliOptionDefinition<T> extends OptionDefinition {
     defaultValue?: T;
 }
 
-type ParamsMap = { [key in keyof TestParams]: Omit<CliOptionDefinition<TestParams[key]>, 'name'> };
+type ParamsMap = { [key in keyof Omit<TestParams, 'onAfterPageLoaded'>]: Omit<CliOptionDefinition<TestParams[key]>, 'name'> };
 
 const options: ParamsMap = {
     url: { type: String, defaultOption: true },

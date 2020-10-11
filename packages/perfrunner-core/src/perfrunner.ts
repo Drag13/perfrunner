@@ -25,21 +25,25 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
 
         log(`starting profile session for ${url.href}`);
         log(conditions);
+
+        const { executablePath, timeout, network, throttlingRate, waitFor, afterPageLoaded } = options;
+
         const rawPerformanceResult = await runProfilingSession(
             {
                 args: options.chromeArgs,
-                executablePath: options.executablePath,
+                executablePath: executablePath,
                 headless: !!options.headless,
                 ignoreDefaultArgs: !!options.ignoreDefaultArgs,
                 product: 'chrome',
-                timeout: options.timeout,
+                timeout: timeout,
             },
             {
-                network: options.network,
-                throttlingRate: options.throttlingRate,
+                network: network,
+                throttlingRate: throttlingRate,
                 url: url,
                 useCache: !!options.useCache,
-                waitFor: options.waitFor,
+                waitFor: waitFor,
+                afterPageLoaded,
             },
             options.runs,
             options.output

@@ -1,5 +1,5 @@
 import { argsLike, isNullOrEmpty } from './string';
-import { ensureFolderCreated, withRootPath } from './fs';
+import { ensureFolderCreated, withRootPath, loadExternalModule } from './fs';
 
 export { argsLike, isNullOrEmpty };
-export { ensureFolderCreated, withRootPath };
+export { ensureFolderCreated, withRootPath, loadExternalModule };

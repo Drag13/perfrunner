@@ -16,6 +16,7 @@ export type TestRunConditions = {
     output: string;
     comment: string | undefined;
     executablePath: string | undefined;
+    onAfterPageLoaded: (() => void) | undefined;
 };
 
 export type PerformanceConditions = {
