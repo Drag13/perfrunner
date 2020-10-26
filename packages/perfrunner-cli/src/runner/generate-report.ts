@@ -6,5 +6,7 @@ export async function generateReport(name: string, outputTo: string, data: any, 
     logger.log('generating report');
     const exitCode = await reporter(outputTo, data, args);
 
+    logger.log(`To view results, please check: ${outputTo}`);
+
     return exitCode;
 }
