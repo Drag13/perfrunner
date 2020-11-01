@@ -13,8 +13,6 @@ import { DEFAULT_CONFIG_NAME, DEFAULT_FOLRDER_CONFIG } from './config';
             process.env.LOG_LEVEL = logLevel;
         }
 
-        console.log(cmd, logLevel);
-
         switch (cmd) {
             case 'create-config':
                 return generateConfig(DEFAULT_CONFIG_NAME, DEFAULT_FOLRDER_CONFIG);
