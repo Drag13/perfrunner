@@ -1,4 +1,5 @@
 import { NetworkSetup, PerfRunnerOptions } from 'perfrunner-core';
+import { getOutputPathFromtestName, getOutputPathFromUrl } from '../../utils';
 
 type ConsoleConfig = {
     url: string;
@@ -22,13 +23,12 @@ type ConsoleConfig = {
 };
 
 const map = (config: ConsoleConfig, useCache: boolean, network: NetworkSetup): PerfRunnerOptions => ({
-    output: config.output,
     network,
     comment: config.comment,
     chromeArgs: config.chromeArgs,
     executablePath: config.executablePath,
     ignoreDefaultArgs: config.ignoreDefaultArgs,
-    useCache: useCache,
+    useCache,
     purge: config.purge,
     reportOnly: config.reportOnly,
     headless: !config.noHeadless,
@@ -38,6 +38,9 @@ const map = (config: ConsoleConfig, useCache: boolean, network: NetworkSetup): P
     url: config.url,
     testName: config.testName,
     waitFor: config.waitFor,
+    output: config.testName
+        ? getOutputPathFromtestName(config.output, config.testName)
+        : getOutputPathFromUrl(config.output, config.url),
 });
 
 export function mapConfigToPerfOptions(config: ConsoleConfig): PerfRunnerOptions[] {

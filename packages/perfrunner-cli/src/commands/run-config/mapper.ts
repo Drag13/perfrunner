@@ -1,9 +1,8 @@
 import { NetworkSetup, PerfRunnerOptions } from 'perfrunner-core';
-import { isNullOrEmpty, loadExternalModule } from '../../utils';
+import { getOutputPathFromtestName, getOutputPathFromUrl, isNullOrEmpty, loadExternalModule } from '../../utils';
 import { JsonConfig, PageSetup } from '../init/json-config';
 
 const map = async (config: JsonConfig, network: NetworkSetup, page: PageSetup, cache: boolean): Promise<PerfRunnerOptions> => ({
-    output: config.output,
     network,
     chromeArgs: config.chromeArgs,
     executablePath: config.executablePath,
@@ -19,6 +18,9 @@ const map = async (config: JsonConfig, network: NetworkSetup, page: PageSetup, c
     waitFor: page.waitFor,
     url: page.url,
     afterPageLoaded: isNullOrEmpty(page.onAfterPageLoadedScript) ? undefined : await loadExternalModule(page.onAfterPageLoadedScript),
+    output: config.testName
+        ? getOutputPathFromtestName(config.output, config.testName)
+        : getOutputPathFromUrl(config.output, page.url),
 });
 
 export async function mapConfigToPerfOptions(jsonConfig: JsonConfig): Promise<PerfRunnerOptions[]> {
