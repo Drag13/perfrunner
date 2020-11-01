@@ -1,19 +1,27 @@
 #!/usr/bin/env node
 
 import { logger } from 'perfrunner-core';
-import { getBasicArguments } from './arguments';
-import { runTestsFromConsole } from './commands/run-from-console/run-test-from-console';
-import { generateConfig } from './commands/genereate-config/generate-config';
+import { getCommand } from './commands';
+import { generateConfig, runTestsFromConsole, runTestFromConfig } from './commands';
+import { DEFAULT_CONFIG_NAME, DEFAULT_FOLRDER_CONFIG } from './config';
 
 (async function (): Promise<number> {
     try {
-        const cmdName = getBasicArguments();
+        const { cmd, logLevel } = getCommand();
 
-        switch (cmdName) {
+        if (logLevel) {
+            process.env.LOG_LEVEL = logLevel;
+        }
+
+        console.log(cmd, logLevel);
+
+        switch (cmd) {
+            case 'create-config':
+                return generateConfig(DEFAULT_CONFIG_NAME, DEFAULT_FOLRDER_CONFIG);
             case 'run-test-from-console':
                 return await runTestsFromConsole();
-            case 'init':
-                return generateConfig();
+            case 'run-test-from-config':
+                return await runTestFromConfig(DEFAULT_CONFIG_NAME, DEFAULT_FOLRDER_CONFIG);
             default:
                 throw 'Not implemented';
         }
