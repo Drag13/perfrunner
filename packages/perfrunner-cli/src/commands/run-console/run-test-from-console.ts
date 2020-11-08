@@ -16,7 +16,7 @@ export async function runTestsFromConsole(): Promise<number> {
         data: result,
     }));
 
-    const reporterResults = await generateReportSeries(results);
+    const isOk = await generateReportSeries(results);
 
-    return reporterResults.some((x) => x !== 0) ? -1 : 0;
+    return isOk ? 0 : -1;
 }
