@@ -1,5 +1,5 @@
 import { runTestSeries } from './run-test-series';
-import { generateReport } from './generate-report';
+import { generateReportSeries } from './generate-report';
 
 export { runTestSeries };
-export { generateReport };
+export { generateReportSeries };

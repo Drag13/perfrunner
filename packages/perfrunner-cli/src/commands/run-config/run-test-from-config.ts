@@ -1,14 +1,22 @@
-import { runTestSeries, generateReport } from '../../runner';
+import { runTestSeries } from '../../runner';
 import { mapConfigToPerfOptions } from './mapper';
 import { loadConfig } from './config-loader';
+import { generateReportSeries } from '../../runner';
 
 export async function runTestFromConfig(pathToFolder: string, configName: string): Promise<number> {
     const config = loadConfig(pathToFolder, configName);
     const params = await mapConfigToPerfOptions(config);
-    const result = await runTestSeries(params);
 
-    const outputTo = config.output;
     const [reporterName, ...reporterArgs] = config.reporter;
 
-    return await generateReport(reporterName, outputTo, result, reporterArgs);
+    const results = (await runTestSeries(params)).map((result, i) => ({
+        reporterName,
+        args: reporterArgs,
+        outputTo: params[i].output,
+        data: result,
+    }));
+
+    const reporterResults = await generateReportSeries(results);
+
+    return reporterResults.some((x) => x !== 0) ? -1 : 0;
 }

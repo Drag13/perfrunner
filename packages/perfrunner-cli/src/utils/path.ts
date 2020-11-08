@@ -18,6 +18,7 @@ export function getOutputPathFromtestName(outputFolder: string, testName: string
 export function getOutputPathFromUrl(outputFolder: string, url: string) {
     const subfolder = generateFriendlyNameFromUrl(new URL(url));
     const safePathToSubfolder = santizePath(subfolder);
+    const result = resolve(process.cwd(), outputFolder, safePathToSubfolder);
 
-    return resolve(process.cwd(), outputFolder, safePathToSubfolder);
+    return result;
 }

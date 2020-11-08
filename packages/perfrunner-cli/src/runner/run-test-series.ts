@@ -10,15 +10,9 @@ async function runSingleTest(profilingOptions: PerfRunnerOptions, i: number) {
     return await profile({ ...profilingOptions, purge: i === 0 ? profilingOptions.purge : false });
 }
 
-export async function runTestSeries(config: PerfRunnerOptions[]): Promise<IPerformanceResult> {
+export async function runTestSeries(config: PerfRunnerOptions[]): Promise<IPerformanceResult[]> {
     const asyncResults = iterateAsync(config, runSingleTest);
     const results = await asyncToArray(asyncResults);
 
-    const lastResult = results.pop();
-
-    if (!lastResult) {
-        throw new Error('No results found');
-    }
-
-    return lastResult;
+    return results;
 }
