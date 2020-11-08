@@ -8,9 +8,7 @@ export const LogLevel = (maybeLogLevel: string | undefined) => {
         return undefined;
     }
 
-    const logLevelKey = maybeLogLevel.toUpperCase();
-
-    return logLevelKey in logger.LOG_LEVEL ? logger.LOG_LEVEL[logLevelKey] : undefined;
+    return maybeLogLevel.toLowerCase().trim() === 'verbose' ? logger.LOG_LEVEL.VERBOSE : undefined;
 };
 
 export const ArgsLikeString = (v: string | undefined) => (v ? `--${argsLike(v)}` : '');

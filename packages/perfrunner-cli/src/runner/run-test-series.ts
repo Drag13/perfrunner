@@ -16,5 +16,9 @@ export async function runTestSeries(config: PerfRunnerOptions[]): Promise<IPerfo
 
     const lastResult = results.pop();
 
+    if (!lastResult) {
+        throw new Error('No results found');
+    }
+
     return lastResult;
 }

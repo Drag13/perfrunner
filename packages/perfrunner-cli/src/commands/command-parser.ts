@@ -16,7 +16,7 @@ const initialParamsDefinition: CliOptions<InitialParams> = {
     logLevel: { type: LogLevel, defaultValue: undefined },
 };
 
-export function getCommand(): { cmd: CommandName; logLevel: string } {
+export function getCommand(): { cmd: CommandName; logLevel?: string } {
     const argsDefinitions = toCmdDefinitions(initialParamsDefinition);
     const { init, url, logLevel } = <InitialParams>cmd(argsDefinitions, { camelCase: true, stopAtFirstUnknown: true });
 

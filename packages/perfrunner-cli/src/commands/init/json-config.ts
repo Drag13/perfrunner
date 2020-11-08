@@ -32,10 +32,10 @@ export type JsonConfig = {
     throttling: number;
     timeout: number;
     page: PageSetup[];
-    testName: string;
-    logLevel: string;
-    chromeArgs: string[];
-    executablePath: string;
+    testName: string | undefined;
+    logLevel: string | undefined;
+    chromeArgs: string[] | undefined;
+    executablePath: string | undefined;
 };
 
 export const defaultJsonConfig: JsonConfig = {
