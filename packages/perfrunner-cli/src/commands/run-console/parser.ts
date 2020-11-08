@@ -1,6 +1,15 @@
 import cmd from 'command-line-args';
 import { NetworkSetup } from 'perfrunner-core';
-import { ArgsLikeString, Bool, CliOptions, LogLevel, Network, StringOrNumber, UrlBasedString } from '../../cmd-utility';
+import {
+    ArgsLikeString,
+    Bool,
+    CliOptions,
+    LogLevel,
+    Network,
+    StringOrNumber,
+    toCmdDefinitions,
+    UrlBasedString,
+} from '../../cmd-utility';
 import {
     DEFAULT_REPORTER,
     DEFAULT_OUTPUT_FOLDER,
@@ -10,7 +19,6 @@ import {
     Original,
     HSPA_Plus,
 } from '../../config';
-import { argsLike } from '../../utils';
 
 export type ConsoleConfig = {
     url: string;
@@ -54,6 +62,6 @@ const options: CliOptions<ConsoleConfig> = {
     executablePath: { type: String, alias: 'E' },
 };
 
-const definitions = Object.entries(options).map(([k, v]) => ({ ...v, name: argsLike(k) }));
+const definitions = toCmdDefinitions(options);
 
 export const parseUserInput = () => <ConsoleConfig>cmd(definitions, { camelCase: true });

@@ -3,7 +3,7 @@ import { DEFAULT_HTTP_SCHEME, FourG, HSPA, HSPA_Plus, HTTPS_SCHEME, HTTP_SCHEME,
 import { URL_IS_EMPTY } from '../errors';
 import { argsLike } from '../utils';
 
-export const LogLevel = (maybeLogLevel: string | undefined) => {
+export const LogLevel = (maybeLogLevel: string | undefined): string | undefined => {
     if (!maybeLogLevel) {
         return undefined;
     }

@@ -18,7 +18,7 @@ const initialParamsDefinition: CliOptions<InitialParams> = {
 
 export function getCommand(): { cmd: CommandName; logLevel?: string } {
     const argsDefinitions = toCmdDefinitions(initialParamsDefinition);
-    const { init, url, logLevel } = <InitialParams>cmd(argsDefinitions, { camelCase: true, stopAtFirstUnknown: true });
+    const { init, logLevel, url } = <InitialParams>cmd(argsDefinitions, { camelCase: true, partial: true });
 
     if (init) {
         return { cmd: 'create-config', logLevel };
