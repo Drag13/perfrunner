@@ -144,7 +144,10 @@ npx perfrunner https://drag13.io --reporter my-custom-reporter.js
 where reporter should looks like:
 
 ```js
-module.exports = (outputFolder, data, args) => console.log(outputFolder, JSON.stringify(data), args);
+module.exports = {
+    generateReport: (data, args) => console.log(outputFolder, JSON.stringify(data), args),
+    defaultReportName: 'reporter.txt',
+};
 ```
 
 ## Troubleshooting

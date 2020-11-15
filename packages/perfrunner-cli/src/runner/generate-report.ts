@@ -1,12 +1,22 @@
+import { join } from 'path';
 import { IPerformanceResult, logger } from 'perfrunner-core';
 import { asyncToArray, iterateAsync } from 'perfrunner-core/dist/utils/async';
+import { writeFile } from '../utils';
 import { loadReporter } from './report-loader';
 
 async function generateReport(reporterName: string, outputTo: string, data: IPerformanceResult, args: string[]) {
-    const reporter = await loadReporter(reporterName);
-    const exitCode = await reporter(outputTo, data, args);
+    const { defaultReportName = 'reporter.txt', generateReport } = await loadReporter(reporterName);
 
-    return exitCode;
+    try {
+        const result = await generateReport(data, args);
+        const fullPath = join(outputTo, defaultReportName);
+        writeFile(fullPath as any, result);
+    } catch (error) {
+        logger.error(error);
+        throw error;
+    }
+
+    return 0;
 }
 
 type ReportResult = {
@@ -20,7 +30,9 @@ export async function generateReportSeries(reports: ReportResult[]): Promise<boo
     logger.log('generating report');
 
     const exitCodes = await asyncToArray(
-        iterateAsync(reports, ({ args, data, outputTo, reporterName }) => generateReport(reporterName, outputTo, data, args))
+        iterateAsync(reports, async ({ args, data, outputTo, reporterName }) => {
+            return await generateReport(reporterName, outputTo, data, args);
+        })
     );
 
     const withErrors = exitCodes.some((x) => x !== 0);

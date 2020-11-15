@@ -1,15 +1,10 @@
-import { IReporter } from '../iReporter';
-import { writeFile } from '../../utils';
+import { IReporter, ReportGenerator } from '../iReporter';
 
-const toJson: IReporter = (outputFolder, result) => {
-    return new Promise((resolve, reject) => {
-        try {
-            writeFile(outputFolder, 'default-reporter.json', result);
-            resolve(0);
-        } catch (error) {
-            reject(error);
-        }
-    });
+const toJson: ReportGenerator = (result) => {
+    return Promise.resolve(JSON.stringify(result, null, ' '));
 };
 
-export { toJson };
+export const defaultJSONReporter: IReporter = {
+    defaultReportName: 'default-reporter.json',
+    generateReport: toJson,
+};

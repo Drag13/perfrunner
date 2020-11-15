@@ -1,5 +1,7 @@
 import { IPerformanceResult } from 'perfrunner-core';
 
+export type ReportGenerator = (data: IPerformanceResult, args?: string[]) => Promise<string>;
 export interface IReporter {
-    (outputFolder: string, data: IPerformanceResult, args?: string[]): Promise<number>;
+    generateReport: ReportGenerator;
+    defaultReportName: string;
 }

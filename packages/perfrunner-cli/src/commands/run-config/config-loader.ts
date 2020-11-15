@@ -14,7 +14,9 @@ export function loadConfig(pathToFolder: string, configName: string): JsonConfig
 
     logger.log(`Loading ${configName}`);
 
-    const config = JSON.parse(readFileSync(fullPathToConfig, { encoding: 'utf-8' }), (key, value) => {
+    const rawConfig = readFileSync(fullPathToConfig, { encoding: 'utf-8' });
+
+    const config = JSON.parse(rawConfig, (key, value) => {
         if (key === 'page' && Array.isArray(value)) {
             return value.map((x: PageSetup) => ({ ...x, url: Url(x.url).href }));
         }
