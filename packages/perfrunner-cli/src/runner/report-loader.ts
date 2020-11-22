@@ -1,8 +1,19 @@
 import { IReporter } from 'perfrunner-reporters';
 import { loadExternalModule } from '../utils';
 
+const isReporter = (maybeReporter: any): maybeReporter is IReporter => {
+    return maybeReporter != null && typeof (maybeReporter as IReporter).generateReport === 'function';
+};
+
 async function loadExternalReporter(path: string): Promise<IReporter> {
-    return await loadExternalModule(path);
+    const mayBeReporter = await loadExternalModule(path);
+    const isWellFormedReporter = isReporter(mayBeReporter);
+
+    if (!isWellFormedReporter) {
+        throw new Error(`External reporter found, but it doesn't contain generateReport function`);
+    }
+
+    return mayBeReporter as IReporter;
 }
 
 async function loadReporterFromReporters(path: string): Promise<IReporter> {

@@ -150,6 +150,32 @@ module.exports = {
 };
 ```
 
+## Config file
+
+Config file supports additional features:
+
+-   Testing multiple plages
+-   Network customization
+-   Executing post loading script
+
+### OnAfterPageLoaded
+
+To run script after it was loaded, you need to:
+
+-   Create new file on the root of the project using `module.exports = function` notation
+-   Set `onAfterPageLoadedScript` property to "./YOUR-FILE-NAME.js"
+
+Example:
+
+```js
+module.exports = async function () {
+    console.log('start');
+    return new Promise((r) => setTimeout((x) => (console.log('end'), r()), 3000));
+};
+```
+
+The script will beexecuted after page loaded. If the script is async - page will wait till completion
+
 ## Troubleshooting
 
 Internally, perfrunner uses [puppeteer](https://github.com/puppeteer/puppeteer), so please check [this](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md) page for troubleshooting.
