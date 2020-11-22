@@ -12,7 +12,7 @@ export function loadConfig(pathToFolder: string, configName: string): JsonConfig
         throw CONFIG_NOT_EXISTS;
     }
 
-    logger.log(`Loading ${configName}`);
+    logger.log(`loading ${fullPathToConfig}`);
 
     const rawConfig = readFileSync(fullPathToConfig, { encoding: 'utf-8' });
 

@@ -12,17 +12,19 @@ const colors = {
 
 const isVerbose = (): boolean => process.env.LOG_LEVEL === LOG_LEVEL.VERBOSE;
 
+const getTime = () => new Date().toLocaleTimeString();
+
 /**
  * Logs message with default level
  * @param message message to log
  */
-export const log = (message: string) => console.log(colors.log, `prefrunner: ${message}`);
+export const log = (message: string) => console.log(colors.log, `${getTime()} ${message}`);
 
 /**
  * Logs debug messages
  * @param message message to log
  */
-export const debug = (message: string) => isVerbose() && console.log(colors.debug, `prefrunner.debug: ${message}`);
+export const debug = (message: string) => isVerbose() && console.log(colors.debug, `${getTime()} ${message}`);
 
 /**
  * Logs error

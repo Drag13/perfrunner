@@ -37,7 +37,7 @@ export async function generateReportSeries(reports: ReportResult[]): Promise<boo
 
     const withErrors = exitCodes.some((x) => x !== 0);
 
-    logger.log(`Reporting done ${withErrors ? 'with some errors' : 'successfully'}`);
+    logger.log(`reporting done ${withErrors ? 'with some errors' : 'successfully'}`);
 
     return !!withErrors;
 }

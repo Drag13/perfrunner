@@ -19,9 +19,9 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
     const db = new Db(connectionString);
 
     if (!options.reportOnly) {
-        const conditions = `Conditions: Network: ${
+        const conditions = `network: ${
             options.network.name != undefined ? options.network.name : 'custom'
-        }; ThrottlingRate: ${options.throttlingRate}x; ${options.useCache ? `With cache` : `No cache;`}`;
+        }; throttling: ${options.throttlingRate}x, ${options.useCache ? `with cache` : `no cache`}`;
 
         log(`starting profile session for ${url.href}`);
         log(conditions);
@@ -69,6 +69,5 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
         db.write(performanceResult, options.purge);
     }
 
-    log('returning performance results');
     return db.read();
 }
