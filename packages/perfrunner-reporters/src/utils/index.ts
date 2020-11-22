@@ -1,6 +1,6 @@
 import { TRANSPARENT, color } from './colors';
 import { toBytes, toMs } from './format';
-import { init0, splitBy, initWithEmptyString, groupBy } from './array';
+import { init0, splitBy, initWithEmptyString, groupBy, isAllSame } from './array';
 import { readFileAsync } from './fs';
 import { defined, isNullOrEmpty, isNullOrNaN } from './misc';
 import { ResourceType, getResourceType } from './res';
@@ -20,7 +20,7 @@ import {
 
 export { TRANSPARENT, color };
 export { toMs, toBytes };
-export { init0, splitBy, initWithEmptyString, groupBy };
+export { init0, splitBy, initWithEmptyString, groupBy, isAllSame };
 export { readFileAsync };
 export { defined, isNullOrEmpty, isNullOrNaN };
 export { ResourceType, getResourceType };

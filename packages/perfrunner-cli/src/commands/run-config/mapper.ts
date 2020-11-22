@@ -26,7 +26,7 @@ const map = async (config: JsonConfig, network: NetworkSetup, page: PageSetup, c
 export async function mapConfigToPerfOptions(jsonConfig: JsonConfig): Promise<PerfRunnerOptions[]> {
     const testConfig: Promise<PerfRunnerOptions>[] = [];
 
-    const enabledNetwork = jsonConfig.network.filter((x) => x.disabled);
+    const enabledNetwork = jsonConfig.network.filter((x) => !x.disabled);
 
     for (const cache of jsonConfig.cache) {
         for (const page of jsonConfig.page) {

@@ -3,7 +3,7 @@ import { render } from 'mustache';
 
 import { IReporter, ReportGenerator } from '../iReporter';
 import { IPerformanceResult } from 'perfrunner-core';
-import { groupBy, hash } from '../../utils';
+import { groupBy, hash, isAllSame } from '../../utils';
 import { getReporterRegistry, defaultReporterNames } from './charts';
 import { readFileAsync } from '../../utils/fs';
 
@@ -35,7 +35,7 @@ function getTabName(perfResult: IPerformanceResult, i: number) {
 const generateHtmlReport: ReportGenerator = async (data, args) => {
     const templatePath = join(__dirname, 'index.html');
 
-    const href = data[0].runParams.url;
+    const href = isAllSame(data.map((x) => x.runParams.url)) ? data[0].runParams.url : 'Various';
     const groupedData = groupByPerfConditions(data);
     const allReporters = getReporterRegistry();
     const reporters = (args?.length ? args : defaultReporterNames).filter((x) => allReporters[x.toLowerCase()]);

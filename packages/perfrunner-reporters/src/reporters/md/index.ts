@@ -11,6 +11,7 @@ import {
     getRecalculateStyleDuration,
     getScriptDuration,
     groupBy,
+    isAllSame,
 } from '../../utils';
 import { ReportGenerator } from '../iReporter';
 import { createViewModel } from './format';
@@ -56,7 +57,7 @@ const toSimpleMd: ReportGenerator = async (data) => {
 
     try {
         const template = await readFileAsync(templatePath);
-        const href = data[0].runParams.url;
+        const href = isAllSame(data.map((x) => x.runParams.url)) ? data[0].runParams.url : 'Various';
         const groupedData = groupByPerfConditions(data);
 
         const result = render(template, {
