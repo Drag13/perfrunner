@@ -1,11 +1,11 @@
-import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { render } from 'mustache';
 
-import { IReporter } from '../iReporter';
+import { IReporter, ReportGenerator } from '../iReporter';
 import { IPerformanceResult } from 'perfrunner-core';
-import { groupBy, hash, writeFile } from '../../utils';
+import { groupBy, hash, isAllSame } from '../../utils';
 import { getReporterRegistry, defaultReporterNames } from './charts';
+import { readFileAsync } from '../../utils/fs';
 
 const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] =>
     groupBy(
@@ -32,19 +32,15 @@ function getTabName(perfResult: IPerformanceResult, i: number) {
     return `${networkName}, ${throttling}, ${cache}`;
 }
 
-const defaultReporter: IReporter = async (outputFolder, data, args) => {
+const generateHtmlReport: ReportGenerator = async (data, args) => {
     const templatePath = join(__dirname, 'index.html');
 
-    if (!existsSync(templatePath)) {
-        throw new Error(`Template not exists on ${templatePath}`);
-    }
-
-    const href = data[0].runParams.url;
+    const href = isAllSame(data.map((x) => x.runParams.url)) ? data[0].runParams.url : 'Various';
     const groupedData = groupByPerfConditions(data);
     const allReporters = getReporterRegistry();
     const reporters = (args?.length ? args : defaultReporterNames).filter((x) => allReporters[x.toLowerCase()]);
 
-    const template = readFileSync(templatePath, { encoding: 'utf-8' });
+    const template = await readFileAsync(templatePath);
     const result = render(template, {
         href: href.length < 43 ? href : href.substr(0, 42),
         pages: groupedData.map((d, i) => getPageMetadata(getTabName(d, i), i === 0)),
@@ -53,8 +49,10 @@ const defaultReporter: IReporter = async (outputFolder, data, args) => {
         arguments: sanitizeJson(JSON.stringify(reporters)),
     });
 
-    writeFile(outputFolder, 'default-report.html', result);
-    return 0;
+    return result;
 };
 
-export { defaultReporter };
+export const defaultHtmlReporter: IReporter = {
+    defaultReportName: 'default-report.html',
+    generateReport: generateHtmlReport,
+};

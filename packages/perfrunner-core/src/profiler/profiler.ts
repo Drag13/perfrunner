@@ -14,7 +14,8 @@ type ProfileParams = {
     url: URL;
     throttlingRate: number;
     network: NetworkSetup;
-    waitFor: number | string | undefined;
+    waitFor?: number | string;
+    afterPageLoaded?: () => any;
 };
 
 type BrowserLaunchOptions = {
@@ -33,9 +34,14 @@ async function warmingBrowser(url: URL, pageInstance: Page) {
     await pageInstance.close();
 }
 
-async function runApplication(url: URL, page: Page, waitFor?: string | number) {
+type PageRunOptions = { waitFor?: string | number; afterPageLoaded?: () => any };
+
+async function runApplication(url: URL, page: Page, options?: PageRunOptions) {
     debug('launching the app');
+    const { waitFor, afterPageLoaded } = options || {};
+
     await page.goto(url.href, { waitUntil: 'networkidle0' });
+
     if (typeof waitFor === 'number' && waitFor != 0 && !isNaN(waitFor)) {
         debug(`waiting for timer: ${waitFor} the app`);
         await page.waitFor(waitFor);
@@ -43,6 +49,10 @@ async function runApplication(url: URL, page: Page, waitFor?: string | number) {
     if (typeof waitFor === 'string' && waitFor.trim() !== '') {
         debug(`waiting for selector: ${waitFor} the app`);
         await page.waitForSelector(waitFor);
+    }
+
+    if (typeof afterPageLoaded === 'function') {
+        await page.evaluate(afterPageLoaded);
     }
 }
 
@@ -58,7 +68,7 @@ type ProfileResult = Promise<{
 }>;
 
 async function profilePage(browser: Browser, params: ProfileParams, traceTo: string, timeout: number, retries = 0): ProfileResult {
-    const { useCache, url, throttlingRate, network, waitFor } = params;
+    const { useCache, url, throttlingRate, network, waitFor, afterPageLoaded } = params;
     const tracer = new Tracer(traceTo);
     let page: Page | null = null;
     try {
@@ -67,7 +77,7 @@ async function profilePage(browser: Browser, params: ProfileParams, traceTo: str
         await setpPerformanceConditions(page, { useCache, throttlingRate, network });
 
         await tracer.start(page);
-        await runApplication(url, page, waitFor);
+        await runApplication(url, page, { waitFor, afterPageLoaded });
         const trace = await tracer.stop();
 
         const result = await extractPerformanceMetrics(page, trace);

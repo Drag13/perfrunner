@@ -1,5 +1,9 @@
-import { RunTestsFromConfigCommand } from './from-config-command';
-import { RunTestsFromConsoleCommand } from './from-console-command';
-import { InitConfigCommand } from './init-command';
+import { getCommand } from './command-parser';
+import { runTestsFromConsole } from './run-console/run-test-from-console';
+import { generateConfig } from './init/generate-config';
+import { runTestFromConfig } from './run-config/run-test-from-config';
 
-export { RunTestsFromConfigCommand, RunTestsFromConsoleCommand, InitConfigCommand };
+export { getCommand };
+export { runTestsFromConsole };
+export { generateConfig };
+export { runTestFromConfig };

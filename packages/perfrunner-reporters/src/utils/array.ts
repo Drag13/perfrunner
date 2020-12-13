@@ -30,3 +30,5 @@ export const groupBy = <T>(array: T[], hashFunc: (el: T) => string): T[][] => {
 
     return result;
 };
+
+export const isAllSame = <T>(array: T[]) => array.every((v) => v === array[0]);

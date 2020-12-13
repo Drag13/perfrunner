@@ -144,8 +144,37 @@ npx perfrunner https://drag13.io --reporter my-custom-reporter.js
 where reporter should looks like:
 
 ```js
-module.exports = (outputFolder, data, args) => console.log(outputFolder, JSON.stringify(data), args);
+module.exports = {
+    generateReport: (data, args) => console.log(outputFolder, JSON.stringify(data), args),
+    defaultReportName: 'reporter.txt',
+};
 ```
+
+## Config file
+
+Config file supports additional features:
+
+-   Testing multiple plages
+-   Network customization
+-   Executing post loading script
+
+### OnAfterPageLoaded
+
+To run script after it was loaded, you need to:
+
+-   Create new file on the root of the project using `module.exports = function` notation
+-   Set `onAfterPageLoadedScript` property to "./YOUR-FILE-NAME.js"
+
+Example:
+
+```js
+module.exports = async function () {
+    console.log('start');
+    return new Promise((r) => setTimeout((x) => (console.log('end'), r()), 3000));
+};
+```
+
+The script will beexecuted after page loaded. If the script is async - page will wait till completion
 
 ## Troubleshooting
 
@@ -171,3 +200,7 @@ npx perfrunner https://drag13.io -E "Path\To\chrome.exe"
 ## What next
 
 For the next updates, please check the [project](https://github.com/Drag13/perfrunner/projects/1). It's not very well described but might give you an idea of what is planned.
+
+## More details
+
+Here you can find an [introduction article about the Perfrunner](https://drag13.io/posts/perfrunner-intro/index.html).

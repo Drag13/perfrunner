@@ -1,9 +1,9 @@
-import { existsSync, readFileSync } from 'fs';
 import { render } from 'mustache';
 import { join } from 'path';
 import { IPerformanceResult } from 'perfrunner-core';
 import { IReporter } from '../..';
 import {
+    readFileAsync,
     getDomInteractive,
     getFCP,
     getLayoutDuration,
@@ -11,8 +11,9 @@ import {
     getRecalculateStyleDuration,
     getScriptDuration,
     groupBy,
-    writeFile,
+    isAllSame,
 } from '../../utils';
+import { ReportGenerator } from '../iReporter';
 import { createViewModel } from './format';
 
 const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] =>
@@ -51,16 +52,12 @@ const getPageMetadata = (data: IPerformanceResult) => ({
     ),
 });
 
-export const toSimpleMd: IReporter = (outputFolder, data) => {
+const toSimpleMd: ReportGenerator = async (data) => {
     const templatePath = join(__dirname, 'index.md');
 
-    if (!existsSync(templatePath)) {
-        return Promise.reject('Template for md reporter not found');
-    }
-
     try {
-        const template = readFileSync(templatePath, { encoding: 'utf-8' });
-        const href = data[0].runParams.url;
+        const template = await readFileAsync(templatePath);
+        const href = isAllSame(data.map((x) => x.runParams.url)) ? data[0].runParams.url : 'Various';
         const groupedData = groupByPerfConditions(data);
 
         const result = render(template, {
@@ -68,10 +65,13 @@ export const toSimpleMd: IReporter = (outputFolder, data) => {
             pages: groupedData.map(getPageMetadata),
         });
 
-        writeFile(outputFolder, 'default-report.md', result);
+        return result;
     } catch (e) {
         return Promise.reject(e);
     }
+};
 
-    return Promise.resolve(0);
+export const defaultMdReporter: IReporter = {
+    defaultReportName: 'default-report.md',
+    generateReport: toSimpleMd,
 };

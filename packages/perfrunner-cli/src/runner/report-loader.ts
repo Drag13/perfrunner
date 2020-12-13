@@ -1,34 +1,37 @@
-import { existsSync } from 'fs';
 import { IReporter } from 'perfrunner-reporters';
-import { withRootPath } from '../utils';
+import { loadExternalModule } from '../utils';
+
+const isReporter = (maybeReporter: any): maybeReporter is IReporter => {
+    return maybeReporter != null && typeof (maybeReporter as IReporter).generateReport === 'function';
+};
 
 async function loadExternalReporter(path: string): Promise<IReporter> {
-    const isFileExists = existsSync(path);
-    if (!isFileExists) {
-        throw new Error(`'External reporter not found in: ${path}`);
+    const mayBeReporter = await loadExternalModule(path);
+    const isWellFormedReporter = isReporter(mayBeReporter);
+
+    if (!isWellFormedReporter) {
+        throw new Error(`External reporter found, but it doesn't contain generateReport function`);
     }
 
-    const module = await import(withRootPath(path));
-    const reporter = module.default;
-    const isFunction = typeof reporter === 'function';
-
-    if (!isFunction) {
-        throw new Error('External reporter found, but it is not a function');
-    }
-
-    return reporter as IReporter;
+    return mayBeReporter as IReporter;
 }
 
 async function loadReporterFromReporters(path: string): Promise<IReporter> {
     const module = (await import('perfrunner-reporters')) as { [key: string]: unknown };
-    const reporter = module[path];
-    const exists = typeof reporter === 'function';
+    const reporter = module[path] as IReporter;
+    const exists = typeof reporter != null;
 
     if (!exists) {
         throw new Error(`Reporter: "${path}" doesn't exists in perfrunner-reporters package`);
     }
 
-    return reporter as IReporter;
+    const isFormed = typeof reporter.generateReport === 'function';
+
+    if (!isFormed) {
+        throw new Error(`Reporter: "${path}" doesn't contain generateReport function`);
+    }
+
+    return reporter;
 }
 
 export async function loadReporter(path: string) {

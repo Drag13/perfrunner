@@ -89,10 +89,6 @@ npx perfrunner
 
 Perfrunner will use `perfrunner.json` configuration file instead of input from the console. With a config file, you can use multiple URL and adjust network setup.
 
-## What next
-
-* Add simple simple markdown reporter
-
 ## Related packages
 
 -   [perfrunner-cli](./packages/perfrunner-cli) - command line interface for the perfrunner
