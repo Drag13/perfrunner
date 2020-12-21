@@ -1,7 +1,7 @@
 import { measureLCP } from './lcp.observer';
-import { IWithObserver, setupObserversStorage } from './observer';
+import { setupObserversStorage } from './observer';
 import { LARGEST_CONTENTFUL_PAINT } from './events';
 
 export { measureLCP };
-export { IWithObserver, setupObserversStorage };
+export { setupObserversStorage };
 export { LARGEST_CONTENTFUL_PAINT };

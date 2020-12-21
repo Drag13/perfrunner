@@ -1,7 +1,7 @@
 import { Trace, subsetTrace, TraceEvent, extractResourceData } from './trace';
 import { Page } from 'puppeteer';
 import { ExtendedPerformanceEntry } from './types';
-import { LARGEST_CONTENTFUL_PAINT, IWithObserver } from './performance-observers';
+import { LARGEST_CONTENTFUL_PAINT } from './performance-observers';
 import { debug } from '../logger';
 import { orderByDescending } from '../utils';
 
@@ -13,10 +13,15 @@ async function extractPageMetrics(page: Page) {
 async function extractObservablePerformanceEntries(page: Page): Promise<PerformanceEntry[]> {
     debug('extracting observable performance entries');
     const rawMetrics = await page.evaluate(function serializeObservableEntries() {
-        const data = (<IWithObserver>window)._cpo?.getEntries() ?? [];
+        const data = window._cpo?.getEntries() ?? [];
+        // don't try to move it anywehre: Evaluation failed: ReferenceError: safeSerializer is not defined
         function safeSerializer() {
             const seen = new WeakSet();
-            return function serializer(_: string, value: any) {
+            return function serializer(key: string, value: any) {
+                if (key === 'element') {
+                    // there is a chance that element will be not accessible due to the security reasons (IFrame). So we avoid serializtion of such.
+                    return value?.toString() ?? '';
+                }
                 if (typeof value === 'object' && value !== null) {
                     if (seen.has(value)) {
                         return;
@@ -94,6 +99,8 @@ function updateMissingData(entries: ExtendedPerformanceEntry[], { traceEvents }:
 export async function extractPerformanceMetrics(page: Page, trace: Trace) {
     const metrics = await extractPageMetrics(page);
     const observables = await extractObservablePerformanceEntries(page);
+    console.log(observables);
+
     const performanceEntries = await extractPerformanceEntries(page);
 
     const normalizedEntries = normalizedPerformanceEntries([...performanceEntries, ...observables]);

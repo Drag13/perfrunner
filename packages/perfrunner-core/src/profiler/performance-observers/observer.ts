@@ -1,15 +1,5 @@
-export interface IWithObserver {
-    _cpo?: IEventStore;
-}
-
-export interface IEventStore {
-    _entries: PerformanceEntry[];
-    add(performanceEntry: PerformanceEntry): void;
-    getEntries(): PerformanceEntry[];
-}
-
 export function setupObserversStorage() {
-    const store: IEventStore = {
+    const store: IEventStore & { _entries: PerformanceEntry[] } = {
         _entries: [],
         add: function (entry) {
             this._entries.push(entry);
@@ -19,6 +9,5 @@ export function setupObserversStorage() {
         },
     };
 
-    //@ts-ignore
-    (<IWithObserver>window)._cpo = store;
+    window._cpo = store;
 }
