@@ -97,6 +97,14 @@ async function profilePage(browser: Browser, params: ProfileParams, traceTo: str
 
         if (retries < MAX_RETRIES) {
             log(`Spotted an error, doing retry #${retries + 1}`);
+
+            const errorMessage: string =
+                typeof error === 'object' && error.message
+                    ? error.message?.toString()
+                    : typeof error === 'string'
+                    ? error
+                    : 'unknown error';
+            debug(`Error message: ${errorMessage}`);
             return await profilePage(browser, params, traceTo, timeout, retries + 1);
         }
 

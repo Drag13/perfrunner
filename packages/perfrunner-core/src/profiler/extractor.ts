@@ -99,15 +99,11 @@ function updateMissingData(entries: ExtendedPerformanceEntry[], { traceEvents }:
 export async function extractPerformanceMetrics(page: Page, trace: Trace) {
     const metrics = await extractPageMetrics(page);
     const observables = await extractObservablePerformanceEntries(page);
-    console.log(observables);
 
     const performanceEntries = await extractPerformanceEntries(page);
 
     const normalizedEntries = normalizedPerformanceEntries([...performanceEntries, ...observables]);
     const extendedEntries = updateMissingData(normalizedEntries, trace);
-
-    const fcp = performanceEntries.find((x) => x.name === 'first-contentful-paint');
-    debug(`fcp: ${fcp ? fcp.startTime : 'undefined'}`);
 
     return {
         metrics,
