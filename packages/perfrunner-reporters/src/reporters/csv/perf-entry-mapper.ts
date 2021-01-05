@@ -1,5 +1,4 @@
-import { ExtendedPerformanceEntry } from 'perfrunner-core';
-import { PerfRunResult } from 'perfrunner-core/dist/db/scheme';
+import { ExtendedPerformanceEntry, PerfRunResult } from 'perfrunner-core';
 import { FlattenPerformanceResult } from './flatten-performance-result';
 import { exclude } from '../../utils';
 

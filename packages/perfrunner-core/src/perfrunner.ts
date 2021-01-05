@@ -4,24 +4,26 @@ import { Db, getConnectionString } from './db';
 import { PerfRunnerOptions } from './profiler/perf-options';
 import { processPerfData } from './processor/processor';
 import { log } from './logger';
-import { IPerformanceResult, PerfRunResult } from './db/scheme';
+import { IPerformanceResult } from './db/scheme';
+import { PerfRunResult } from './types/perfrunresult';
+import { IStorage } from './types/storage';
 
 /**
  * Profile given URL and returns performance data
  * @param {PerfRunnerOptions} options Profiling parameters
  * @returns {Promise<IPerformanceResult>} performance result
  */
-export async function profile(options: PerfRunnerOptions): Promise<IPerformanceResult> {
+export async function profile(options: PerfRunnerOptions, storage?: IStorage): Promise<IPerformanceResult> {
     validateArguments(options);
 
     const url = new URL(options.url);
     const connectionString = getConnectionString(options.output, url, options.testName);
-    const db = new Db(connectionString);
+    const db = storage ?? new Db(connectionString);
 
     if (!options.reportOnly) {
-        const conditions = `network: ${
-            options.network.name != undefined ? options.network.name : 'custom'
-        }; throttling: ${options.throttlingRate}x, ${options.useCache ? `with cache` : `no cache`}`;
+        const conditions = `network: ${options.network.name != undefined ? options.network.name : 'custom'}; throttling: ${
+            options.throttlingRate
+        }x, ${options.useCache ? `with cache` : `no cache`}`;
 
         log(`starting profile session for ${url.href}`);
         log(conditions);
@@ -69,5 +71,7 @@ export async function profile(options: PerfRunnerOptions): Promise<IPerformanceR
         db.write(performanceResult, options.purge);
     }
 
-    return db.read();
+    const result = await db.read();
+
+    return result;
 }

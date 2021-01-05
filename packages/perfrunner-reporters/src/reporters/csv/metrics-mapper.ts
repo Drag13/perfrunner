@@ -1,4 +1,4 @@
-import { PerfRunResult } from 'perfrunner-core/dist/db/scheme';
+import { PerfRunResult } from 'perfrunner-core';
 import { FlattenPerformanceResult } from './flatten-performance-result';
 
 export function metricsToCsv(testResult: PerfRunResult, id: number): FlattenPerformanceResult {

@@ -1,10 +1,12 @@
 import FileSync from 'lowdb/adapters/FileSync';
 import lowdb, { LowdbSync } from 'lowdb';
-import { DbSchema, PerfRunResult } from './scheme';
+import { DbSchema } from './scheme';
 import { debug } from '../logger';
 import { ConnectionString } from './connection-string';
+import { IStorage } from '../types/storage';
+import { PerfRunResult } from '../types/perfrunresult';
 
-class Db {
+class Db implements IStorage {
     private _db: LowdbSync<DbSchema>;
 
     public constructor(connectpionString: ConnectionString) {
@@ -13,7 +15,7 @@ class Db {
         this._db = lowdb(adapter);
     }
 
-    write(data: PerfRunResult, purge?: boolean): void {
+    async write(data: PerfRunResult, purge?: boolean): Promise<void> {
         const db = this._db;
 
         db.defaults({ profile: [], count: 0 }).write();
@@ -26,9 +28,12 @@ class Db {
         db.update('count', (n) => n + 1).write();
     }
 
-    read = () => this._db.get('profile').value();
+    async read() {
+        const data = this._db.get('profile').value();
+        return Promise.resolve(data);
+    }
 
-    purge() {
+    async purge() {
         debug(`clearing old data`);
         this._db
             .get('profile')
