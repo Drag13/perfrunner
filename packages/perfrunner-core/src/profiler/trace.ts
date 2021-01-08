@@ -95,7 +95,7 @@ export class Tracer {
 
     private ensureFolderCreated(path: string) {
         if (!existsSync(path)) {
-            mkdirSync(path);
+            mkdirSync(path, { recursive: true });
         }
     }
 }

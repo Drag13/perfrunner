@@ -28,9 +28,11 @@ class Db implements IStorage {
         db.update('count', (n) => n + 1).write();
     }
 
-    async read() {
+    async read(url?: string) {
         const data = this._db.get('profile').value();
-        return Promise.resolve(data);
+        const result = typeof url === 'string' ? data.filter((x) => x.runParams.url.toLowerCase() === url.toLowerCase()) : data;
+
+        return Promise.resolve(result);
     }
 
     async purge() {
