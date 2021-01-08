@@ -68,7 +68,7 @@ export async function profile(options: PerfRunnerOptions, storage?: IStorage): P
         };
 
         log('saving data...');
-        db.write(performanceResult, options.purge);
+        await db.write(performanceResult, options.purge);
     }
 
     const result = await db.read();

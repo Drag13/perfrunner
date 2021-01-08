@@ -15,7 +15,7 @@ class Db implements IStorage {
         this._db = lowdb(adapter);
     }
 
-    async write(data: PerfRunResult, purge?: boolean): Promise<void> {
+    write(data: PerfRunResult, purge?: boolean): Promise<void> {
         const db = this._db;
 
         db.defaults({ profile: [], count: 0 }).write();
@@ -26,22 +26,26 @@ class Db implements IStorage {
 
         db.get('profile').push(data).write();
         db.update('count', (n) => n + 1).write();
+
+        return Promise.resolve(undefined);
     }
 
-    async read(url?: string) {
+    read(url?: string): Promise<PerfRunResult[]> {
         const data = this._db.get('profile').value();
         const result = typeof url === 'string' ? data.filter((x) => x.runParams.url.toLowerCase() === url.toLowerCase()) : data;
 
         return Promise.resolve(result);
     }
 
-    async purge() {
+    purge(): Promise<undefined> {
         debug(`clearing old data`);
         this._db
             .get('profile')
             .remove(() => true)
             .write();
         this._db.update('count', (_) => 0).write();
+
+        return Promise.resolve(undefined);
     }
 }
 
