@@ -1,6 +1,7 @@
 import { AbstractChart, IViewData, msLabel } from './abstract.chart';
 import { color, init0, initWithEmptyString } from '../../../utils';
 import { IPerformanceResult } from '../types';
+import { numberOrZero } from '../../../utils/numbers';
 
 type ChartData = {
     layoutDuration: number[];
@@ -35,10 +36,10 @@ export class MetricsChartReporter extends AbstractChart<ChartData> {
         };
 
         return rawData.reduce((acc, v, i) => {
-            acc.data.layoutDuration[i] = v.pageMetrics.LayoutDuration;
-            acc.data.recalcStyleDuration[i] = v.pageMetrics.RecalcStyleDuration;
-            acc.data.scriptDuration[i] = v.pageMetrics.ScriptDuration;
-            acc.data.taskDuration[i] = v.pageMetrics.TaskDuration;
+            acc.data.layoutDuration[i] = numberOrZero(v.pageMetrics.LayoutDuration);
+            acc.data.recalcStyleDuration[i] = numberOrZero(v.pageMetrics.RecalcStyleDuration);
+            acc.data.scriptDuration[i] = numberOrZero(v.pageMetrics.ScriptDuration);
+            acc.data.taskDuration[i] = numberOrZero(v.pageMetrics.TaskDuration);
             acc.labels[i] = this.getLabel(i, rawData[i].comment);
             acc.timeStamp[i] = rawData[i].timeStamp;
 

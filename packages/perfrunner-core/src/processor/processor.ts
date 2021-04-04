@@ -6,7 +6,7 @@ import { exclude, mergeWithRules as merge } from './merge';
 import { transform } from './transform';
 import { ExtendedPerformanceEntry } from '../profiler/types';
 
-const toMiliseconds = (v: number) => v * 1000;
+const toMiliseconds = (v: number | undefined) => (v ?? 0) * 1000;
 
 export const processPerfData = (rawPerformanceData: RawPerfData[]): PerformanceData => {
     const metrics = rawPerformanceData.map((x) => x.metrics);
