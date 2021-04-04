@@ -1,0 +1,1 @@
+export const numberOrZero = (x:number | undefined | null) => x ?? 0;

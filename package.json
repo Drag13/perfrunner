@@ -9,6 +9,7 @@
     "build": "lerna run build",
     "pack": "lerna run pack",
     "prettier": "lerna run prettier",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "demo":"(cd packages\\perfrunner-cli\\)&&(npm run demo)"
   }
 }
