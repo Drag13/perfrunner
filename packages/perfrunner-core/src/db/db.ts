@@ -37,7 +37,7 @@ class Db implements IStorage {
         return Promise.resolve(result);
     }
 
-    purge(): Promise<undefined> {
+    purge(): Promise<void> {
         debug(`clearing old data`);
         this._db
             .get('profile')
@@ -45,7 +45,7 @@ class Db implements IStorage {
             .write();
         this._db.update('count', (_) => 0).write();
 
-        return Promise.resolve(undefined);
+        return Promise.resolve();
     }
 }
 
