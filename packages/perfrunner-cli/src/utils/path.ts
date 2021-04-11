@@ -4,9 +4,10 @@ const generateFriendlyNameFromUrl = (url: URL): string => {
     const friendlyHost = url.host.replace(/[\.:]/g, '_'); // remove . and : from host
     const pathName = url.pathname;
     const normalizedPath = pathName.endsWith('/') ? pathName.substring(0, pathName.length - 1) : pathName;
-    const friendlyPath = normalizedPath.replace(/[\\\/]/g, '__');
+    const friendlyPath = normalizedPath.replace(/[\\\/]/g, '__').replace(/\./g, '__');
+    const friendlyProtocol = url.protocol.replace(':', '__');
 
-    return `${friendlyHost}${friendlyPath}`;
+    return `${friendlyProtocol}${friendlyHost}${friendlyPath}`;
 };
 
 const santizePath = (path: string) => path; // TODO: implement sanitaze
