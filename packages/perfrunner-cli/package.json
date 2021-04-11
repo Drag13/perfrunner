@@ -1,6 +1,6 @@
 {
   "name": "perfrunner",
-  "version": "0.12.1-alpha.0",
+  "version": "0.13.0-alpha.0",
   "description": "Command-line-interface for the perfrunner - automated UI performance test tool",
   "main": "./dist/cli.js",
   "scripts": {
@@ -48,8 +48,8 @@
   },
   "dependencies": {
     "command-line-args": "~5.1.1",
-    "perfrunner-core": "^0.12.1-alpha.0",
-    "perfrunner-reporters": "^0.12.1-alpha.0"
+    "perfrunner-core": "^0.13.0-alpha.0",
+    "perfrunner-reporters": "^0.13.0-alpha.0"
   },
   "files": [
     "dist",
