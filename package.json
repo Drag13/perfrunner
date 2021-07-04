@@ -2,7 +2,7 @@
   "name": "root",
   "private": false,
   "devDependencies": {
-    "lerna": "~3.22.1"
+    "lerna": "^4.0.0"
   },
   "scripts": {
     "lerna": "lerna",
@@ -10,6 +10,6 @@
     "pack": "lerna run pack",
     "prettier": "lerna run prettier",
     "test": "lerna run test",
-    "demo":"(cd packages\\perfrunner-cli\\)&&(npm run demo)"
+    "demo": "(cd packages\\perfrunner-cli\\)&&(npm run demo)"
   }
 }
