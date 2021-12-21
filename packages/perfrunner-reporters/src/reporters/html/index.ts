@@ -6,6 +6,7 @@ import { IPerformanceResult } from 'perfrunner-core';
 import { groupBy, hash, isAllSame } from '../../utils';
 import { getReporterRegistry, defaultReporterNames } from './charts';
 import { readFileAsync } from '../../utils/fs';
+import { sanitizeJson } from '../../utils/json';
 
 const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] =>
     groupBy(
@@ -20,8 +21,6 @@ const getPageMetadata = (pageName: string, isActive: boolean) => ({
     pageClass: isActive ? 'active' : '',
     tabClass: isActive ? 'active show' : '',
 });
-
-const sanitizeJson = (json: string) => json.replace(/'/g, "'");
 
 function getTabName(perfResult: IPerformanceResult, i: number) {
     const options = perfResult[0].runParams;

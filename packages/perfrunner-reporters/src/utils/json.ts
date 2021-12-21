@@ -1,1 +1,1 @@
-export const sanitizeJson = (json: string) => json.replace(/'/g, "'");
+export const sanitizeJson = (json: string) => json;
