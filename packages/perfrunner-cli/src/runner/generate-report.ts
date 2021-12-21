@@ -11,7 +11,7 @@ async function generateReport(reporterName: string, outputTo: string, data: IPer
         const result = await generateReport(data, args);
         const fullPath = join(outputTo, defaultReportName);
         writeFile(fullPath as any, result);
-    } catch (error) {
+    } catch (error: any) {
         logger.error(error);
         throw error;
     }
