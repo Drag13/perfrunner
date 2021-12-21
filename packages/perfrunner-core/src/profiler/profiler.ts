@@ -90,7 +90,7 @@ async function profilePage(browser: Browser, params: ProfileParams, traceTo: str
         log(`lcp: ${lcp ? lcp.startTime : 'not recorded'}`);
 
         return result;
-    } catch (error) {
+    } catch (error: any) {
         if (page) {
             await page.close();
         }
@@ -99,8 +99,8 @@ async function profilePage(browser: Browser, params: ProfileParams, traceTo: str
             log(`Spotted an error, doing retry #${retries + 1}`);
 
             const errorMessage: string =
-                typeof error === 'object' && error.message
-                    ? error.message?.toString()
+                typeof error === 'object' && error?.message
+                    ? error?.message?.toString()
                     : typeof error === 'string'
                     ? error
                     : 'unknown error';

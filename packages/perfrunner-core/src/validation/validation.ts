@@ -55,7 +55,7 @@ export const validator = object().shape(optionsValidationScheme);
 export function validateArguments(params: PerfRunnerOptions) {
     try {
         validator.validateSync(params);
-    } catch (e) {
+    } catch (e: any) {
         error(e);
         throw e;
     }
