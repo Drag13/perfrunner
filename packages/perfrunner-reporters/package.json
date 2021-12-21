@@ -36,8 +36,8 @@
     "husky": "~4.2.5",
     "parcel-bundler": "^1.12.5",
     "parcel-plugin-inline-source": "~1.0.0",
-    "prettier": "~2.0.5",
-    "typescript": "^4.2.3"
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
   },
   "dependencies": {
     "bootstrap": "^4.5.2",

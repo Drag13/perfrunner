@@ -23,7 +23,7 @@ import { DEFAULT_CONFIG_NAME, DEFAULT_FOLRDER_CONFIG } from './config';
             default:
                 throw 'Not implemented';
         }
-    } catch (error) {
+    } catch (error: any) {
         logger.error(error);
         return -1;
     }
