@@ -31,26 +31,7 @@
   "homepage": "https://github.com/Drag13/perfrunner",
   "readme": "https://github.com/Drag13/perfrunner/blob/master/packages/perfrunner-cli/readme.md",
   "license": "MIT",
-  "devDependencies": {
-    "@types/chai": "^4.2.12",
-    "@types/command-line-args": "~5.0.0",
-    "@types/lowdb": "~1.0.9",
-    "@types/mocha": "~7.0.2",
-    "@types/node": "^14.11.2",
-    "chai": "~4.2.0",
-    "husky": "~4.2.5",
-    "lint-staged": "^10.4.0",
-    "mocha": "~7.2.0",
-    "prettier": "^2.5.1",
-    "ts-mocha": "~7.0.0",
-    "ts-node": "~8.10.2",
-    "typescript": "^4.5.4"
-  },
-  "dependencies": {
-    "command-line-args": "~5.1.1",
-    "perfrunner-core": "^0.13.0-alpha.1",
-    "perfrunner-reporters": "^0.13.0-alpha.1"
-  },
+  "dependencies": {},
   "files": [
     "dist",
     "!dist/generated",

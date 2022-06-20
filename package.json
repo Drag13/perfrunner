@@ -2,7 +2,7 @@
   "name": "root",
   "private": false,
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "typescript": "^4.5.4"
   },
   "scripts": {
     "lerna": "lerna",
@@ -11,5 +11,10 @@
     "prettier": "lerna run prettier",
     "test": "lerna run test",
     "demo": "(cd packages\\perfrunner-cli\\)&&(npm run demo)"
+  },
+  "dependencies": {
+    "perfrunner": "file:packages\\perfrunner-cli",
+    "perfrunner-core": "file:packages\\perfrunner-core",
+    "perfrunner-reporters": "file:packages\\perfrunner-reporters"
   }
 }
