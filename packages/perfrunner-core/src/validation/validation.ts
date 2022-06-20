@@ -32,7 +32,6 @@ const optionsValidationScheme: ValidationScheme = {
     output: requiredString(),
     headless: optionalBool(true),
     purge: optionalBool(),
-    reportOnly: optionalBool(),
     ignoreDefaultArgs: optionalBool(),
     useCache: optionalBool(),
     chromeArgs: array().of(requiredString()),

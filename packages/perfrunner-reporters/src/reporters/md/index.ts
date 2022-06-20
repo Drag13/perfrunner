@@ -16,14 +16,14 @@ import {
 import { ReportGenerator } from '../iReporter';
 import { createViewModel } from './format';
 
-const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] =>
+const groupByPerfConditions = (performanceRuns: IPerformanceResult[]): IPerformanceResult[][] =>
     groupBy(
         performanceRuns,
         ({ runParams: { useCache, network, throttlingRate } }) =>
             `${network.downloadThroughput}_${network.uploadThroughput}_${network.latency}_${throttlingRate}_${useCache ? 1 : 0}`
     );
 
-function getTabName(perfResult: IPerformanceResult) {
+function getTabName(perfResult: IPerformanceResult[]) {
     const options = perfResult[0].runParams;
     const networkName =
         options.network.name ??
@@ -34,7 +34,7 @@ function getTabName(perfResult: IPerformanceResult) {
     return `${networkName}, ${throttling}, ${cache}`;
 }
 
-const getPageMetadata = (data: IPerformanceResult) => ({
+const getPageMetadata = (data: IPerformanceResult[]) => ({
     pageName: getTabName(data),
     stats: createViewModel(
         data

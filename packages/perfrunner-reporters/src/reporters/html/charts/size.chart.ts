@@ -10,7 +10,7 @@ export class ResourceSizeChart extends AbstractChart<ChartData> {
     readonly name: string = 'size';
     readonly title: string = 'Resource Size';
 
-    protected getViewData = (rawData: IPerformanceResult) => {
+    protected getViewData = (rawData: IPerformanceResult[]) => {
         if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format');
         }

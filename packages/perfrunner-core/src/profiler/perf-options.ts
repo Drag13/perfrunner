@@ -101,11 +101,6 @@ export interface RunnerOptions {
     testName?: string;
 
     /**
-     * Sets to report only mode. No tests will be executed, but data will be read and returned if exists
-     */
-    reportOnly?: boolean;
-
-    /**
      * Sets function that should be executed after page loaded. If function returns promise, page will wait untill the promise resolved
      */
     afterPageLoaded?: () => any;

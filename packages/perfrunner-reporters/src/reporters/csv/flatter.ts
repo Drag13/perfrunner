@@ -3,7 +3,7 @@ import { perfEntriesToCsv } from './perf-entry-mapper';
 import { metricsToCsv } from './metrics-mapper';
 import { FlattenPerformanceResult } from './flatten-performance-result';
 
-function flatten(rawData: IPerformanceResult) {
+function flatten(rawData: IPerformanceResult[]) {
     const result: FlattenPerformanceResult[] = [];
 
     return rawData.reduce((acc, testResult, id) => {

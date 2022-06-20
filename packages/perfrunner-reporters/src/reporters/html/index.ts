@@ -8,7 +8,7 @@ import { getReporterRegistry, defaultReporterNames } from './charts';
 import { readFileAsync } from '../../utils/fs';
 import { sanitizeJson } from '../../utils/json';
 
-const groupByPerfConditions = (performanceRuns: IPerformanceResult): IPerformanceResult[] =>
+const groupByPerfConditions = (performanceRuns: IPerformanceResult[]): IPerformanceResult[][] =>
     groupBy(
         performanceRuns,
         ({ runParams: { useCache, network, throttlingRate } }) =>
@@ -22,7 +22,7 @@ const getPageMetadata = (pageName: string, isActive: boolean) => ({
     tabClass: isActive ? 'active show' : '',
 });
 
-function getTabName(perfResult: IPerformanceResult, i: number) {
+function getTabName(perfResult: IPerformanceResult[], i: number) {
     const options = perfResult[0].runParams;
     const networkName = options.network.name ?? `#${i}`;
     const throttling = options.throttlingRate === 0 ? `no throttling` : `throttling: ${options.throttlingRate}`;

@@ -25,11 +25,11 @@ export abstract class AbstractChart<TData> {
     protected readonly FONT_FAMILIY = `'monospace', 'Verdana', 'sans-serif'`;
     protected readonly DEFAULT_LINE_WIDTH = 2;
 
-    protected abstract getViewData: (data: IPerformanceResult) => IViewData<TData>;
+    protected abstract getViewData: (data: IPerformanceResult[]) => IViewData<TData>;
     protected abstract getDatasetEntries: (viewData: TData) => Array<any>;
     protected abstract yAxesLabelCalback(value: string | number): string;
 
-    public render(container: Element, rawData: IPerformanceResult) {
+    public render(container: Element, rawData: IPerformanceResult[]) {
         if (container == null) {
             throw new Error('Chart container is not defined');
         }
@@ -89,7 +89,7 @@ export abstract class AbstractChart<TData> {
     protected legend = () => ({ labels: { fontFamily: this.FONT_FAMILIY } });
     protected chartTitle = () => ({ text: this.title, display: true, fontFamily: this.FONT_FAMILIY });
     protected getLabel = (index: number, comment: string | undefined) => `#${index + 1}${isNullOrEmpty(comment) ? '' : ` ${comment}`}`;
-    protected runParams = (rawData: IPerformanceResult): RunParams[] =>
+    protected runParams = (rawData: IPerformanceResult[]): RunParams[] =>
         rawData.map((x) => ({
             download: x.runParams.network.downloadThroughput,
             upload: x.runParams.network.uploadThroughput,

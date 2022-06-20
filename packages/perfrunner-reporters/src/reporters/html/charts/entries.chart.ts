@@ -20,7 +20,7 @@ export class EntriesChartReporter extends AbstractChart<ChartData> {
         ];
     };
 
-    protected getViewData = (rawData: IPerformanceResult) => {
+    protected getViewData = (rawData: IPerformanceResult[]) => {
         if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format');
         }

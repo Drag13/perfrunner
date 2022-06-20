@@ -2,7 +2,7 @@ import { getReporterRegistry, defaultReporterNames } from './charts';
 import { defined } from '../../utils';
 import { IPerformanceResult } from 'perfrunner-core';
 
-(function render(navId: string, contentId: string, data: IPerformanceResult[], reporters: string[] = []) {
+(function render(navId: string, contentId: string, data: IPerformanceResult[][], reporters: string[] = []) {
     const navNode = document.getElementById(navId);
     const contentNode = document.getElementById(contentId);
 

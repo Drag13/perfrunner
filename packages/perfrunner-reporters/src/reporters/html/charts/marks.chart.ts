@@ -10,7 +10,7 @@ export class MarksChartReporter extends AbstractChart<ChartData> {
     readonly title = 'Performance Marks';
     protected yAxesLabelCalback = msLabel;
 
-    protected getViewData = (rawData: IPerformanceResult) => {
+    protected getViewData = (rawData: IPerformanceResult[]) => {
         if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format');
         }

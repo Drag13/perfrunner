@@ -16,7 +16,7 @@ export class MetricsChartReporter extends AbstractChart<ChartData> {
     readonly title = 'Common performance metrics';
     yAxesLabelCalback = msLabel;
 
-    protected getViewData = (rawData: IPerformanceResult) => {
+    protected getViewData = (rawData: IPerformanceResult[]) => {
         if (!Array.isArray(rawData)) {
             throw new Error('data is not in array format');
         }
