@@ -2,7 +2,7 @@ import { profile, PerfRunnerOptions, logger, IPerformanceResult } from 'perfrunn
 import { asyncToArray, iterateAsync } from 'perfrunner-core/dist/utils/async';
 import { ensureFolderCreated } from '../utils';
 
-async function runSingleTest(profilingOptions: PerfRunnerOptions, i: number) {
+export async function runSingleTest(profilingOptions: PerfRunnerOptions, i: number) {
     ensureFolderCreated(profilingOptions.output);
 
     logger.debug(JSON.stringify(profilingOptions.network));

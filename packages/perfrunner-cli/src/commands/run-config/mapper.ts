@@ -9,7 +9,6 @@ const map = async (config: JsonConfig, network: NetworkSetup, page: PageSetup, c
     ignoreDefaultArgs: config.ignoreDefaultArgs,
     useCache: cache,
     purge: false,
-    reportOnly: config.reportOnly,
     headless: !config.noHeadless,
     throttlingRate: config.throttling,
     runs: config.runs,

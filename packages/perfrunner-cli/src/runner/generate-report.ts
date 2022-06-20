@@ -4,7 +4,7 @@ import { asyncToArray, iterateAsync } from 'perfrunner-core/dist/utils/async';
 import { writeFile } from '../utils';
 import { loadReporter } from './report-loader';
 
-async function generateReport(reporterName: string, outputTo: string, data: IPerformanceResult, args: string[]) {
+export async function generateReport(reporterName: string, outputTo: string, data: IPerformanceResult[], args: string[]) {
     const { defaultReportName = 'reporter.txt', generateReport } = await loadReporter(reporterName);
 
     try {
@@ -22,7 +22,7 @@ async function generateReport(reporterName: string, outputTo: string, data: IPer
 type ReportResult = {
     reporterName: string;
     outputTo: string;
-    data: IPerformanceResult;
+    data: IPerformanceResult[];
     args: string[];
 };
 

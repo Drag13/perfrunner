@@ -30,7 +30,6 @@ const map = (config: ConsoleConfig, useCache: boolean, network: NetworkSetup): P
     ignoreDefaultArgs: config.ignoreDefaultArgs,
     useCache,
     purge: config.purge,
-    reportOnly: config.reportOnly,
     headless: !config.noHeadless,
     throttlingRate: config.throttling,
     runs: config.runs,
